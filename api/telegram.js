@@ -4,6 +4,7 @@ import { tg, send, buttons, download, admins, webhookSecret } from '../lib/tg.js
 import * as drafts from '../lib/drafts.js';
 import { parseListing, applyCorrection } from '../lib/parse.js';
 import { readObjects, commitObjects } from '../lib/gh.js';
+import { findUrls, readPage, downloadImage } from '../lib/page.js';
 import { previewText, missing, nextNumber, toObject, addObject, eur, esc } from '../lib/objects.js';
 
 const SITE = () => (process.env.SITE_URL || 'https://assel-chi.vercel.app').replace(/\/$/, '');
@@ -95,12 +96,22 @@ async function makePreview(chat) {
   await send(chat, 'Разбираю, это займёт до минуты…');
   const texts = list.map(p => p.text).filter(Boolean);
   const pdfIds = [...new Set(list.map(p => p.pdf).filter(Boolean))];
-  const photos = [...new Set(list.map(p => p.photo).filter(Boolean))].slice(0, MAX_PHOTOS);
+  const tgPhotos = [...new Set(list.map(p => p.photo).filter(Boolean))].map(tg => ({ tg }));
   const pdfs = await Promise.all(pdfIds.map(download));
-  const parsed = await parseListing({ texts, pdfs });
+  const pages = [];
+  for (const url of findUrls(texts.join('\n')).slice(0, 2)) {
+    try { pages.push(await readPage(url)); } catch (e) { await send(chat, `Не открылась ссылка: ${esc(e.message)}`); }
+  }
+  const parsed = await parseListing({ texts, pdfs, pages });
+  const pageImages = pages.flatMap(p => p.images);
+  const webPhotos = tgPhotos.length ? [] : (parsed.photo_ids || []).map(i => pageImages[i]).filter(Boolean).map(i => ({ url: i.url }));
+  const photos = [...tgPhotos, ...webPhotos].slice(0, MAX_PHOTOS);
   await drafts.setState(chat, { stage: 'preview', parsed, photos });
   return sendPreview(chat, parsed, photos.length);
 }
+
+// A photo is a Telegram file ({ tg }) or a picture on the agency site ({ url }).
+const fetchPhoto = p => (typeof p === 'string' ? download(p) : p.tg ? download(p.tg) : downloadImage(p.url));
 
 async function sendPreview(chat, parsed, photos) {
   const ready = !missing(parsed, photos).length;
@@ -116,7 +127,8 @@ async function publish(chat) {
   await drafts.setState(chat, { ...state, stage: 'publishing' });
   await send(chat, 'Публикую…');
 
-  const images = await Promise.all(state.photos.map(download));
+  const images = (await Promise.all(state.photos.map(p => fetchPhoto(p).catch(() => null)))).filter(Boolean);
+  if (!images.length) return send(chat, 'Не получилось скачать фото. Перешлите фото в чат и нажмите «Готово» ещё раз.');
   const o = await commitObjects(list => {
     const n = nextNumber(list);
     const keys = images.map((_, i) => `o${n}-${i + 1}`);

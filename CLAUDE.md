@@ -15,7 +15,7 @@ Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegra
   Open Graph image, JSON-LD), `sitemap.xml` and `robots.txt`. Run `npm run build`.
 - Telegram bot (`api/telegram.js`): Assel forwards photos, texts and PDFs; on «Готово» Claude (`lib/parse.js`) extracts
   the fields, the bot shows a preview, corrections are plain messages, «Опубликовать» commits photos to `public/img/o<n>-<i>.jpg`
-  and the object to `data/objects.json` through the GitHub API (`lib/gh.js`), and Vercel redeploys. Commands: /list, /price, /sold, /unsold, /cancel.
+  and the object to `data/objects.json` through the GitHub API (`lib/gh.js`), and Vercel redeploys. Links in a message (agency object pages) are opened by `lib/page.js`: text and photo URLs go to Claude, which picks the photos; the price is never taken from the page. Commands: /list, /price, /sold, /unsold, /cancel.
   Drafts live in a private Vercel Blob store (`lib/drafts.js`). The first real object removes the `demo: true` examples.
 - Leads: the site form posts to `api/lead.js`, which sends the lead (object, UTM source) to Assel in Telegram.
 - `api/setup.js`: open `/api/setup/` once after the token changes to register the webhook and the command menu.

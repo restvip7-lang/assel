@@ -43,3 +43,22 @@ test('lead message names the object and the source', () => {
   assert.match(t, /instagram \/ reels12/);
   assert.match(leadText({ name: '<x>', contact: '1234' }), /&lt;x&gt;/);
 });
+
+import { extract, findUrls } from '../lib/page.js';
+
+test('links are found in forwarded text', () => {
+  assert.deepEqual(findUrls('Смотри https://agency.com/obj/12, и ещё https://agency.com/obj/12'), ['https://agency.com/obj/12']);
+});
+
+test('page text and photos are extracted', () => {
+  const html = `<html><head><title>2+1 в Оба</title><meta property="og:image" content="/i/cover.jpg"></head>
+  <body><nav>Меню</nav><h1>2+1, 95 м²</h1><p>До моря 700 м</p><script>var g=["https:\\/\\/cdn.x.com\\/a.webp"]</script>
+  <img src="/logo.svg"><img data-src="/i/1.jpg" alt="Гостиная"><img srcset="/i/2-s.jpg 400w, /i/2-l.jpg 1200w"></body></html>`;
+  const p = extract(html, 'https://agency.com/obj/12');
+  assert.equal(p.title, '2+1 в Оба');
+  assert.match(p.text, /95 м²/);
+  assert.doesNotMatch(p.text, /Меню/);
+  assert.deepEqual(p.images.map(i => i.url), [
+    'https://agency.com/i/cover.jpg', 'https://agency.com/i/1.jpg', 'https://agency.com/i/2-l.jpg', 'https://cdn.x.com/a.webp',
+  ]);
+});
