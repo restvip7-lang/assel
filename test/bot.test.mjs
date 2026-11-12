@@ -62,3 +62,10 @@ test('page text and photos are extracted', () => {
     'https://agency.com/i/cover.jpg', 'https://agency.com/i/1.jpg', 'https://agency.com/i/2-l.jpg', 'https://cdn.x.com/a.webp',
   ]);
 });
+
+import { largest } from '../lib/page.js';
+test('only the biggest size of each photo is kept', () => {
+  const u = s => ({ url: `https://a.com/storage/1/conversions/01-${s}.jpg?v=1`, alt: '' });
+  assert.deepEqual(largest([u('_x580'), u('200x125'), u('_x900'), { url: 'https://a.com/b.jpg', alt: '' }]).map(i => i.url),
+    ['https://a.com/storage/1/conversions/01-_x900.jpg?v=1', 'https://a.com/b.jpg']);
+});

@@ -100,7 +100,7 @@ async function makePreview(chat) {
   const pdfs = await Promise.all(pdfIds.map(download));
   const pages = [];
   for (const url of findUrls(texts.join('\n')).slice(0, 2)) {
-    try { pages.push(await readPage(url)); } catch (e) { await send(chat, `Не открылась ссылка: ${esc(e.message)}`); }
+    try { const pg = await readPage(url); pages.push(pg); await send(chat, `Открыла страницу «${esc(pg.title.slice(0, 80))}», нашла ${pg.images.length} фото, выбираю нужные…`); } catch (e) { await send(chat, `Не открылась ссылка: ${esc(e.message)}`); }
   }
   const parsed = await parseListing({ texts, pdfs, pages });
   const pageImages = pages.flatMap(p => p.images);
