@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { validate } from '../build.mjs';
+import { validate } from '../lib/objects.js';
 
 const objects = JSON.parse(fs.readFileSync(new URL('../data/objects.json', import.meta.url)));
 const ok = { n: 1, name: 'A', d: 'Оба', rooms: '1+1', price: 1, area: 1, sea: 1, imgs: ['c1'] };

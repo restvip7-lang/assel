@@ -13,6 +13,15 @@ Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegra
 - `public/`: images (`img/<key>.jpg`) and the favicon, copied as is.
 - `build.mjs`: builds `dist/` with the home page, one page per object at `/o/<n>/` (own title, description,
   Open Graph image, JSON-LD), `sitemap.xml` and `robots.txt`. Run `npm run build`.
+- Telegram bot (`api/telegram.js`): Assel forwards photos, texts and PDFs; on «Готово» Claude (`lib/parse.js`) extracts
+  the fields, the bot shows a preview, corrections are plain messages, «Опубликовать» commits photos to `public/img/o<n>-<i>.jpg`
+  and the object to `data/objects.json` through the GitHub API (`lib/gh.js`), and Vercel redeploys. Commands: /list, /price, /sold, /unsold, /cancel.
+  Drafts live in a private Vercel Blob store (`lib/drafts.js`). The first real object removes the `demo: true` examples.
+- Leads: the site form posts to `api/lead.js`, which sends the lead (object, UTM source) to Assel in Telegram.
+- `api/setup.js`: open `/api/setup/` once after the token changes to register the webhook and the command menu.
+- Env vars (Vercel): `TELEGRAM_BOT_TOKEN`, `ADMIN_IDS` (Telegram user ids, comma separated; the first one gets leads
+  unless `LEADS_CHAT_ID` is set), `ANTHROPIC_API_KEY`, `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only),
+  `BLOB_READ_WRITE_TOKEN` (added by the Blob store), optional `SITE_URL`.
 - Tests: `npm test`. Run tests and the build before every push. Vercel builds from `main`.
 
 ## Object fields
