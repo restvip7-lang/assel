@@ -352,7 +352,7 @@ function home(){
      ["Есть ли рассрочка?","У многих новостроек есть рассрочка от застройщика без банка. Условия указаны на странице каждого объекта."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
   <p style="font-size:13px;color:var(--muted)">Ответы черновые, Assel проверит и поправит.</p></div></section>
  ${contact()}
- <footer><span>Assel Usmanova · недвижимость в Алании</span><span>usmanovahomes.com</span></footer></div>`;
+ <footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}</span></footer></div>`;
 }
 function gridHTML(l){return l.map(card).join("")||`<div class="empty"><b>По этим фильтрам сейчас ничего нет.</b><p style="color:var(--muted)">Напишите Assel: у неё бывают объекты до старта продаж.</p><button class="btn wa" data-wa="">${WA}Написать Assel</button></div>`}
 function contact(o){return `<section class="contact" id="contact"><div><h2>${o?"Узнать про №"+o.n:"Не нашли подходящее?"}</h2>
@@ -383,10 +383,10 @@ function obj(o){
    <button class="btn tg" data-tg="${o.n}">${TG}Telegram</button>
    <button class="btn ghost" data-go="contact">Записаться на показ</button>
    <div class="ag"><span class="ph">AU</span><div><b>Assel Usmanova</b><small>Отвечаю лично, обычно в течение часа</small></div></div>
-   <div class="share"><code id="slink">usmanovahomes.com/o/${o.n}</code><button data-act="copy">Копировать</button></div>
+   <div class="share"><code id="slink">${location.host}/o/${o.n}</code><button data-act="copy">Копировать</button></div>
   </aside></div>
   <section class="sec"><h2>Похожие объекты</h2><div class="grid">${sim.map(card).join("")}</div></section>
-  ${contact(o)}<footer><span>Assel Usmanova · недвижимость в Алании</span><span>usmanovahomes.com/o/${o.n}</span></footer></div>`;
+  ${contact(o)}<footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}/o/${o.n}</span></footer></div>`;
 }
 
 const app=document.getElementById("app"),bar=document.getElementById("bar");
@@ -409,7 +409,7 @@ document.addEventListener("click",e=>{
  if(a.dataset.act==="lang")toast("<b>Языки</b>English и Türkçe скоро.");
  if(a.dataset.act==="video"){if(cur().youtube)location.href="https://www.youtube.com/watch?v="+cur().youtube;else toast("<b>Видео-обзор</b>Скоро здесь будет видео.");}
  if(a.dataset.act==="photo")toast("<b>Галерея</b>Полноэкранный просмотр фото скоро.");
- if(a.dataset.act==="copy"){const t="https://usmanovahomes.com/o/"+cur().n;try{navigator.clipboard.writeText(t).then(()=>a.textContent="Скопировано",()=>getSelection().selectAllChildren(document.getElementById("slink")))}catch(_){getSelection().selectAllChildren(document.getElementById("slink"))}}
+ if(a.dataset.act==="copy"){const t=location.origin+"/o/"+cur().n+"/";try{navigator.clipboard.writeText(t).then(()=>a.textContent="Скопировано",()=>getSelection().selectAllChildren(document.getElementById("slink")))}catch(_){getSelection().selectAllChildren(document.getElementById("slink"))}}
 });
 document.addEventListener("change",e=>{const f=e.target.dataset.f;if(!f)return;st[f]=e.target.value;const l=filtered();document.getElementById("grid").innerHTML=gridHTML(l);document.getElementById("found").textContent="Найдено: "+l.length;bindTracks()});
 document.addEventListener("submit",e=>{if(e.target.id!=="lead")return;e.preventDefault();const o=cur();const t=`Здравствуйте, Assel! Меня зовут ${document.getElementById("l-name").value}. Контакт: ${document.getElementById("l-ph").value}. Удобно связаться: ${document.getElementById("l-when").value.toLowerCase()}.${o?" Интересует объект №"+o.n+".":""}`;if(SITE.whatsapp)location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t)}`;else document.getElementById("ok").hidden=false});
