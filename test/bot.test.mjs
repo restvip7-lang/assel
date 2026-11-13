@@ -29,6 +29,13 @@ test('parsed draft becomes a valid object without invented fields', () => {
   assert.equal('owner' in o, false);
 });
 
+test('no complex name: still publishable, auto title', () => {
+  const p = { ...parsed, name: null, rooms: '1+1', area: 35 };
+  assert.deepEqual(missing(p, 3), []);
+  assert.equal(toObject(p, 1, ['o1-1']).name, 'Квартира 1+1, 35 м²');
+  assert.match(previewText(p, 3), /Квартира 1\+1, 35 м²/);
+});
+
 test('missing fields block publishing', () => {
   assert.deepEqual(missing({ ...parsed, price: null }, 2), ['цена в евро']);
   assert.deepEqual(missing(parsed, 0), ['хотя бы одно фото']);

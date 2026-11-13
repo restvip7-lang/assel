@@ -21,7 +21,8 @@ const HELP = `Перешлите мне объект: фото, текст от 
 /cancel — удалить черновик`;
 
 const DONE_BTN = buttons([[['✅ Готово', 'done'], ['✖️ Отменить', 'cancel']]]);
-const PREVIEW_BTN = buttons([[['🚀 Опубликовать', 'pub']], [['✖️ Отменить', 'cancel']]]);
+const PREVIEW_BTN = buttons([[['🚀 Опубликовать', 'pub'], ['🗑 Удалить', 'cancel']]]);
+const DELETE_BTN = buttons([[['🗑 Удалить', 'cancel']]]);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -116,7 +117,7 @@ const fetchPhoto = p => (typeof p === 'string' ? download(p) : p.tg ? download(p
 async function sendPreview(chat, parsed, photos) {
   const ready = !missing(parsed, photos).length;
   const tail = ready ? '\n\nЧтобы исправить, просто напишите, например: «район Оба, до моря 400 м».' : '';
-  return send(chat, previewText(parsed, photos) + tail, ready ? PREVIEW_BTN : buttons([[['✖️ Отменить', 'cancel']]]));
+  return send(chat, previewText(parsed, photos) + tail, ready ? PREVIEW_BTN : DELETE_BTN);
 }
 
 async function publish(chat) {
