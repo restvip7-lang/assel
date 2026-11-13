@@ -118,3 +118,19 @@ test('cost of a Claude call in USD', () => {
   assert.equal(usd(0.0123), '$0.012');
   assert.equal(usd(4.2), '$4.20');
 });
+
+import { renderAll, pickPhotos, facts } from '../lib/promo.js';
+import fs from 'node:fs';
+
+test('promo pictures: six PNGs in the right sizes', () => {
+  const o = { n: 5, name: 'Sea Line', d: 'Махмутлар', rooms: '1+1', area: 58, sea: 350, floor: '4 из 9', year: '2026', price: 139000, imgs: ['p1', 'c1', 'c3'] };
+  assert.deepEqual(pickPhotos(o.imgs), { photo: 'c1', info: 'c3' });
+  assert.equal(facts(o).length, 6);
+  const jpg = fs.readFileSync(new URL('../public/img/c1.jpg', import.meta.url));
+  const all = renderAll(o, { photo: jpg, info: jpg }, { whatsapp: '77016777674' });
+  assert.equal(all.length, 6);
+  for (const a of all) {
+    assert.equal(a.png.readUInt32BE(16), a.format.w);
+    assert.equal(a.png.readUInt32BE(20), a.format.h);
+  }
+});

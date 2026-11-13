@@ -4,6 +4,6 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "functions": {
-    "api/telegram.js": { "maxDuration": 120 }
+    "api/telegram.js": { "maxDuration": 120, "includeFiles": "fonts/**" }
   }
 }

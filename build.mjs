@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { validate } from './lib/objects.js';
+import { renderAll, pickPhotos, FORMATS, KINDS } from './lib/promo.js';
 
 const root = path.dirname(new URL(import.meta.url).pathname);
 const read = f => JSON.parse(fs.readFileSync(path.join(root, f), 'utf8'));
@@ -31,6 +32,23 @@ function page({ title, desc, url, ogImg, jsonld }) {
     .replace('/*GUIDES*/[]', js(guides))
     .replace('/*NAV*/', guides.map(g => `<a href="/${g.slug}/">${esc(g.nav)}</a>`).join(''))
     .replace('/*SITE*/{}', js({ whatsapp: site.whatsapp, telegram: site.telegram }));
+}
+
+function promoPage(o) {
+  const card = (f, k) => `<figure><a href="${f.key}-${k.key}.png" target="_blank"><img src="${f.key}-${k.key}.png" width="${f.w}" height="${f.h}" alt="${esc(k.title)}" loading="lazy"></a>
+    <figcaption><b>${esc(k.title)}</b><a class="dl" href="${f.key}-${k.key}.png" download="assel-${o.n}-${f.key}-${k.key}.png">Скачать</a></figcaption></figure>`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Картинки для рекламы №${o.n}</title><link rel="icon" href="/favicon.svg">
+<style>:root{--ink:#0E1B2C;--muted:#5B6B7C;--line:#DDE4EA;--coral:#FF6A3D;--bg:#F6F8F9}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:0 auto;padding:32px 16px 64px}h1{font-size:clamp(26px,4vw,40px);margin:0 0 6px}p{color:var(--muted);margin:0 0 8px}a{color:inherit}
+section{margin-top:36px}h2{margin:0;font-size:22px}.use{font-size:14px}.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:12px}
+figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:10px}figure img{width:100%;height:auto;border-radius:12px;display:block}
+figcaption{display:flex;justify-content:space-between;align-items:center;gap:10px}.dl{background:var(--coral);color:#fff;text-decoration:none;font-weight:700;padding:9px 18px;border-radius:999px}
+.tips{margin-top:40px;background:var(--ink);color:#fff;border-radius:18px;padding:20px 24px}.tips p{color:#cfd8e0}</style></head><body><main>
+<p><a href="/o/${o.n}/">← Объект №${o.n}</a></p><h1>Картинки для рекламы №${o.n}</h1><p>${esc(o.name)}, ${esc(o.d)}. Нажмите «Скачать» и выложите в Instagram, WhatsApp или Telegram. В подписи к посту можно дать ссылку на объект: ${esc(site.domain)}/o/${o.n}/</p>
+${FORMATS.map(f => `<section><h2>${esc(f.title)}</h2><p class="use">${esc(f.use)} · ${f.w}×${f.h}</p><div class="row">${KINDS.map(k => card(f, k)).join('')}</div></section>`).join('')}
+<div class="tips"><b>Подсказка</b><p>4:5 в ленту, 9:16 в сторис и статус WhatsApp, 16:9 в Telegram-канал. Картинки обновляются сами, если поменять цену или данные объекта в боте.</p></div>
+</main></body></html>`;
 }
 
 function build() {
@@ -66,6 +84,16 @@ function build() {
           address: { '@type': 'PostalAddress', addressLocality: o.d + ', Alanya', addressCountry: 'TR' } },
       },
     }));
+  }
+
+  // Pictures for Instagram, WhatsApp and Telegram: /o/<n>/promo/ (not indexed).
+  for (const o of objects) {
+    const dir = path.join(dist, 'o', String(o.n), 'promo');
+    fs.mkdirSync(dir, { recursive: true });
+    const keys = pickPhotos(o.imgs);
+    const photo = k => fs.readFileSync(path.join(root, 'public/img', k + '.jpg'));
+    for (const a of renderAll(o, { photo: photo(keys.photo), info: photo(keys.info) }, site)) fs.writeFileSync(path.join(dir, a.name), a.png);
+    fs.writeFileSync(path.join(dir, 'index.html'), promoPage(o));
   }
 
   // Deleted objects: old links from Instagram lead to the home page.

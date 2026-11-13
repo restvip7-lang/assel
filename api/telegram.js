@@ -1,6 +1,8 @@
 // Telegram webhook: Assel forwards objects, checks the preview, publishes. Also price/sold commands.
 import { waitUntil } from '@vercel/functions';
-import { tg, send, buttons, download, admins, webhookSecret } from '../lib/tg.js';
+import { tg, send, buttons, download, admins, webhookSecret, sendDocuments } from '../lib/tg.js';
+import { renderAll, pickPhotos } from '../lib/promo.js';
+import site from '../data/site.json' with { type: 'json' };
 import * as drafts from '../lib/drafts.js';
 import { parseListing, applyCorrection } from '../lib/parse.js';
 import { readObjects, commitObjects } from '../lib/gh.js';
@@ -130,6 +132,13 @@ async function onButton(chat, q) {
     return send(chat, `Что поменять в №${n}? Напишите обычным текстом, например «цена 47000, этаж 1 из 4, добавь что есть кондиционер». Можно прислать новые фото.`, buttons([[['✖️ Отмена', 'editcancel']]]));
   }
   if (act === 'save') return saveEdit(chat, n);
+  if (act === 'promo') {
+    const o = await findObject(n);
+    if (!o) return send(chat, `Объекта №${n} на сайте нет.`);
+    await send(chat, 'Рисую картинки…');
+    const cache = {};
+    return sendPromos(chat, o, async k => (cache[k] ??= Buffer.from(await (await fetch(`${SITE()}/img/${k}.jpg`)).arrayBuffer())));
+  }
   if (act === 'phadd' || act === 'phrep') return savePhotos(chat, n, act === 'phrep');
   if (act === 'sold' || act === 'unsold') return setSold(chat, n, act === 'sold');
   if (act === 'del') return send(chat, `Точно удалить №${n}? Страница пропадёт с сайта, ссылки на неё будут вести на главную. Если квартиру купили, лучше нажать «Продано».`,
@@ -190,6 +199,8 @@ async function publish(chat) {
   });
   await drafts.clear(chat);
   const url = `${SITE()}/o/${o.n}/`;
+  const byKey = Object.fromEntries(o.imgs.map((k, i) => [k, images[i]]));
+  waitUntil(sendPromos(chat, o, k => byKey[k]).catch(e => send(chat, `Картинки для Instagram не получились: ${esc(e.message)}`)));
   return send(chat, `Готово, объект №${o.n} будет на сайте через минуту:\n${url}\n\nЭту ссылку можно ставить в Instagram. В посте можно написать «пишите ${o.n} в WhatsApp».${await costLine('Эта публикация стоила', state.cost)}`);
 }
 
@@ -247,7 +258,7 @@ ${SITE()}/o/${o.n}/`;
 
 const actions = o => buttons([
   [['✏️ Изменить', `edit:${o.n}`], o.sold ? ['↩️ В продажу', `unsold:${o.n}`] : ['✅ Продано', `sold:${o.n}`]],
-  [['🗑 Удалить', `del:${o.n}`]],
+  [['🖼 Картинки для Instagram', `promo:${o.n}`], ['🗑 Удалить', `del:${o.n}`]],
 ]);
 
 async function findObject(n) {
@@ -360,4 +371,16 @@ async function costLine(what, cost) {
   if (!cost) return '';
   const b = await getBilling();
   return `\n\n💸 ${what} примерно ${usd(cost)}${b.balance != null ? `, на счёте осталось около ${usd(b.balance)}` : ''}.`;
+}
+
+// ---- Pictures for Instagram ----
+
+
+// photoOf(key) returns the photo buffer (or a promise of it).
+async function sendPromos(chat, o, photoOf) {
+  const keys = pickPhotos(o.imgs);
+  const photos = { photo: await photoOf(keys.photo), info: await photoOf(keys.info) };
+  const all = renderAll(o, photos, site);
+  await sendDocuments(chat, all.map(a => ({ name: `assel-${o.n}-${a.name}`, buffer: a.png })),
+    `🖼 Картинки для рекламы №${o.n}: 4:5 в ленту Instagram, 9:16 в сторис и статус WhatsApp, 16:9 в Telegram.\nВсе форматы на одной странице (появится через минуту): ${SITE()}/o/${o.n}/promo/`);
 }
