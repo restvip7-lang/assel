@@ -8,6 +8,7 @@ const root = path.dirname(new URL(import.meta.url).pathname);
 const read = f => JSON.parse(fs.readFileSync(path.join(root, f), 'utf8'));
 const site = read('data/site.json');
 const objects = read('data/objects.json');
+const guides = read('data/guides.json');
 const tpl = fs.readFileSync(path.join(root, 'src/index.html'), 'utf8');
 const dist = path.join(root, 'dist');
 
@@ -25,6 +26,8 @@ function page({ title, desc, url, ogImg, jsonld }) {
     .replaceAll('/*ROBOTS*/', site.indexable ? 'index, follow' : 'noindex, nofollow')
     .replace('/*JSONLD*/', js(jsonld))
     .replace('/*OBJECTS*/[]', js(objects))
+    .replace('/*GUIDES*/[]', js(guides))
+    .replace('/*NAV*/', guides.map(g => `<a href="/${g.slug}/">${esc(g.nav)}</a>`).join(''))
     .replace('/*SITE*/{}', js({ whatsapp: site.whatsapp, telegram: site.telegram }));
 }
 
@@ -63,7 +66,17 @@ function build() {
     }));
   }
 
-  const urls = ['/', ...objects.map(o => `/o/${o.n}/`)];
+  for (const g of guides) {
+    const dir = path.join(dist, g.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    const url = `${site.domain}/${g.slug}/`;
+    fs.writeFileSync(path.join(dir, 'index.html'), page({
+      title: g.title, desc: g.desc, url, ogImg: site.domain + '/img/hero.jpg',
+      jsonld: { '@context': 'https://schema.org', '@type': 'Article', headline: g.h1, description: g.desc, url, author: agent },
+    }));
+  }
+
+  const urls = ['/', ...guides.map(g => `/${g.slug}/`), ...objects.map(o => `/o/${o.n}/`)];
   fs.writeFileSync(path.join(dist, 'sitemap.xml'),
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.map(u => `  <url><loc>${site.domain}${u}</loc></url>`).join('\n') + '\n</urlset>\n');

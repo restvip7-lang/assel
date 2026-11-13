@@ -9,6 +9,7 @@ Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegra
 - `data/objects.json`: every object. The only source of objects.
 - `data/site.json`: domain, Assel's WhatsApp number (digits only, e.g. `90555...`), Telegram username, `indexable`.
   While `indexable` is false the site sends `noindex` and robots.txt blocks crawlers. Turn it on only when real objects are in.
+- `data/guides.json`: topic pages (Где жить, Инвестиции, Гражданство) at `/<slug>/`, also in the menu and on the home page.
 - `src/index.html`: the page template (all CSS and JS inline, no framework).
 - `public/`: images (`img/<key>.jpg`) and the favicon, copied as is.
 - `build.mjs`: builds `dist/` with the home page, one page per object at `/o/<n>/` (own title, description,
