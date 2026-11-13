@@ -9,6 +9,7 @@ export default async function handler(req, res) {
       { command: 'list', description: 'Все объекты' },
       { command: 'price', description: 'Новая цена: /price 12 145000' },
       { command: 'sold', description: 'Продано: /sold 12' },
+      { command: 'balance', description: 'Остаток на счёте Claude: /balance или /balance 20' },
       { command: 'cancel', description: 'Удалить черновик' },
       { command: 'help', description: 'Как пользоваться' },
     ] });

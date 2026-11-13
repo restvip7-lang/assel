@@ -109,3 +109,12 @@ test('deleted object leaves a stub; its number is not reused', () => {
   assert.deepEqual(validate([{ n: 2, deleted: true }]), []);
   assert.equal(nextPhotoIndex({ n: 4, imgs: ['o4-1', 'o4-9', 'c1'] }), 10);
 });
+
+import { costOf, usd } from '../lib/cost.js';
+
+test('cost of a Claude call in USD', () => {
+  assert.equal(costOf({ input_tokens: 1_000_000, output_tokens: 0 }), 4);
+  assert.equal(costOf({ input_tokens: 10_000, output_tokens: 2_000 }), 0.08);
+  assert.equal(usd(0.0123), '$0.012');
+  assert.equal(usd(4.2), '$4.20');
+});

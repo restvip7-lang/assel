@@ -4,6 +4,7 @@ import { tg, send, buttons, download, admins, webhookSecret } from '../lib/tg.js
 import * as drafts from '../lib/drafts.js';
 import { parseListing, applyCorrection } from '../lib/parse.js';
 import { readObjects, commitObjects } from '../lib/gh.js';
+import { charge, setBalance, getBilling, usd, outOfCredit, LOW_BALANCE } from '../lib/cost.js';
 import { findUrls, readPage, downloadImage } from '../lib/page.js';
 import { previewText, missing, nextNumber, toObject, addObject, eur, esc, objectRef, toDraft, updateObject, diffText, deleteObject, nextPhotoIndex } from '../lib/objects.js';
 
@@ -21,7 +22,8 @@ const HELP = `Перешлите мне объект: фото, текст от 
 /price 12 145000 — новая цена объекта №12
 /sold 12 — объект №12 продан (страница остаётся, покупателю предложат похожие)
 /unsold 12 — вернуть в продажу
-/cancel — удалить черновик`;
+/cancel — удалить черновик
+/balance — сколько примерно осталось на счёте Claude; /balance 20 — записать остаток после пополнения`;
 
 const DONE_BTN = buttons([[['✅ Готово', 'done'], ['✖️ Отменить', 'cancel']]]);
 const PREVIEW_BTN = buttons([[['🚀 Опубликовать', 'pub'], ['🗑 Удалить', 'cancel']]]);
@@ -38,6 +40,11 @@ export default async function handler(req, res) {
 
 async function report(update, e) {
   console.error(e);
+  if (e.cost) await spend(null, e.cost).catch(() => {});
+  if (outOfCredit(e)) {
+    for (const id of admins()) await send(id, '⚠️ На счёте Claude (Anthropic) закончились деньги, бот не может разбирать объекты. Пополните баланс: https://console.anthropic.com/settings/billing\nПосле пополнения напишите боту /balance и сумму на счёте, например /balance 20.').catch(() => {});
+    return;
+  }
   const chat = update.message?.chat.id ?? update.callback_query?.message.chat.id;
   if (chat) await send(chat, `Что-то пошло не так: ${esc(e.message).slice(0, 300)}\nПопробуйте ещё раз или напишите Ануару.`).catch(() => {});
 }
@@ -81,8 +88,9 @@ async function onMessage(chat, m) {
   // A plain message after the preview is a correction, not a new part.
   if (state.stage === 'preview' && m.text && !m.forward_origin) {
     await tg('sendChatAction', { chat_id: chat, action: 'typing' });
-    const parsed = await applyCorrection(state.parsed, m.text);
-    await drafts.setState(chat, { ...state, parsed });
+    const { draft: parsed, cost } = await applyCorrection(state.parsed, m.text);
+    await spend(chat, cost);
+    await drafts.setState(chat, { ...state, parsed, cost: (state.cost || 0) + cost });
     return sendPreview(chat, parsed, state.photos.length);
   }
 
@@ -141,11 +149,12 @@ async function makePreview(chat) {
   for (const url of findUrls(texts.join('\n')).slice(0, 2)) {
     try { const pg = await readPage(url); pages.push(pg); await send(chat, `Открыла страницу «${esc(pg.title.slice(0, 80))}», нашла ${pg.images.length} фото, выбираю нужные…`); } catch (e) { await send(chat, `Не открылась ссылка: ${esc(e.message)}`); }
   }
-  const parsed = await parseListing({ texts, pdfs, pages });
+  const { draft: parsed, cost } = await parseListing({ texts, pdfs, pages });
+  await spend(chat, cost);
   const pageImages = pages.flatMap(p => p.images);
   const webPhotos = tgPhotos.length ? [] : (parsed.photo_ids || []).map(i => pageImages[i]).filter(Boolean).map(i => ({ url: i.url }));
   const photos = [...tgPhotos, ...webPhotos].slice(0, MAX_PHOTOS);
-  await drafts.setState(chat, { stage: 'preview', parsed, photos });
+  await drafts.setState(chat, { stage: 'preview', parsed, photos, cost });
   return sendPreview(chat, parsed, photos.length);
 }
 
@@ -181,11 +190,20 @@ async function publish(chat) {
   });
   await drafts.clear(chat);
   const url = `${SITE()}/o/${o.n}/`;
-  return send(chat, `Готово, объект №${o.n} будет на сайте через минуту:\n${url}\n\nЭту ссылку можно ставить в Instagram. В посте можно написать «пишите ${o.n} в WhatsApp».`);
+  return send(chat, `Готово, объект №${o.n} будет на сайте через минуту:\n${url}\n\nЭту ссылку можно ставить в Instagram. В посте можно написать «пишите ${o.n} в WhatsApp».${await costLine('Эта публикация стоила', state.cost)}`);
 }
 
 async function onCommand(chat, cmd, arg) {
   if (cmd === 'start' || cmd === 'help') return send(chat, HELP);
+  if (cmd === 'balance') {
+    const v = Number(arg.replace(/[$\s]/g, '').replace(',', '.'));
+    if (arg && !(v >= 0)) return send(chat, 'Напишите так: /balance 20 (сумма на счёте Anthropic в долларах).');
+    if (arg) { await setBalance(v); return send(chat, `Записала: на счёте ${usd(v)}. Буду вычитать стоимость каждого разбора и предупрежу, когда останется меньше ${usd(LOW_BALANCE)}.`); }
+    const b = await getBilling();
+    return send(chat, b.balance == null
+      ? `Остаток пока не записан. Посмотрите его на https://console.anthropic.com/settings/billing и пришлите, например: /balance 20\nВсего потрачено ботом: ${usd(b.spent || 0)}.`
+      : `На счёте примерно ${usd(b.balance)} (по моим подсчётам после последнего пополнения). Всего потрачено ботом: ${usd(b.spent || 0)}.\nТочная сумма: https://console.anthropic.com/settings/billing`);
+  }
   if (cmd === 'cancel') { await drafts.clear(chat); return send(chat, 'Черновик удалён.'); }
   if (cmd === 'list') {
     const list = (await readObjects()).filter(o => !o.demo);
@@ -252,12 +270,16 @@ async function editText(chat, edit, text) {
   if (!o) { await drafts.clearEdit(chat); return send(chat, `Объекта №${edit.n} уже нет на сайте.`); }
   await tg('sendChatAction', { chat_id: chat, action: 'typing' });
   const base = edit.next ? toDraft(edit.next) : toDraft(o);
-  const next = updateObject(o, await applyCorrection(base, text));
+  const { draft, cost } = await applyCorrection(base, text);
+  await spend(chat, cost);
+  const spent = (edit.cost || 0) + cost;
+  await drafts.setEdit(chat, { ...edit, cost: spent, at: Date.now() });
+  const next = updateObject(o, draft);
   const m = missing(next, next.imgs.length);
   if (m.length) return send(chat, `Так нельзя: пропадёт ${m.join(', ')}. Напишите иначе или нажмите «Отмена».`, buttons([[['✖️ Отмена', 'editcancel']]]));
   const diff = diffText(o, next);
   if (!diff) return send(chat, 'Я не нашла, что менять. Напишите точнее, например «цена 47000».', buttons([[['✖️ Отмена', 'editcancel']]]));
-  await drafts.setEdit(chat, { n: o.n, next, at: Date.now() });
+  await drafts.setEdit(chat, { n: o.n, next, cost: spent, at: Date.now() });
   return send(chat, `Изменения в №${o.n}:\n\n${diff}\n\nМожно дописать ещё, или сохраните.`, buttons([[['💾 Сохранить', `save:${o.n}`], ['✖️ Отмена', 'editcancel']]]));
 }
 
@@ -274,7 +296,7 @@ async function saveEdit(chat, n) {
   });
   await drafts.clearEdit(chat);
   if (!o) return send(chat, `Объекта №${n} уже нет на сайте.`);
-  return send(chat, `Сохранила. №${n} обновится на сайте через минуту:\n${SITE()}/o/${n}/`);
+  return send(chat, `Сохранила. №${n} обновится на сайте через минуту:\n${SITE()}/o/${n}/${await costLine('Это изменение стоило', edit.cost)}`);
 }
 
 async function savePhotos(chat, n, replace) {
@@ -323,4 +345,19 @@ async function removeObject(chat, n) {
   await drafts.clearEdit(chat);
   if (!o) return send(chat, `Объекта №${n} уже нет на сайте.`);
   return send(chat, `Удалила №${n}. Через минуту он пропадёт с сайта, старые ссылки будут вести на главную. Номер ${n} новым объектам не достанется.`);
+}
+
+// ---- Claude spending ----
+
+// Record a Claude call; when the estimated balance drops below the line, tell every admin once.
+async function spend(chat, cost) {
+  if (!cost) return;
+  const b = await charge(cost);
+  if (b.warn) for (const id of admins()) await send(id, `⚠️ На счёте Claude осталось примерно ${usd(b.balance)}. Скоро бот не сможет разбирать объекты. Пополните: https://console.anthropic.com/settings/billing\nПосле пополнения напишите /balance и сумму на счёте.`).catch(() => {});
+}
+
+async function costLine(what, cost) {
+  if (!cost) return '';
+  const b = await getBilling();
+  return `\n\n💸 ${what} примерно ${usd(cost)}${b.balance != null ? `, на счёте осталось около ${usd(b.balance)}` : ''}.`;
 }
