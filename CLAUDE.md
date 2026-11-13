@@ -35,9 +35,8 @@ Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegra
   "owner": true,                // true = from the owner (resale), omit = from the developer
   "price": 139000, "rooms": "1+1", "area": 58, "sea": 350,
   "floor": "4 из 9", "year": "2026 | Сдан",
-  "inst": { "first": "40%", "months": 18 },   // developer installment plan, or null
   "imgs": ["c1", "c3", "p1"],   // keys of public/img/*.jpg; keys starting with "p" are floor plans
-  "tags": ["Рассрочка"], "hot": "Новый",
+  "tags": ["Гражданство"]   // «Гражданство» only if the price qualifies (from $400 000); no installment plans on this site, "hot": "Новый",
   "video": true, "youtube": "VIDEO_ID",
   "desc": "...", "near": ["Пляж 350 м"]
 }

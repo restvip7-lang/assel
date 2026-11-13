@@ -5,7 +5,7 @@ import { leadText } from '../api/lead.js';
 
 const parsed = {
   name: 'Sea <b>Line</b>', d: 'Махмутлар', owner: false, price: 139000.4, rooms: '1+1', area: 58, sea: null,
-  floor: null, year: '2026', inst: { first: '40%', months: 18 }, tags: ['Рассрочка'], hot: null,
+  floor: null, year: '2026', tags: ['Гражданство'], hot: null,
   desc: 'Светлая квартира.', desc_en: 'Bright flat.', desc_tr: 'Aydınlık daire.', near: ['Пляж 350 м'], questions: [],
 };
 

@@ -226,11 +226,6 @@ footer{padding-block:10px 110px;color:var(--muted);font-size:13px;display:flex;j
 .kv b{font-size:19px}
 .ob h2{font-size:26px;margin-top:36px}
 .ob p{font-size:17px;max-width:64ch;color:var(--ink)}
-.plan-pay{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.plan-pay div{padding:16px;min-width:0}
-.plan-pay div+div{border-left:1px solid var(--line)}
-.plan-pay b{display:block;font-size:22px;font-weight:800}
-.plan-pay span{font-size:13px;color:var(--muted)}
 .near{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .near span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:14px}
 .map{margin-top:14px;aspect-ratio:16/8;max-width:100%;border-radius:18px;position:relative;overflow:hidden;background:
@@ -281,8 +276,7 @@ footer{padding-block:10px 110px;color:var(--muted);font-size:13px;display:flex;j
   .gal button:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}
   .gal button{aspect-ratio:4/3}.gal button:nth-child(n+4){display:none}
   .kv{grid-template-columns:1fr 1fr}
-  .plan-pay{grid-template-columns:1fr}.plan-pay div+div{border-left:0;border-top:1px solid var(--line)}
-  .bar .w{grid-template-columns:1fr auto auto}.bar .pp{display:none}
+    .bar .w{grid-template-columns:1fr auto auto}.bar .pp{display:none}
   .bar .btn.wa{grid-column:1}
 }
 /* custom dropdown (native lists look broken in dark mode on Windows) */
@@ -418,8 +412,7 @@ function home(){
  <section class="sec" id="faq"><h2>Частые вопросы</h2><div class="faq">
   ${[["Можно купить квартиру, не приезжая в Турцию?","Да. Показ проходит по видеосвязи, а сделку можно оформить по доверенности. Assel расскажет, какие документы нужны."],
      ["Даёт ли покупка квартиры ВНЖ?","Владелец жилья может подать на краткосрочный ВНЖ. Условия меняются, поэтому Assel проверит актуальные требования под ваш случай."],
-     ["Сколько стоят налоги и расходы при покупке?","Зависит от объекта: налог на регистрацию, экспертиза, перевод документов. Assel пришлёт точный расчёт по выбранной квартире."],
-     ["Есть ли рассрочка?","У многих новостроек есть рассрочка от застройщика без банка. Условия указаны на странице каждого объекта."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
+     ["Сколько стоят налоги и расходы при покупке?","Зависит от объекта: налог на регистрацию, экспертиза, перевод документов. Assel пришлёт точный расчёт по выбранной квартире."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
   <p style="font-size:13px;color:var(--muted)">Ответы черновые, Assel проверит и поправит.</p></div></section>
  ${contact()}
  <footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}</span></footer></div>`;
@@ -443,7 +436,6 @@ function obj(o){
    <h1>${o.rooms}, ${o.area} м² в ${o.name}</h1><div class="loc">${[o.d+", Алания",seaTxt(o),"объект №"+o.n].filter(Boolean).join(" · ")}</div>${o.sold?`<div class="soldnote">Этот объект уже продан. Посмотрите похожие ниже или напишите Assel, она подберёт такой же.</div>`:""}
    <div class="kv"><div><span>Комнаты</span><b>${o.rooms}</b></div><div><span>Площадь</span><b class="num">${o.area} м²</b></div>${o.floor?`<div><span>Этаж</span><b>${o.floor}</b></div>`:""}${o.year?`<div><span>Сдача</span><b>${o.year}</b></div>`:""}</div>
    <h2>Об объекте</h2><p>${o.desc}</p>
-   ${o.inst?`<h2>Рассрочка от застройщика</h2><div class="plan-pay"><div><b class="num">${o.inst.first}</b><span>первый взнос, ${eur(o.price*parseInt(o.inst.first)/100)}</span></div><div><b class="num">${o.inst.months} мес.</b><span>без банка и процентов</span></div><div><b class="num">${eur(o.price*(1-parseInt(o.inst.first)/100)/o.inst.months)}</b><span>в месяц</span></div></div>`:""}
    ${o.video?`<h2>Видео-обзор</h2><button class="vid" data-act="video" aria-label="Смотреть видео-обзор"><img src="${IMG[o.imgs[1]]}" alt=""><span class="pl"><i></i></span><span class="vc">Assel показывает квартиру</span></button>`:""}
    ${o.near.length?`<h2>Что рядом</h2><div class="near">${o.near.map(n=>`<span>${n}</span>`).join("")}</div>`:""}
    <div class="map" role="img" aria-label="Примерное расположение"><div class="spot"></div><small><b>${o.d}</b> · примерное место. Точный адрес пришлю перед показом.</small></div>

@@ -80,7 +80,7 @@
         onUpdate: () => { pr.textContent = '€' + (Math.round(c.v / 100) * 100).toLocaleString('en-US').replace(/,/g, ' '); },
         onComplete: () => { pr.textContent = '€' + target.toLocaleString('en-US').replace(/,/g, ' '); } });
     }
-    reveal($('.ob h2, .plan-pay, .near, .map, .vid'), { y: 40 });
+    reveal($('.ob h2, .near, .map, .vid'), { y: 40 });
   }
 
   function page() {

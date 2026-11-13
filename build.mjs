@@ -41,7 +41,7 @@ function build() {
   const agent = { '@type': 'RealEstateAgent', name: site.name, areaServed: 'Alanya, Antalya, Türkiye', url: site.domain + '/' };
   fs.writeFileSync(path.join(dist, 'index.html'), page({
     title: 'Квартиры в Алании от собственников и застройщиков | Assel Usmanova',
-    desc: 'Подберу квартиру в Алании под ваш бюджет: новостройки и вторичка у моря, рассрочка, помощь с ВНЖ. Пишите в WhatsApp или Telegram.',
+    desc: 'Подберу квартиру в Алании под ваш бюджет: новостройки и вторичка у моря, помощь с ВНЖ и гражданством. Пишите в WhatsApp или Telegram.',
     url: site.domain + '/',
     ogImg: site.domain + '/img/hero.jpg',
     jsonld: { '@context': 'https://schema.org', ...agent },
