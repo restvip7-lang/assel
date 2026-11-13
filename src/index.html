@@ -10,6 +10,7 @@
 <link rel="canonical" href="/*URL*/">
 <meta property="og:type" content="website"><meta property="og:title" content="/*TITLE*/"><meta property="og:description" content="/*DESC*/"><meta property="og:url" content="/*URL*/"><meta property="og:image" content="/*OGIMG*/"><meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
+<script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("m");setTimeout(()=>document.documentElement.classList.remove("m"),2500)}}catch(_){}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Prata&display=swap">
@@ -267,7 +268,15 @@ footer{padding-block:10px 110px;color:var(--muted);font-size:13px;display:flex;j
   .bar .w{grid-template-columns:1fr auto auto}.bar .pp{display:none}
   .bar .btn.wa{grid-column:1}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* motion */
+.m .hero .w>*{visibility:hidden}
+.wo{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}.wi{display:inline-block;will-change:transform}
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}
+.card .ph-wrap img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}.card:hover .ph-wrap img:first-child{transform:scale(1.05)}
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.35s}
+::view-transition-group(*){animation-duration:.45s;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
 </style>
 <script type="application/ld+json">/*JSONLD*/</script>
 </head>
@@ -304,7 +313,7 @@ function filtered(){
 const seg=(k,opts)=>`<div class="seg" role="group">${opts.map(v=>`<button data-pk="${k}" data-v="${v}" aria-pressed="${st.pick[k]===v}">${v}</button>`).join("")}</div>`;
 
 function card(o){return `<article class="card">
- <div class="ph-wrap"><div class="track" data-track>${o.imgs.map((k,i)=>`<img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}" loading="lazy">`).join("")}</div>
+ <div class="ph-wrap"><div class="track" data-track>${o.imgs.map((k,i)=>`<img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}" loading="lazy"${i?"":` style="view-transition-name:ph${o.n}"`}>`).join("")}</div>
   <div class="badges"><span class="badge" style="background:var(--ink);color:var(--bg)">${o.owner?"От собственника":"От застройщика"}</span>${o.hot?`<span class="badge hot">${o.hot}</span>`:""}${o.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
   ${o.video?`<a class="play" href="/o/${o.n}/" aria-label="Смотреть видео-обзор"><i></i>Видео-обзор</a>`:""}<span class="no">№${o.n}</span><div class="dots">${o.imgs.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>
  <div class="cb"><div class="pr"><b class="num">${eur(o.price)}</b><span class="num">${eur(o.price/o.area)}/м²</span></div>
@@ -371,7 +380,7 @@ function contact(o){return `<section class="contact" id="contact"><div><h2>${o?"
 function obj(o){
  const sim=LIVE.filter(x=>x!==o).sort((a,b)=>Math.abs(a.price-o.price)-Math.abs(b.price-o.price)).slice(0,3);
  return `<div class="w"><div class="crumbs"><a href="/">Все объекты</a> / ${o.d} / №${o.n}</div>
-  <div class="gal">${o.imgs.map((k,i)=>`<button data-act="photo" aria-label="Фото ${i+1}"><img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}">${i===2&&o.imgs.length>3?`<span class="more">+${o.imgs.length-3} фото</span>`:""}</button>`).join("")}</div>
+  <div class="gal">${o.imgs.map((k,i)=>`<button data-act="photo" aria-label="Фото ${i+1}"><img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}"${i?"":` style="view-transition-name:ph${o.n}"`}>${i===2&&o.imgs.length>3?`<span class="more">+${o.imgs.length-3} фото</span>`:""}</button>`).join("")}</div>
   <div class="ob"><div>
    <div class="badges" style="position:static;margin-bottom:12px">${o.hot?`<span class="badge hot">${o.hot}</span>`:""}${o.tags.map(t=>`<span class="badge" style="background:var(--sea-soft);color:var(--sea)">${t}</span>`).join("")}</div>
    <h1>${o.rooms}, ${o.area} м² в ${o.name}</h1><div class="loc">${[o.d+", Алания",seaTxt(o),"объект №"+o.n].filter(Boolean).join(" · ")}</div>${o.sold?`<div class="soldnote">Этот объект уже продан. Посмотрите похожие ниже или напишите Assel, она подберёт такой же.</div>`:""}
@@ -409,14 +418,14 @@ document.addEventListener("click",e=>{
  const w=e.target.closest("[data-wa]");if(w){const v=w.dataset.wa;const o=O.find(x=>x.n==v);const txt=v==="pick"?pickMsg():msg(o);if(SITE.whatsapp){location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(txt)}`}else toast(`<b>Номер WhatsApp ещё не указан</b>Будет отправлено: «${txt}»`);return}
  const tgb=e.target.closest("[data-tg]");if(tgb){const v=tgb.dataset.tg;const txt=v==="pick"?pickMsg():v?msg(O.find(x=>x.n==v)):"";if(txt){try{navigator.clipboard.writeText(txt).catch(()=>{})}catch(_){}toast(`<b>Текст скопирован</b>Вставьте его в чат с Assel: «${txt}»`)}if(SITE.telegram)setTimeout(()=>window.open(`https://t.me/${SITE.telegram}`,"_blank"),txt?900:0);else if(!txt)toast("<b>Telegram ещё не указан</b>");return}
  const pk=e.target.closest("[data-pk]");if(pk){st.pick[pk.dataset.pk]=pk.dataset.v;document.querySelectorAll(`[data-pk="${pk.dataset.pk}"]`).forEach(b=>b.setAttribute("aria-pressed",b===pk));document.getElementById("pv").innerHTML=`<b>Получить подборку, сообщение Assel:</b> ${pickMsg()}`;return}
- const g=e.target.closest("[data-go]");if(g){e.preventDefault();const go=()=>document.getElementById(g.dataset.go)?.scrollIntoView({behavior:"smooth"});if(cur()&&g.dataset.go!=="contact"){location.href="/#"+g.dataset.go}else go();return}
+ const g=e.target.closest("[data-go]");if(g){e.preventDefault();const go=()=>{const t=document.getElementById(g.dataset.go);if(!t)return;window.__lenis?window.__lenis.scrollTo(t,{offset:-80}):t.scrollIntoView({behavior:"smooth"})};if(cur()&&g.dataset.go!=="contact"){location.href="/#"+g.dataset.go}else go();return}
  const a=e.target.closest("[data-act]");if(!a)return;
  if(a.dataset.act==="lang")toast("<b>Языки</b>English и Türkçe скоро.");
  if(a.dataset.act==="video"){if(cur().youtube)location.href="https://www.youtube.com/watch?v="+cur().youtube;else toast("<b>Видео-обзор</b>Скоро здесь будет видео.");}
  if(a.dataset.act==="photo")toast("<b>Галерея</b>Полноэкранный просмотр фото скоро.");
  if(a.dataset.act==="copy"){const t=location.origin+"/o/"+cur().n+"/";try{navigator.clipboard.writeText(t).then(()=>a.textContent="Скопировано",()=>getSelection().selectAllChildren(document.getElementById("slink")))}catch(_){getSelection().selectAllChildren(document.getElementById("slink"))}}
 });
-document.addEventListener("change",e=>{const f=e.target.dataset.f;if(!f)return;st[f]=e.target.value;const l=filtered();document.getElementById("grid").innerHTML=gridHTML(l);document.getElementById("found").textContent="Найдено: "+l.length;bindTracks()});
+document.addEventListener("change",e=>{const f=e.target.dataset.f;if(!f)return;st[f]=e.target.value;const l=filtered();const gr=document.getElementById("grid");gr.innerHTML=gridHTML(l);document.getElementById("found").textContent="Найдено: "+l.length;bindTracks();window.motion?.cards(gr)});
 // Lead source: UTM tags from an Instagram link or the referring site, kept for this visit.
 let SRC="";try{const q=new URLSearchParams(location.search);SRC=[q.get("utm_source"),q.get("utm_campaign"),q.get("utm_content")].filter(Boolean).join(" / ")||sessionStorage.getItem("src")||(document.referrer&&!document.referrer.includes(location.host)?new URL(document.referrer).host:"");sessionStorage.setItem("src",SRC)}catch(_){}
 document.addEventListener("submit",async e=>{if(e.target.id!=="lead")return;e.preventDefault();const f=e.target,o=cur(),ok=document.getElementById("ok"),b=f.querySelector("button[type=submit]");
@@ -427,5 +436,9 @@ if(location.hash){const t=document.getElementById(location.hash.slice(1));t&&set
 render();
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" defer></script>
+<script src="/motion.js" defer></script>
 </body>
 </html>
