@@ -73,6 +73,7 @@ img{display:block;max-width:100%}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,20,32,.88) 0%,rgba(8,20,32,.6) 48%,rgba(8,20,32,.15) 100%)}
 .hero .w{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;padding-block:56px 64px;align-items:center}
 .eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.14);padding:7px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+button.eyebrow{color:inherit;border:0;font-family:inherit;cursor:pointer;transition:background .2s}button.eyebrow:hover{background:rgba(255,255,255,.24)}
 .eyebrow i{width:8px;height:8px;border-radius:50%;background:#3BE07F;box-shadow:0 0 0 4px rgba(59,224,127,.25)}
 .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(36px,5.4vw,66px);line-height:1.04;margin-top:18px}
 .hero h1 em{font-style:normal;color:#FFC9B5;white-space:nowrap}
@@ -379,7 +380,7 @@ function card(o){return `<article class="card">
 function home(){
  const l=filtered();
  return `<section class="hero"><img src="${IMG.hero}" alt="Аланья: крепость и побережье"><div class="w">
-  <div><span class="eyebrow"><i></i>Отвечаю в WhatsApp сегодня</span>
+  <div><button class="eyebrow" data-wa=""><i></i>Задавайте вопросы в WhatsApp</button>
    <h1>Квартиры в Алании <em>от ${eur(Math.min(...LIVE.map(o=>o.price)))}</em>. Подберу под ваш бюджет и проведу сделку</h1>
    <p class="sub">Новостройки и готовое жильё у моря. Проверяю документы и застройщика, показываю вживую или по видео, сопровождаю до получения ТАПУ.</p>
    <div class="agent"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><span>Живу в Алании 9 лет · RU · KZ · TR</span></div></div>
