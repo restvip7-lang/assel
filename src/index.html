@@ -173,8 +173,13 @@ img{display:block;max-width:100%}
 /* steps / about */
 .about{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
 .about .pic{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#F4B98E,#C9705A)}
-.about .pic img{width:100%;height:100%;object-fit:cover;opacity:.35;mix-blend-mode:multiply}
-.about .pic span{position:absolute;left:16px;bottom:16px;background:var(--surface);color:var(--ink);font-size:13px;font-weight:600;padding:7px 12px;border-radius:10px}
+.about .pic img{width:100%;height:100%;object-fit:cover}
+.ph img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.work{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.work figure{margin:0;border-radius:var(--r);overflow:hidden;background:var(--surface);border:1px solid var(--line)}
+.work img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.work figcaption{padding:12px 16px;font-size:14px;color:var(--muted)}
+@media (max-width:620px){.work{grid-template-columns:1fr}}
 .about p{font-size:17px;color:var(--muted);max-width:58ch}
 .about .sig{font-family:var(--display);font-size:26px;color:var(--ink)}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;counter-reset:s}
@@ -373,11 +378,11 @@ function card(o){return `<article class="card">
 
 function home(){
  const l=filtered();
- return `<section class="hero"><img src="${IMG.hero}" alt="Жилой комплекс в Алании"><div class="w">
+ return `<section class="hero"><img src="${IMG.hero}" alt="Аланья: крепость и побережье"><div class="w">
   <div><span class="eyebrow"><i></i>Отвечаю в WhatsApp сегодня</span>
    <h1>Квартиры в Алании <em>от ${eur(Math.min(...LIVE.map(o=>o.price)))}</em>. Подберу под ваш бюджет и проведу сделку</h1>
    <p class="sub">Новостройки и готовое жильё у моря. Проверяю документы и застройщика, показываю вживую или по видео, сопровождаю до получения ТАПУ.</p>
-   <div class="agent"><span class="ph">AU</span><div><b>Assel Usmanova</b><span>Живу в Алании 9 лет · RU · KZ · TR</span></div></div>
+   <div class="agent"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><span>Живу в Алании 9 лет · RU · KZ · TR</span></div></div>
    <div class="ticks"><span>Без регистрации</span><span>Показ по видео</span><span>Помощь с ВНЖ</span></div></div>
   <div class="pick" id="pick"><h3>Подбор за 3 клика</h3>
    <div class="q"><span>Бюджет</span>${seg("b",["до €100k","€100–200k","€200–350k","€350k+"])}</div>
@@ -401,12 +406,13 @@ function home(){
    <span class="found" id="found">Найдено: ${l.length}</span></div>
   <div class="grid" id="grid">${gridHTML(l)}</div></section>
  <section class="sec" id="guides"><h2>Перед покупкой</h2><div class="gtiles">${G.map((g,i)=>`<a class="gtile" href="/${g.slug}/"><span class="gi">0${i+1}</span><b>${g.h1}</b><span>${g.lead.split(". ")[0]}.</span><i>Читать →</i></a>`).join("")}</div></section>
- <section class="sec" id="about"><div class="about"><div class="pic"><img src="${IMG.c6}" alt=""><span>Здесь будет фото Assel</span></div>
+ <section class="sec" id="about"><div class="about"><div class="pic"><img src="${IMG.assel}" alt="Assel Usmanova, менеджер по недвижимости в Алании" loading="lazy"></div>
   <div><h2>Привет, я Assel</h2>
    <p>Я живу в Алании 9 лет и помогаю покупать здесь квартиры людям из Казахстана, России и других стран. Говорю по-русски, по-казахски и по-турецки, поэтому сама веду переговоры с застройщиками и собственниками. Подбираю под задачу: жить у моря, сдавать в аренду или оформить ВНЖ. Сама езжу на объекты, проверяю застройщика и документы, торгуюсь за скидку.</p>
    <p>Пишите в WhatsApp: отвечаю лично, без менеджеров-посредников и навязчивых звонков.</p>
    <div class="sig">Assel Usmanova</div>
    <p style="font-size:13px">Текст временный, напишем вместе с Assel.</p></div></div>
+  <div class="work">${[["showing","Показываю квартиры вживую или по видеосвязи"],["balcony","Смотрим не только метры, но и вид, и район"],["keys","После ТАПУ передаю ключи и помогаю обустроиться"]].map(([k,t])=>`<figure><img src="${IMG["w-"+k]}" alt="${t}" loading="lazy"><figcaption>${t}</figcaption></figure>`).join("")}</div>
   <div class="steps">${[["Подбор","Вы пишете бюджет и цель, я присылаю 3–5 вариантов с ценами и планировками."],["Показ","Вживую или по видеосвязи, если вы ещё не в Турции."],["Проверка","Разрешения, долги по объекту, репутация застройщика."],["Сделка и ТАПУ","Договор, оплата, ТАПУ, подключение счётчиков и помощь после покупки."]].map((s,i)=>`<div class="step"><b>${i+1}</b><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></section>
  <section class="sec"><h2>Отзывы клиентов</h2><div class="reviews">${[1,2,3].map(()=>`<div class="rev"><div class="st">★★★★★</div><p>Здесь будет настоящий отзыв клиента Assel, можно со скриншота переписки.</p><small>Имя · страна · что купил</small></div>`).join("")}</div></section>
  <section class="sec" id="faq"><h2>Частые вопросы</h2><div class="faq">
@@ -445,7 +451,7 @@ function obj(o){
    <div class="msg">Откроется WhatsApp с готовым текстом: «${msg(o)}»</div>
    <button class="btn tg" data-tg="${o.n}">${TG}Telegram</button>
    <button class="btn ghost" data-go="contact">Записаться на показ</button>
-   <div class="ag"><span class="ph">AU</span><div><b>Assel Usmanova</b><small>Отвечаю лично, обычно в течение часа</small></div></div>
+   <div class="ag"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><small>Отвечаю лично, обычно в течение часа</small></div></div>
    <div class="share"><code id="slink">${location.host}/o/${o.n}</code><button data-act="copy">Копировать</button></div>
   </aside></div>
   <section class="sec"><h2>Похожие объекты</h2><div class="grid">${sim.map(card).join("")}</div></section>

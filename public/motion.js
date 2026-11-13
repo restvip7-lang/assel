@@ -89,7 +89,7 @@
     reveal($('.strip .w > div'), { y: 20 });
     reveal($('.sec h2, .sechd p'), { y: 40 });
     reveal($('.card'), { y: 70 });
-    reveal($('.step, .rev, .faq details, .about .pic, .about > div'), { y: 50 });
+    reveal($('.step, .rev, .faq details, .about .pic, .about > div, .work figure'), { y: 50 });
     reveal($('.contact'), { y: 60 });
     // One gentle nudge on the WhatsApp bar button after a while on the page.
     const wa = document.querySelector('.bar .btn.wa');
