@@ -101,8 +101,8 @@ button.eyebrow{color:inherit;border:0;font-family:inherit;cursor:pointer;transit
 /* trust strip */
 .strip{background:var(--surface);border-bottom:1px solid var(--line)}
 .strip .w{display:grid;grid-template-columns:repeat(4,1fr)}
-.strip div{padding:20px 16px 20px 0;min-width:0}
-.strip div+div{padding-left:20px;border-left:1px solid var(--line)}
+.strip .w>div{padding:20px 16px 20px 0;min-width:0}
+.strip .w>div+div{padding-left:20px;border-left:1px solid var(--line)}
 .strip b{display:block;font-family:var(--display);font-weight:400;font-size:30px;line-height:1.1}
 .strip b.tbd{color:var(--muted)}
 .strip span{font-size:14px;color:var(--muted)}
@@ -274,10 +274,17 @@ footer{padding-block:10px 110px;color:var(--muted);font-size:13px;display:flex;j
   .brand small{display:none}.hd .w{gap:8px}
   .hero::before{background:linear-gradient(180deg,rgba(8,20,32,.55) 0%,rgba(8,20,32,.9) 70%)}
   .hero .w{padding-block:36px 28px;gap:24px}
-  .strip .w{grid-template-columns:1fr 1fr}.strip div:nth-child(3){padding-left:0;border-left:0}
-  .strip div{border-top:1px solid var(--line)}.strip div:nth-child(-n+2){border-top:0}
+  .strip .w{grid-template-columns:1fr 1fr}.strip .w>div{padding:14px 12px 14px 0}.strip .w>div:nth-child(even){padding-left:14px}.strip .w>div:nth-child(3){padding-left:0;border-left:0}
+  .strip .w>div{border-top:1px solid var(--line)}.strip .w>div:nth-child(-n+2){border-top:0}
+  .strip b{font-size:24px}.strip span{font-size:13px;line-height:1.35;display:block;margin-top:2px}
   .grid,.steps,.reviews{grid-template-columns:1fr}
-  .found{margin-left:0;width:100%}
+  .filters{position:static;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-block:10px}
+  .fl:nth-child(even) .ddl{left:auto;right:-10px}
+  .fl{flex-direction:column;align-items:stretch;gap:0;padding:7px 12px;border-radius:12px;min-width:0}
+  .fl label{font-size:11px;line-height:1.2}
+  .fl .ddb{padding:2px 0;font-size:15px}
+  .fl .ddb span{overflow:hidden;text-overflow:ellipsis}
+  .found{margin:0;align-self:center;text-align:center;font-size:13px}
   .gal{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;height:auto}
   .gal button:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}
   .gal button{aspect-ratio:4/3}.gal button:nth-child(n+4){display:none}
