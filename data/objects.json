@@ -1,174 +1,35 @@
 [
   {
-    "n": 12,
-    "video": true,
-    "name": "Sea Line",
-    "d": "Махмутлар",
-    "price": 139000,
-    "rooms": "1+1",
-    "area": 58,
-    "sea": 350,
-    "floor": "4 из 9",
-    "year": "2026",
-    "imgs": [
-      "c1",
-      "c3",
-      "p1",
-      "c5"
-    ],
-    "tags": [
-      "Гражданство"
-    ],
-    "hot": "Новый",
-    "desc": "Светлая квартира в новом комплексе с бассейном, фитнесом и закрытой территорией. Подходит и для жизни, и для сдачи в аренду: пляж, рынок и остановка в шаговой доступности.",
-    "near": [
-      "Пляж 350 м",
-      "Рынок по вторникам",
-      "Остановка 2 мин",
-      "Школа 10 мин"
-    ],
-    "demo": true
-  },
-  {
-    "n": 15,
+    "n": 1,
     "owner": true,
-    "name": "Oba Garden",
-    "d": "Оба",
-    "price": 215000,
-    "rooms": "2+1",
-    "area": 95,
-    "sea": 700,
-    "floor": "2 из 6",
-    "year": "Сдан",
-    "imgs": [
-      "c2",
-      "c6",
-      "p6",
-      "c4"
-    ],
-    "tags": [
-      "Для семьи"
-    ],
-    "desc": "Две спальни на тихой улице в Оба, вид на горы. Удобно семье с детьми: школа и парк в пяти минутах.",
-    "near": [
-      "Школа 5 мин",
-      "Парк",
-      "Клиника 10 мин",
-      "Пляж 700 м"
-    ],
-    "demo": true
-  },
-  {
-    "n": 21,
-    "name": "Avsallar Hills",
-    "d": "Авсаллар",
-    "price": 96000,
+    "name": "Квартира 1+1, 35 м²",
+    "d": "Газипаша",
+    "price": 45000,
     "rooms": "1+1",
-    "area": 48,
-    "sea": 900,
-    "floor": "1 из 5",
-    "year": "2027",
+    "area": 35,
+    "sea": 1000,
+    "floor": "1",
+    "year": "2022",
     "imgs": [
-      "c5",
-      "c1",
-      "p3",
-      "c2"
+      "o1-1",
+      "o1-2",
+      "o1-3",
+      "o1-4",
+      "o1-5",
+      "o1-6",
+      "o1-7",
+      "o1-8",
+      "o1-9"
     ],
-    "tags": [
-      "Гражданство"
-    ],
-    "hot": "Лучшая цена",
-    "desc": "Самый доступный вход в Аланью: компактная квартира у моря. Хороший вариант под аренду.",
+    "tags": [],
+    "desc": "Аккуратная квартира 1+1 площадью 35 м² на первом этаже дома 2022 года в Газипаше, около километра до моря и до центра. Гостиная совмещена с кухней, где уже стоит гарнитур, есть отдельная спальня, ламинат, санузел и балкон. Квартира без мебели, так что её легко обставить под себя: хороший вариант для тех, кто ищет доступное жильё у моря в спокойном городе.",
     "near": [
-      "Пляж 900 м",
-      "Супермаркет",
-      "Шаттл к морю"
+      "Море 1000 м",
+      "Центр 1000 м",
+      "Аэропорт 15 км"
     ],
-    "demo": true
-  },
-  {
-    "n": 24,
-    "owner": true,
-    "name": "Tosmur River",
-    "d": "Тосмур",
-    "price": 320000,
-    "rooms": "3+1",
-    "area": 140,
-    "sea": 450,
-    "floor": "5 из 7",
-    "year": "Сдан",
-    "imgs": [
-      "c4",
-      "c3",
-      "p9",
-      "c6"
-    ],
-    "tags": [
-      "Под ВНЖ"
-    ],
-    "desc": "Просторная квартира у реки Димчай с большой террасой. Для тех, кто переезжает насовсем.",
-    "near": [
-      "Река Димчай",
-      "Пляж 450 м",
-      "Аквапарк"
-    ],
-    "demo": true
-  },
-  {
-    "n": 27,
-    "video": true,
-    "owner": true,
-    "name": "Kestel Bay",
-    "d": "Кестель",
-    "price": 178000,
-    "rooms": "1+1",
-    "area": 64,
-    "sea": 150,
-    "floor": "6 из 8",
-    "year": "Сдан",
-    "imgs": [
-      "c3",
-      "c5",
-      "p4",
-      "c1"
-    ],
-    "tags": [
-      "У моря"
-    ],
-    "hot": "150 м до моря",
-    "desc": "Почти первая линия: 150 метров до пляжа и вид на море с балкона.",
-    "near": [
-      "Пляж 150 м",
-      "Кафе на набережной"
-    ],
-    "demo": true
-  },
-  {
-    "n": 30,
-    "name": "Mahmutlar Park",
-    "d": "Махмутлар",
-    "price": 245000,
-    "rooms": "2+1",
-    "area": 105,
-    "sea": 500,
-    "floor": "3 из 10",
-    "year": "2026",
-    "imgs": [
-      "c6",
-      "c2",
-      "p10",
-      "c4"
-    ],
-    "tags": [
-      "Гражданство",
-      "Для семьи"
-    ],
-    "desc": "Две спальни, две ванные, большой балкон. Комплекс с детскими площадками и крытым бассейном.",
-    "near": [
-      "Пляж 500 м",
-      "Детсад",
-      "Торговый центр"
-    ],
-    "demo": true
+    "desc_en": "A neat 1+1 apartment of 35 m² on the ground floor of a 2022 building in Gazipasha, about a kilometre from the sea and the town centre. The living room is combined with a kitchen that already has fitted units, plus a separate bedroom, laminate flooring, a bathroom and a balcony. It comes unfurnished, so you can set it up your own way: a good choice for anyone looking for affordable housing near the sea in a quiet town.",
+    "desc_tr": "Gazipaşa'da, 2022 yapımı bir binanın giriş katında 35 m² büyüklüğünde düzenli bir 1+1 daire; denize ve merkeze yaklaşık bir kilometre mesafede. Salon, mutfak dolapları hazır olan açık mutfakla birleşik; ayrı bir yatak odası, laminat zemin, banyo ve balkon mevcut. Daire eşyasız satılıyor, böylece kendi zevkinize göre döşeyebilirsiniz: sakin bir şehirde denize yakın uygun fiyatlı konut arayanlar için iyi bir seçenek.",
+    "addedAt": "2026-11-13"
   }
 ]
