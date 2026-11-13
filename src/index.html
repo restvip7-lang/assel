@@ -388,9 +388,9 @@ function home(){
    <div class="q"><span>Бюджет</span>${seg("b",["до €100k","€100–200k","€200–350k","€350k+"])}</div>
    <div class="q"><span>Комнаты</span>${seg("r",["1+1","2+1","3+1","Вилла"])}</div>
    <div class="q"><span>Для чего</span>${seg("g",["Жить","Сдавать","Инвестиция","ВНЖ","Гражданство"])}</div>
-   <div class="preview" id="pv"><b>Получить подборку, сообщение Assel:</b> ${pickMsg()}</div>
+   <div class="preview" id="pv"><b>Получить подборку, ваше сообщение мне:</b> ${pickMsg()}</div>
    <div class="two"><button class="btn wa" data-wa="pick">${WA}WhatsApp</button><button class="btn tg" data-tg="pick">${TG}Telegram</button></div>
-   <small>Или <a href="/" data-go="contact" style="color:var(--sea)">оставьте контакт</a>, Assel напишет сама</small></div>
+   <small>Или <a href="/" data-go="contact" style="color:var(--sea)">оставьте контакт</a>, и я напишу сама</small></div>
  </div></section>
  <div class="strip"><div class="w">
   <div><b>9 лет</b><span>живу в Алании, знаю каждый район</span></div><div><b>20+ семей</b><span>купили квартиру с моей помощью</span></div>
@@ -411,19 +411,19 @@ function home(){
    <p>Я живу в Алании 9 лет и помогаю покупать здесь квартиры людям из Казахстана, России и других стран. Говорю по-русски, по-казахски и по-турецки, поэтому сама веду переговоры с застройщиками и собственниками. Подбираю под задачу: жить у моря, сдавать в аренду или оформить ВНЖ. Сама езжу на объекты, проверяю застройщика и документы, торгуюсь за скидку.</p>
    <p>Пишите в WhatsApp: отвечаю лично, без менеджеров-посредников и навязчивых звонков.</p>
    <div class="sig">Assel Usmanova</div>
-   <p style="font-size:13px">Текст временный, напишем вместе с Assel.</p></div></div>
+   <p style="font-size:13px">Текст временный.</p></div></div>
   <div class="work">${[["showing","Показываю квартиры вживую или по видеосвязи"],["balcony","Смотрим не только метры, но и вид, и район"],["keys","После ТАПУ передаю ключи и помогаю обустроиться"]].map(([k,t])=>`<figure><img src="${IMG["w-"+k]}" alt="${t}" loading="lazy"><figcaption>${t}</figcaption></figure>`).join("")}</div>
   <div class="steps">${[["Подбор","Вы пишете бюджет и цель, я присылаю 3–5 вариантов с ценами и планировками."],["Показ","Вживую или по видеосвязи, если вы ещё не в Турции."],["Проверка","Разрешения, долги по объекту, репутация застройщика."],["Сделка и ТАПУ","Договор, оплата, ТАПУ, подключение счётчиков и помощь после покупки."]].map((s,i)=>`<div class="step"><b>${i+1}</b><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></section>
- <section class="sec"><h2>Отзывы клиентов</h2><div class="reviews">${[1,2,3].map(()=>`<div class="rev"><div class="st">★★★★★</div><p>Здесь будет настоящий отзыв клиента Assel, можно со скриншота переписки.</p><small>Имя · страна · что купил</small></div>`).join("")}</div></section>
+ <section class="sec"><h2>Отзывы клиентов</h2><div class="reviews">${[1,2,3].map(()=>`<div class="rev"><div class="st">★★★★★</div><p>Здесь будет настоящий отзыв клиента.</p><small>Имя · страна · что купил</small></div>`).join("")}</div></section>
  <section class="sec" id="faq"><h2>Частые вопросы</h2><div class="faq">
-  ${[["Можно купить квартиру, не приезжая в Турцию?","Да. Показ проходит по видеосвязи, а сделку можно оформить по доверенности. Assel расскажет, какие документы нужны."],
-     ["Даёт ли покупка квартиры ВНЖ?","Владелец жилья может подать на краткосрочный ВНЖ. Условия меняются, поэтому Assel проверит актуальные требования под ваш случай."],
-     ["Сколько стоят налоги и расходы при покупке?","Зависит от объекта: налог на регистрацию, экспертиза, перевод документов. Assel пришлёт точный расчёт по выбранной квартире."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
-  <p style="font-size:13px;color:var(--muted)">Ответы черновые, Assel проверит и поправит.</p></div></section>
+  ${[["Можно купить квартиру, не приезжая в Турцию?","Да. Показ проходит по видеосвязи, а сделку можно оформить по доверенности. Я расскажу, какие документы нужны."],
+     ["Даёт ли покупка квартиры ВНЖ?","Владелец жилья может подать на краткосрочный ВНЖ. Условия меняются, поэтому я проверю актуальные требования под ваш случай."],
+     ["Сколько стоят налоги и расходы при покупке?","Зависит от объекта: налог на регистрацию, экспертиза, перевод документов. Я пришлю точный расчёт по выбранной квартире."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
+  <p style="font-size:13px;color:var(--muted)">Ответы черновые.</p></div></section>
  ${contact()}
  <footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}</span></footer></div>`;
 }
-function gridHTML(l){return l.map(card).join("")||`<div class="empty"><b>По этим фильтрам сейчас ничего нет.</b><p style="color:var(--muted)">Напишите Assel: у неё бывают объекты до старта продаж.</p><button class="btn wa" data-wa="">${WA}Написать Assel</button></div>`}
+function gridHTML(l){return l.map(card).join("")||`<div class="empty"><b>По этим фильтрам сейчас ничего нет.</b><p style="color:var(--muted)">Напишите мне: у меня бывают объекты до старта продаж.</p><button class="btn wa" data-wa="">${WA}Написать мне</button></div>`}
 function contact(o){return `<section class="contact" id="contact"><div><h2>${o?"Узнать про №"+o.n:"Не нашли подходящее?"}</h2>
   <p>${o?"Пришлю дополнительные фото, видео с объекта и точный расчёт стоимости.":"Напишите бюджет и пожелания. Я подберу варианты, в том числе те, что ещё не опубликованы."}</p>
   <div class="row"><button class="btn wa" data-wa="${o?o.n:""}">${WA}WhatsApp</button><button class="btn tg" data-tg>${TG}Telegram</button></div></div>
@@ -431,7 +431,7 @@ function contact(o){return `<section class="contact" id="contact"><div><h2>${o?"
   <label for="l-ph">Телефон, WhatsApp или Telegram</label><input id="l-ph" required placeholder="+7 … или @username">
   <label for="l-when">Когда удобно связаться</label><select id="l-when"><option>Сегодня</option><option>Завтра</option><option>В выходные</option></select>
   <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
-  <button class="btn" type="submit">Жду сообщения от Assel</button><div class="ok" id="ok" hidden role="status"></div></form></section>`}
+  <button class="btn" type="submit">Жду вашего сообщения</button><div class="ok" id="ok" hidden role="status"></div></form></section>`}
 
 function obj(o){
  const sim=LIVE.filter(x=>x!==o).sort((a,b)=>Math.abs(a.price-o.price)-Math.abs(b.price-o.price)).slice(0,3);
@@ -439,10 +439,10 @@ function obj(o){
   <div class="gal">${o.imgs.map((k,i)=>`<button data-act="photo" data-i="${i}" aria-label="Открыть фото ${i+1}"><img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}"${i?"":` style="view-transition-name:ph${o.n}"`}>${i===2&&o.imgs.length>3?`<span class="more">+${o.imgs.length-3} фото</span>`:""}</button>`).join("")}</div>
   <div class="ob"><div>
    <div class="badges" style="position:static;margin-bottom:12px">${o.hot?`<span class="badge hot">${o.hot}</span>`:""}${o.tags.map(t=>`<span class="badge" style="background:var(--sea-soft);color:var(--sea)">${t}</span>`).join("")}</div>
-   <h1>${o.rooms}, ${o.area} м² в ${o.name}</h1><div class="loc">${[o.d+", Алания",seaTxt(o),"объект №"+o.n].filter(Boolean).join(" · ")}</div>${o.sold?`<div class="soldnote">Этот объект уже продан. Посмотрите похожие ниже или напишите Assel, она подберёт такой же.</div>`:""}
+   <h1>${o.rooms}, ${o.area} м² в ${o.name}</h1><div class="loc">${[o.d+", Алания",seaTxt(o),"объект №"+o.n].filter(Boolean).join(" · ")}</div>${o.sold?`<div class="soldnote">Этот объект уже продан. Посмотрите похожие ниже или напишите мне, я подберу такой же.</div>`:""}
    <div class="kv"><div><span>Комнаты</span><b>${o.rooms}</b></div><div><span>Площадь</span><b class="num">${o.area} м²</b></div>${o.floor?`<div><span>Этаж</span><b>${o.floor}</b></div>`:""}${o.year?`<div><span>Сдача</span><b>${o.year}</b></div>`:""}</div>
    <h2>Об объекте</h2><p>${o.desc}</p>
-   ${o.video?`<h2>Видео-обзор</h2><button class="vid" data-act="video" aria-label="Смотреть видео-обзор"><img src="${IMG[o.imgs[1]]}" alt=""><span class="pl"><i></i></span><span class="vc">Assel показывает квартиру</span></button>`:""}
+   ${o.video?`<h2>Видео-обзор</h2><button class="vid" data-act="video" aria-label="Смотреть видео-обзор"><img src="${IMG[o.imgs[1]]}" alt=""><span class="pl"><i></i></span><span class="vc">Показываю квартиру</span></button>`:""}
    ${o.near.length?`<h2>Что рядом</h2><div class="near">${o.near.map(n=>`<span>${n}</span>`).join("")}</div>`:""}
    <div class="map" role="img" aria-label="Примерное расположение"><div class="spot"></div><small><b>${o.d}</b> · примерное место. Точный адрес пришлю перед показом.</small></div>
   </div>
@@ -466,7 +466,7 @@ function guide(g){
  return `<section class="ghero"><div class="w"><div class="crumbs"><a href="/">Главная</a> / ${g.nav}</div><h1>${g.h1}</h1><p>${g.lead}</p>
   <div class="row"><button class="btn wa" data-wa="g:${g.slug}">${WA}${g.cta}</button><a class="btn ghost" href="/#catalog">Смотреть объекты</a></div></div></section>
  <div class="w">${g.blocks.map(blk).join("")}
-  <p class="gnote" style="margin-top:28px">Текст черновой, Assel проверит и дополнит.</p>
+  <p class="gnote" style="margin-top:28px">Текст черновой.</p>
   <section class="sec"><h2>Другие темы</h2><div class="gtiles">${G.filter(x=>x!==g).map(x=>`<a class="gtile" href="/${x.slug}/"><b>${x.h1}</b><i>Читать →</i></a>`).join("")}</div></section>
   ${contact()}<footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}/${g.slug}</span></footer></div>`;
 }
@@ -520,8 +520,8 @@ document.addEventListener("click",e=>{
  const ar=e.target.closest("[data-arr]");if(ar){e.preventDefault();const w=ar.closest(".ph-wrap");slide(w,cur_i(w.querySelector("[data-track]"))+(+ar.dataset.arr));return}
  const dt=e.target.closest("[data-dot]");if(dt){slide(dt.closest(".ph-wrap"),+dt.dataset.dot);return}
  const w=e.target.closest("[data-wa]");if(w){const v=w.dataset.wa;const o=O.find(x=>x.n==v);const gd=v.startsWith("g:")&&G.find(g=>g.slug===v.slice(2));const txt=v==="pick"?pickMsg():v.startsWith("d:")?`Здравствуйте, Assel! Хочу жить в районе ${v.slice(2)}. Что посоветуете?`:gd?`Здравствуйте, Assel! ${gd.cta}, пожалуйста.`:msg(o);if(SITE.whatsapp){location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(txt)}`}else toast(`<b>Номер WhatsApp ещё не указан</b>Будет отправлено: «${txt}»`);return}
- const tgb=e.target.closest("[data-tg]");if(tgb){const v=tgb.dataset.tg;const txt=v==="pick"?pickMsg():v?msg(O.find(x=>x.n==v)):"";if(txt){try{navigator.clipboard.writeText(txt).catch(()=>{})}catch(_){}toast(`<b>Текст скопирован</b>Вставьте его в чат с Assel: «${txt}»`)}if(SITE.telegram)setTimeout(()=>window.open(`https://t.me/${SITE.telegram}`,"_blank"),txt?900:0);else if(!txt)toast("<b>Telegram ещё не указан</b>");return}
- const pk=e.target.closest("[data-pk]");if(pk){st.pick[pk.dataset.pk]=pk.dataset.v;document.querySelectorAll(`[data-pk="${pk.dataset.pk}"]`).forEach(b=>b.setAttribute("aria-pressed",b===pk));document.getElementById("pv").innerHTML=`<b>Получить подборку, сообщение Assel:</b> ${pickMsg()}`;return}
+ const tgb=e.target.closest("[data-tg]");if(tgb){const v=tgb.dataset.tg;const txt=v==="pick"?pickMsg():v?msg(O.find(x=>x.n==v)):"";if(txt){try{navigator.clipboard.writeText(txt).catch(()=>{})}catch(_){}toast(`<b>Текст скопирован</b>Вставьте его в чат со мной: «${txt}»`)}if(SITE.telegram)setTimeout(()=>window.open(`https://t.me/${SITE.telegram}`,"_blank"),txt?900:0);else if(!txt)toast("<b>Telegram ещё не указан</b>");return}
+ const pk=e.target.closest("[data-pk]");if(pk){st.pick[pk.dataset.pk]=pk.dataset.v;document.querySelectorAll(`[data-pk="${pk.dataset.pk}"]`).forEach(b=>b.setAttribute("aria-pressed",b===pk));document.getElementById("pv").innerHTML=`<b>Получить подборку, ваше сообщение мне:</b> ${pickMsg()}`;return}
  const g=e.target.closest("[data-go]");if(g){e.preventDefault();const go=()=>{const t=document.getElementById(g.dataset.go);if(!t)return;window.__lenis?window.__lenis.scrollTo(t,{offset:-80}):t.scrollIntoView({behavior:"smooth"})};if((cur()||curG())&&g.dataset.go!=="contact"){location.href="/#"+g.dataset.go}else go();return}
  const a=e.target.closest("[data-act]");if(!a)return;
  if(a.dataset.act==="lang")toast("<b>Языки</b>English и Türkçe скоро.");
@@ -534,8 +534,8 @@ document.addEventListener("change",e=>{const f=e.target.dataset.f;if(!f)return;s
 let SRC="";try{const q=new URLSearchParams(location.search);SRC=[q.get("utm_source"),q.get("utm_campaign"),q.get("utm_content")].filter(Boolean).join(" / ")||sessionStorage.getItem("src")||(document.referrer&&!document.referrer.includes(location.host)?new URL(document.referrer).host:"");sessionStorage.setItem("src",SRC)}catch(_){}
 document.addEventListener("submit",async e=>{if(e.target.id!=="lead")return;e.preventDefault();const f=e.target,o=cur(),ok=document.getElementById("ok"),b=f.querySelector("button[type=submit]");
  const lead={name:document.getElementById("l-name").value,contact:document.getElementById("l-ph").value,when:document.getElementById("l-when").value,n:o?o.n:null,src:SRC,page:location.pathname,website:f.elements.website?.value||""};
- b.disabled=true;try{const r=await fetch("/api/lead/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)});if(!r.ok)throw 0;ok.textContent=`Спасибо, ${lead.name}! Assel получила заявку и напишет вам ${lead.when.toLowerCase()==="сегодня"?"сегодня":lead.when.toLowerCase()}.`;ok.hidden=false;f.querySelectorAll("input,select").forEach(x=>x.disabled=true);b.hidden=true}
- catch(_){b.disabled=false;const t=`Здравствуйте, Assel! Меня зовут ${lead.name}. Контакт: ${lead.contact}. Удобно связаться: ${lead.when.toLowerCase()}.${o?" Интересует объект №"+o.n+".":""}`;if(SITE.whatsapp)location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t)}`;else{ok.textContent="Не получилось отправить. Напишите Assel в WhatsApp или Telegram.";ok.hidden=false}}});
+ b.disabled=true;try{const r=await fetch("/api/lead/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)});if(!r.ok)throw 0;ok.textContent=`Спасибо, ${lead.name}! Я получила заявку и напишу вам ${lead.when.toLowerCase()==="сегодня"?"сегодня":lead.when.toLowerCase()}.`;ok.hidden=false;f.querySelectorAll("input,select").forEach(x=>x.disabled=true);b.hidden=true}
+ catch(_){b.disabled=false;const t=`Здравствуйте, Assel! Меня зовут ${lead.name}. Контакт: ${lead.contact}. Удобно связаться: ${lead.when.toLowerCase()}.${o?" Интересует объект №"+o.n+".":""}`;if(SITE.whatsapp)location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t)}`;else{ok.textContent="Не получилось отправить. Напишите мне в WhatsApp или Telegram.";ok.hidden=false}}});
 if(location.hash){const t=document.getElementById(location.hash.slice(1));t&&setTimeout(()=>t.scrollIntoView(),0)}
 render();
 </script>
