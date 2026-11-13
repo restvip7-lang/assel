@@ -76,3 +76,36 @@ test('only the biggest size of each photo is kept', () => {
   assert.deepEqual(largest([u('_x580'), u('200x125'), u('_x900'), { url: 'https://a.com/b.jpg', alt: '' }]).map(i => i.url),
     ['https://a.com/storage/1/conversions/01-_x900.jpg?v=1', 'https://a.com/b.jpg']);
 });
+
+import { objectRef, toDraft, updateObject, diffText, deleteObject, nextPhotoIndex } from '../lib/objects.js';
+
+test('object reference from a message', () => {
+  assert.equal(objectRef('1'), 1);
+  assert.equal(objectRef(' №12 '), 12);
+  assert.equal(objectRef('#7'), 7);
+  assert.equal(objectRef('https://assel-chi.vercel.app/o/3/'), 3);
+  assert.equal(objectRef('https://usmanovahomes.com/o/15?utm_source=ig'), 15);
+  assert.equal(objectRef('цена 145000'), null);
+  assert.equal(objectRef('https://pointproperty.com/prodazha/kvartira-1'), null);
+});
+
+test('edit keeps number, photos and sold; diff lists changes', () => {
+  const old = { n: 3, name: 'Квартира 1+1, 35 м²', d: 'Газипаша', owner: true, price: 45000, rooms: '1+1', area: 35, imgs: ['o3-1', 'o3-2'], tags: [], desc: 'x', near: [], sold: true, addedAt: '2026-11-13' };
+  const next = updateObject(old, { ...toDraft(old), price: 47000, floor: '1 из 4' });
+  assert.equal(next.n, 3);
+  assert.deepEqual(next.imgs, ['o3-1', 'o3-2']);
+  assert.equal(next.sold, true);
+  assert.equal(next.addedAt, '2026-11-13');
+  const d = diffText(old, next);
+  assert.match(d, /Цена:<\/b> €45 000 → €47 000/);
+  assert.match(d, /Этаж:<\/b> — → 1 из 4/);
+  assert.doesNotMatch(d, /Район/);
+});
+
+test('deleted object leaves a stub; its number is not reused', () => {
+  const list = deleteObject([{ n: 1, name: 'a' }, { n: 2, name: 'b', d: 'x' }], 2);
+  assert.deepEqual(Object.keys(list[1]).sort(), ['deleted', 'deletedAt', 'n']);
+  assert.equal(nextNumber(list), 3);
+  assert.deepEqual(validate([{ n: 2, deleted: true }]), []);
+  assert.equal(nextPhotoIndex({ n: 4, imgs: ['o4-1', 'o4-9', 'c1'] }), 10);
+});

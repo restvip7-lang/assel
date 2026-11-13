@@ -7,7 +7,9 @@ import { validate } from './lib/objects.js';
 const root = path.dirname(new URL(import.meta.url).pathname);
 const read = f => JSON.parse(fs.readFileSync(path.join(root, f), 'utf8'));
 const site = read('data/site.json');
-const objects = read('data/objects.json');
+const all = read('data/objects.json');
+const objects = all.filter(o => !o.deleted);
+const removed = all.filter(o => o.deleted);
 const guides = read('data/guides.json');
 const tpl = fs.readFileSync(path.join(root, 'src/index.html'), 'utf8');
 const dist = path.join(root, 'dist');
@@ -32,7 +34,7 @@ function page({ title, desc, url, ogImg, jsonld }) {
 }
 
 function build() {
-  const errors = validate(objects);
+  const errors = validate(all);
   if (errors.length) { console.error('Ошибки в data/objects.json:\n' + errors.join('\n')); process.exit(1); }
 
   fs.rmSync(dist, { recursive: true, force: true });
@@ -64,6 +66,13 @@ function build() {
           address: { '@type': 'PostalAddress', addressLocality: o.d + ', Alanya', addressCountry: 'TR' } },
       },
     }));
+  }
+
+  // Deleted objects: old links from Instagram lead to the home page.
+  for (const o of removed) {
+    const dir = path.join(dist, 'o', String(o.n));
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=/"><link rel="canonical" href="${site.domain}/"><title>Объект снят с продажи</title><a href="/">Объект снят с продажи. Смотрите другие квартиры</a><script>location.replace('/')</script>`);
   }
 
   for (const g of guides) {
