@@ -55,13 +55,13 @@
     const hero = document.querySelector('.hero');
     if (!hero) return;
     const tl = gsap.timeline();
-    tl.from(hero.querySelector(':scope > img'), { scale: 1.18, duration: 2.2, ease: 'power2.out' }, 0)
+    tl.from(hero.querySelector('img.bg'), { scale: 1.18, duration: 2.2, ease: 'power2.out' }, 0)
       .from(hero.querySelector('.eyebrow'), { autoAlpha: 0, y: 16, duration: 0.6 }, 0.1)
       .from(splitWords(hero.querySelector('h1')), { yPercent: 115, duration: 1, stagger: 0.045, ease: 'power4.out' }, 0.2)
       .from($('.sub, .agent, .ticks', hero), { autoAlpha: 0, y: 24, stagger: 0.1 }, 0.6)
       .from(hero.querySelector('.pick'), { autoAlpha: 0, y: 60, rotate: 2.5, duration: 1.1, ease: 'expo.out' }, 0.45)
       .from($('.pick .seg button', hero), { autoAlpha: 0, scale: 0.85, stagger: 0.02, duration: 0.4, ease: 'back.out(2)' }, 0.8);
-    gsap.to(hero.querySelector(':scope > img'), { yPercent: 12, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to(hero.querySelector('img.bg'), { yPercent: 12, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   function objectIn() {

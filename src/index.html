@@ -73,8 +73,8 @@ img{display:block;max-width:100%}
 
 /* hero */
 .hero{position:relative;color:#fff;overflow:hidden}
-.hero>img{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
-.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,20,32,.88) 0%,rgba(8,20,32,.6) 48%,rgba(8,20,32,.15) 100%)}
+.hero img.bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,20,32,.74) 0%,rgba(8,20,32,.5) 46%,rgba(8,20,32,.06) 100%)}
 .hero .w{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;padding-block:56px 64px;align-items:center}
 .eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.14);padding:7px 12px;border-radius:999px;backdrop-filter:blur(6px)}
 button.eyebrow{color:inherit;border:0;font-family:inherit;cursor:pointer;transition:background .2s}button.eyebrow:hover{background:rgba(255,255,255,.24)}
@@ -272,11 +272,14 @@ footer{padding-block:10px 110px;color:var(--muted);font-size:13px;display:flex;j
   .steps,.reviews{grid-template-columns:1fr 1fr}
   .side{position:static}
   .bar{display:block}
+  /* One column: the photo sits behind the headline only, so it is not stretched down behind the picker card. */
+  .hero{background:#0B1A28}
+  .hero img.bg{height:min(100%,640px);object-position:60% 50%}
+  .hero::before{background:linear-gradient(180deg,rgba(8,20,32,.46) 0,rgba(8,20,32,.6) 320px,#0B1A28 640px)}
 }
 @media (max-width:620px){
   .hd .btn span{display:none}.hd .btn{padding:10px}
   .brand small{display:none}.hd .w{gap:8px}
-  .hero::before{background:linear-gradient(180deg,rgba(8,20,32,.55) 0%,rgba(8,20,32,.9) 70%)}
   .hero .w{padding-block:36px 28px;gap:24px}
   .strip .w{grid-template-columns:1fr 1fr}.strip .w>div{padding:14px 12px 14px 0}.strip .w>div:nth-child(even){padding-left:14px}.strip .w>div:nth-child(3){padding-left:0;border-left:0}
   .strip .w>div{border-top:1px solid var(--line)}.strip .w>div:nth-child(-n+2){border-top:0}
@@ -390,7 +393,7 @@ function card(o){return `<article class="card">
 
 function home(){
  const l=filtered();
- return `<section class="hero"><img src="${IMG.hero}" alt="${L.heroAlt}" fetchpriority="high"><div class="w">
+ return `<section class="hero"><picture><source media="(min-width:981px)" srcset="${IMG["hero-wide"]}"><img class="bg" src="${IMG.hero}" alt="${L.heroAlt}" fetchpriority="high"></picture><div class="w">
   <div><button class="eyebrow" data-wa=""><i></i>${L.eyebrow}</button>
    <h1>${f(L.h1,{price:eur(Math.min(...LIVE.map(o=>o.price)))})}</h1>
    <p class="sub">${L.sub}</p>
