@@ -5,6 +5,9 @@ import { esc } from '../lib/objects.js';
 const SITE = () => (process.env.SITE_URL || 'https://assel-chi.vercel.app').replace(/\/$/, '');
 const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
+// Shown only when the visitor used the English or the Turkish version.
+const LANG_NAMES = { en: 'английский', tr: 'турецкий' };
+
 export function leadText(b) {
   const n = Number.isInteger(b.n) && b.n > 0 ? b.n : null;
   return [
@@ -14,6 +17,7 @@ export function leadText(b) {
     `Когда связаться: ${esc(str(b.when, 40) || '—')}`,
     n ? `Объект: №${n} ${SITE()}/o/${n}/` : 'Объект: общий подбор',
     `Откуда пришёл: ${esc(str(b.src, 120) || 'напрямую')}`,
+    ...(LANG_NAMES[b.lang] ? [`Язык сайта: ${LANG_NAMES[b.lang]}`] : []),
   ].join('\n');
 }
 

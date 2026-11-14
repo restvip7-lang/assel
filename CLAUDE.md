@@ -1,8 +1,8 @@
 # Usmanova Homes
 
 Personal sales site of Assel Usmanova, a real-estate sales manager in Alanya. Goal: a visitor from Instagram,
-Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegram. All visitor-facing text is in Russian
-(English and Turkish come later). No lead magnets, no sign-up, no pop-ups, no live chat.
+Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegram. The site is in three languages:
+Russian at `/`, English at `/en/`, Turkish at `/tr/`. No lead magnets, no sign-up, no pop-ups, no live chat.
 
 ## How it works
 
@@ -10,10 +10,19 @@ Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegra
 - `data/site.json`: domain, Assel's WhatsApp number (digits only, e.g. `90555...`), Telegram username, `indexable`.
   While `indexable` is false the site sends `noindex` and robots.txt blocks crawlers. Turn it on only when real objects are in.
 - `data/guides.json`: topic pages (Где жить, Инвестиции, Гражданство) at `/<slug>/`, also in the menu and on the home page.
+  `data/guides.en.json` and `data/guides.tr.json` hold the same topics in the same order with their own slugs.
+- `data/i18n.json`: every interface text in `ru`, `en`, `tr` (same keys in each; a test checks it), plus district, tag and badge
+  translations. `lib/i18n.js` `localize(o, lang)` turns an object into what a visitor of that language sees: auto titles
+  («Квартира 1+1, 35 м²» → «1+1 apartment, 35 m²»), district (`dn`; `d` stays Russian as the filter key), `desc_en`/`desc_tr`,
+  `near_en`/`near_tr`. A tag, badge or «nearby» item without a translation is left out, never guessed.
+  When you add or change a text in the template, use `L.key` (or `{{key}}` in the static HTML) and add the key to all three languages.
 - `src/index.html`: the page template (all CSS and JS inline, no framework).
 - `public/`: images (`img/<key>.jpg`) and the favicon, copied as is.
 - `build.mjs`: builds `dist/` with the home page, one page per object at `/o/<n>/` (own title, description,
-  Open Graph image, JSON-LD), `sitemap.xml` and `robots.txt`. Run `npm run build`.
+  Open Graph image, JSON-LD) and the topic pages, each in three languages, plus `sitemap.xml` and `robots.txt`. Run `npm run build`.
+  SEO: every page has a canonical URL, `hreflang` links to its translations (also in the sitemap), and its text is prerendered
+  into the HTML (the build runs the template's own scripts in `node:vm`), so crawlers do not need JavaScript.
+  Short links for Instagram stay `/o/<n>/` (Russian); the language menu in the header leads to the same page in another language.
 - Telegram bot (`api/telegram.js`): Assel forwards photos, texts and PDFs; on «Готово» Claude (`lib/parse.js`) extracts
   the fields, the bot shows a preview, corrections are plain messages, «Опубликовать» commits photos to `public/img/o<n>-<i>.jpg`
   and the object to `data/objects.json` through the GitHub API (`lib/gh.js`), and Vercel redeploys. Links in a message (agency object pages) are opened by `lib/page.js`: text and photo URLs go to Claude, which picks the photos; the price is never taken from the page. Commands: /list, /price, /sold, /unsold, /cancel. The complex name is optional: without it the object is titled «Квартира 1+1, 35 м²» (`autoName`). The preview ends with «Опубликовать» / «Удалить».
@@ -41,7 +50,8 @@ Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegra
   "imgs": ["c1", "c3", "p1"],   // keys of public/img/*.jpg; keys starting with "p" are floor plans
   "tags": ["Гражданство"], "hot": "Новый",   // «Гражданство» only if the price qualifies (from $400 000); no installment plans on this site
   "video": true, "youtube": "VIDEO_ID",
-  "desc": "...", "near": ["Пляж 350 м"]
+  "desc": "...", "near": ["Пляж 350 м"],
+  "desc_en": "...", "desc_tr": "...", "near_en": ["Beach 350 m"], "near_tr": ["Plaj 350 m"]   // written by the bot
 }
 ```
 

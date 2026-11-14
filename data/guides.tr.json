@@ -1,0 +1,87 @@
+[
+  {
+    "slug": "nerede-yasanir",
+    "nav": "Nerede yaşanır",
+    "title": "Alanya'da nerede yaşanır: bölgeler rehberi | Assel Usmanova",
+    "desc": "Alanya'nın bölgeleri sade bir dille: Mahmutlar, Oba, Kestel, Tosmur, Avsallar, merkez ve Gazipaşa. Hangisi kime uygun, nelere bakmalı.",
+    "h1": "Alanya'da nerede yaşanır",
+    "lead": "Alanya deniz boyunca yaklaşık 70 km uzanır ve bölgeler birbirinden çok farklıdır. Her biri hakkında kısaca: kime uygun ve nelere dikkat etmeli.",
+    "blocks": [
+      { "type": "districts", "h": "Bölgeler", "cards": [
+        { "name": "Merkez ve Kleopatra", "d": "Центр", "who": "Arabasız yaşam, şehir yanı başında", "p": "Kleopatra Plajı, sahil yolu, kafeler ve mağazalar yürüme mesafesinde. Yeni proje az, fiyatlar daha yüksek, yazın daha gürültülü." },
+        { "name": "Oba", "d": "Оба", "who": "Aileler, yıl boyu yaşam", "p": "Merkeze yakın, yeşil ve sakin bir bölge. Okullar, klinikler, pazar ve Rusça konuşan birçok aile." },
+        { "name": "Tosmur", "d": "Тосмур", "who": "Aileler, taşınma", "p": "Dim Çayı kıyısında, Oba'dan daha sakin. Yeni siteler, Kestel plajına birkaç dakika." },
+        { "name": "Kestel", "d": "Кестель", "who": "Deniz kenarında yaşam", "p": "Sahilin hemen yanında siteler ve uzun bir plaj. Mağaza sayısı Oba'dan az, ama merkez yakın." },
+        { "name": "Mahmutlar", "d": "Махмутлар", "who": "Kiralama ve yaşam, her bütçe", "p": "Kendi altyapısı ve uzun bir sahil yolu olan büyük bir bölge. Havuzlu çok sayıda site var, fiyatlar merkezden düşük." },
+        { "name": "Kargıcak", "d": "Каргыджак", "who": "Manzara ve sessizlik", "p": "Mahmutlar'ın ardındaki tepeler: deniz manzarası, villalar ve küçük siteler. Arabayla daha rahat." },
+        { "name": "Cikcilli", "d": "Джикджилли", "who": "Şehre yakın, yeni binalar", "p": "Merkezin üstündeki yamaç. Yeni siteler, merkeze ve plaja yakın, ama yer yer yokuşlu." },
+        { "name": "Avsallar ve Konaklı", "d": "Авсаллар", "who": "Uygun başlangıç, kiralama", "p": "Merkezin batısında, İncekum plajının yanında. Daha sakin, uygun fiyatlı çok sayıda yeni proje var." },
+        { "name": "Gazipaşa", "d": "Газипаша", "who": "En düşük bütçe", "p": "40 km doğuda, Gazipaşa Havalimanı'nın yanında. En uygun fiyatlar, sakin ve gelişen bir bölge." }
+      ]},
+      { "type": "list", "h": "Nasıl seçilir", "items": [
+        "Yıl boyu yaşam: yakındaki okullara, kliniklere ve mağazalara bakın. En çok Oba, Tosmur ve Mahmutlar tercih edilir.",
+        "Kiraya vermek: denize uzaklık ve 1+1 plan daha önemlidir. En kolay kiralanan daire tipidir.",
+        "Arabasız: merkez, Oba, Mahmutlar. Kargıcak'ta ve tepelerde arabasız zor.",
+        "Satın almadan önce gelin ve bölgede birkaç gün kalın. Türkiye'de değilseniz bölgeyi görüntülü aramayla gösteririm."
+      ]}
+    ],
+    "cta": "Bölge ve daire seçin",
+    "msg": "Merhaba Assel Hanım! Alanya'da bölge ve daire seçmeme yardımcı olur musunuz?"
+  },
+  {
+    "slug": "yatirim",
+    "nav": "Yatırım",
+    "title": "Alanya'da gayrimenkul yatırımı: kira ve masraflar | Assel Usmanova",
+    "desc": "Alanya'da dairelerden nasıl kazanılır: uzun dönem ve günlük kiralama, inşaat aşamasında alım. Nelere bakmalı, hangi masrafları hesaba katmalı.",
+    "h1": "Yatırım olarak Alanya'da daire",
+    "lead": "Deniz kenarındaki bir daire gelir getirebilir, ama yalnızca doğru seçilirse. Üç yol ve her birinde önemli olanlar.",
+    "blocks": [
+      { "type": "cards", "h": "Nasıl kazanılır", "cards": [
+        { "t": "Uzun dönem kiralama", "p": "Yıl boyu düzenli gelir ve daha az uğraş. Kiracılar okullara, mağazalara ve ulaşıma yakın konut arar." },
+        { "t": "Günlük kiralama", "p": "Yazın gelir daha yüksek, kışın daha düşük. Yönetim şirketi ve kısa dönem kiralama izni gerekir: izinsiz günlük kiralama Türkiye'de yasaktır." },
+        { "t": "İnşaat aşamasında alım", "p": "Fiyat, tamamlanmış binaya göre daha düşüktür. Teslime doğru fiyat genellikle artar, ancak gecikme riski vardır." }
+      ]},
+      { "type": "list", "h": "Nelere bakmalı", "items": [
+        "Denize uzaklık ve plan: denize yakın 1+1 en hızlı kiralanır ve satılır.",
+        "Aidat: sitenin bakımı için aylık ödeme. Kira gelirinin bir kısmını götürür.",
+        "Müteahhit: hangi binaları teslim etti ve zamanında teslim etti mi.",
+        "Belgeler: iskân (oturma izni) ve tapu."
+      ]},
+      { "type": "list", "h": "Satın alma masrafları", "items": [
+        "Tapu harcı.",
+        "Değerleme raporu: yabancılar için zorunludur.",
+        "Belge çevirisi, noter, abonelikler.",
+        "Kiraya veriyorsanız: kira geliri vergisi."
+      ], "note": "Belirli bir daire için net hesabı WhatsApp'tan gönderirim." }
+    ],
+    "cta": "Daire için hesap alın",
+    "msg": "Merhaba Assel Hanım! Bir daire için maliyet hesabı gönderir misiniz?"
+  },
+  {
+    "slug": "vatandaslik",
+    "nav": "Vatandaşlık",
+    "title": "Alanya'da gayrimenkul alarak Türk vatandaşlığı | Assel Usmanova",
+    "desc": "Gayrimenkul alımıyla Türk vatandaşlığı nasıl alınır: koşullar, kimler pasaport alır, adımlar ve ikamet izninden farkı.",
+    "h1": "Gayrimenkul alımıyla Türk vatandaşlığı",
+    "lead": "Belirli bir tutarın üzerindeki gayrimenkul alımı, tüm aileye Türk pasaportu hakkı verir. İşte nasıl işlediği.",
+    "blocks": [
+      { "type": "cards", "h": "Temel koşullar", "cards": [
+        { "t": "400.000 $ ve üzeri", "p": "Tek bir daire ya da birkaç daire olabilir; değerleri toplanır. Değeri resmî değerleme uzmanı onaylar." },
+        { "t": "3 yıl satmama", "p": "Tapuya üç yıl satılamaz şerhi konur. Bu sürede daireyi kiraya verebilirsiniz." },
+        { "t": "Tüm aile", "p": "Başvuru sahibi, eşi ve 18 yaşından küçük çocukları pasaport alır." }
+      ]},
+      { "type": "steps", "h": "Süreç nasıl işler", "items": [
+        "Gerekli tutara uygun dairelerin seçimi.",
+        "Değerleme, satış ve satılamaz şerhli tapu.",
+        "İkamet izni ve vatandaşlık başvurusu.",
+        "İnceleme ve Türk pasaportu."
+      ]},
+      { "type": "list", "h": "İkamet izni mi, vatandaşlık mı", "items": [
+        "Gayrimenkul yoluyla ikamet izni daha ucuz bir daireyle de alınabilir. Yenilenmesi gerekir.",
+        "Vatandaşlık kalıcı pasaport verir, ancak 400.000 $ ve üzeri alım ve 3 yıl satmama şartı gerektirir."
+      ], "note": "Program koşulları değişir. Satıştan önce hangi kuralların geçerli olduğunu bir avukatla birlikte kontrol ederim." }
+    ],
+    "cta": "Vatandaşlığa uygun daireleri seçin",
+    "msg": "Merhaba Assel Hanım! Vatandaşlığa uygun daireleri gönderir misiniz?"
+  }
+]

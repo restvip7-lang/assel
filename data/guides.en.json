@@ -1,0 +1,87 @@
+[
+  {
+    "slug": "where-to-live",
+    "nav": "Where to live",
+    "title": "Where to live in Alanya: the areas compared | Assel Usmanova",
+    "desc": "Alanya's areas in plain words: Mahmutlar, Oba, Kestel, Tosmur, Avsallar, the centre and Gazipasa. Who each one suits and what to look at.",
+    "h1": "Where to live in Alanya",
+    "lead": "Alanya stretches along the sea for almost 70 km, and its areas differ a lot. A short note on each: who it suits and what to look for.",
+    "blocks": [
+      { "type": "districts", "h": "Areas", "cards": [
+        { "name": "City centre and Cleopatra", "d": "Центр", "who": "No car needed, the city at your door", "p": "Cleopatra Beach, the promenade, cafés and shops within walking distance. Few new-builds, higher prices, noisier in summer." },
+        { "name": "Oba", "d": "Оба", "who": "Families, year-round living", "p": "A green, quiet area next to the centre. Schools, clinics, a market, and many Russian-speaking families." },
+        { "name": "Tosmur", "d": "Тосмур", "who": "Families, relocation", "p": "By the Dim River, quieter than Oba. New complexes, a few minutes to Kestel beach." },
+        { "name": "Kestel", "d": "Кестель", "who": "Life by the sea", "p": "Complexes right on the seafront and a long beach. Fewer shops than in Oba, but the centre is close." },
+        { "name": "Mahmutlar", "d": "Махмутлар", "who": "Renting and living, any budget", "p": "A large area with its own infrastructure and a long promenade. Many complexes with pools, prices lower than in the centre." },
+        { "name": "Kargicak", "d": "Каргыджак", "who": "Views and quiet", "p": "The hills beyond Mahmutlar: sea views, villas and small complexes. Easier with a car." },
+        { "name": "Cikcilli", "d": "Джикджилли", "who": "Close to the city, new buildings", "p": "A slope above the centre. New complexes, close to the centre and the beach, but uphill in places." },
+        { "name": "Avsallar and Konakli", "d": "Авсаллар", "who": "Affordable entry, renting", "p": "West of the centre, near Incekum beach. Calmer, with many affordable new-builds." },
+        { "name": "Gazipasa", "d": "Газипаша", "who": "Smallest budget", "p": "40 km to the east, next to Gazipasa Airport. The most affordable prices, quiet, and the area is growing." }
+      ]},
+      { "type": "list", "h": "How to choose", "items": [
+        "Living year-round: look at schools, clinics and shops nearby. Oba, Tosmur and Mahmutlar are chosen most often.",
+        "Renting out: distance to the sea and a 1+1 layout matter more. It is the easiest to rent out.",
+        "Without a car: the centre, Oba, Mahmutlar. In Kargicak and on the hills it's hard without a car.",
+        "Come and stay in the area for a couple of days before buying. If you're not in Türkiye, I'll show you the area by video call."
+      ]}
+    ],
+    "cta": "Find an area and an apartment",
+    "msg": "Hello Assel! Please help me choose an area and an apartment in Alanya."
+  },
+  {
+    "slug": "investment",
+    "nav": "Investment",
+    "title": "Investing in Alanya property: rental, resale, costs | Assel Usmanova",
+    "desc": "How people earn on apartments in Alanya: long-term and short-term rental, buying during construction. What to look at and which costs to plan for.",
+    "h1": "An apartment in Alanya as an investment",
+    "lead": "An apartment by the sea can bring income, but only if it's chosen well. Three ways and what matters in each.",
+    "blocks": [
+      { "type": "cards", "h": "How people earn", "cards": [
+        { "t": "Long-term rental", "p": "Steady income all year and less hassle. Tenants look for homes near schools, shops and transport." },
+        { "t": "Short-term rental", "p": "Income is higher in summer and lower in winter. You need a management company and a short-term rental permit: without it, daily rentals are not allowed in Türkiye." },
+        { "t": "Buying during construction", "p": "The price is lower than for a finished building. By completion the price usually rises, but there is a risk of delays." }
+      ]},
+      { "type": "list", "h": "What to look at", "items": [
+        "Distance to the sea and layout: a 1+1 by the sea rents and sells fastest.",
+        "Aidat: the monthly fee for maintaining the complex. It takes part of the rental income.",
+        "The developer: which buildings they have completed, and whether on time.",
+        "Documents: the occupancy permit (iskan) and the TAPU, i.e. the title deed."
+      ]},
+      { "type": "list", "h": "Costs when buying", "items": [
+        "Title deed (TAPU) registration tax.",
+        "Property valuation report: mandatory for foreigners.",
+        "Document translation, notary, utility connections.",
+        "If you rent out: tax on rental income."
+      ], "note": "I'll send an exact calculation for a specific apartment on WhatsApp." }
+    ],
+    "cta": "Get a calculation for a property",
+    "msg": "Hello Assel! Please send me a cost calculation for a property."
+  },
+  {
+    "slug": "citizenship",
+    "nav": "Citizenship",
+    "title": "Turkish citizenship by buying property in Alanya | Assel Usmanova",
+    "desc": "How to get Turkish citizenship through a property purchase: conditions, who gets a passport, the steps and how it differs from a residence permit.",
+    "h1": "Turkish citizenship by buying property",
+    "lead": "Buying property from a certain amount gives the whole family the right to a Turkish passport. Here is how it works.",
+    "blocks": [
+      { "type": "cards", "h": "Key conditions", "cards": [
+        { "t": "From $400,000", "p": "It can be one apartment or several; their values add up. The value is confirmed by an official appraiser." },
+        { "t": "3 years without selling", "p": "A no-sale restriction for three years is recorded in the TAPU. You can still rent the apartment out." },
+        { "t": "The whole family", "p": "The applicant, their spouse and children under 18 receive passports." }
+      ]},
+      { "type": "steps", "h": "How it goes", "items": [
+        "Choosing properties for the required amount.",
+        "Valuation, purchase and TAPU with the no-sale note.",
+        "Residence permit and citizenship application.",
+        "Review and the Turkish passport."
+      ]},
+      { "type": "list", "h": "Residence permit or citizenship", "items": [
+        "A property-based residence permit is also possible with a cheaper apartment. It has to be renewed.",
+        "Citizenship gives a passport for good, but requires a purchase from $400,000 and a 3-year no-sale restriction."
+      ], "note": "The programme's rules change. Before the purchase I'll check with a lawyer which rules apply now." }
+    ],
+    "cta": "Find properties for citizenship",
+    "msg": "Hello Assel! Please find me properties that qualify for citizenship."
+  }
+]

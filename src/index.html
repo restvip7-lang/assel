@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="/*LANG*/">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -7,8 +7,8 @@
 <title>/*TITLE*/</title>
 <meta name="description" content="/*DESC*/">
 <meta name="robots" content="/*ROBOTS*/">
-<link rel="canonical" href="/*URL*/">
-<meta property="og:type" content="website"><meta property="og:title" content="/*TITLE*/"><meta property="og:description" content="/*DESC*/"><meta property="og:url" content="/*URL*/"><meta property="og:image" content="/*OGIMG*/"><meta property="og:locale" content="ru_RU">
+<link rel="canonical" href="/*URL*/">/*HREFLANG*/
+<meta property="og:type" content="website"><meta property="og:title" content="/*TITLE*/"><meta property="og:description" content="/*DESC*/"><meta property="og:url" content="/*URL*/"><meta property="og:image" content="/*OGIMG*/"><meta property="og:locale" content="/*OGLOCALE*/">
 <meta name="twitter:card" content="summary_large_image">
 <script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("m");setTimeout(()=>document.documentElement.classList.remove("m"),2500)}}catch(_){}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -55,7 +55,11 @@ img{display:block;max-width:100%}
 .nav{display:flex;gap:22px;font-weight:500;font-size:15px}
 .nav a{color:var(--ink);text-decoration:none}
 .nav a:hover{color:var(--sea)}
-.lang{white-space:nowrap;border:1px solid var(--line);border-radius:10px;background:none;color:var(--ink);padding:7px 10px;font-weight:600;font-size:13px}
+.lang{position:relative;font-weight:600;font-size:13px}
+.lang summary{list-style:none;cursor:pointer;white-space:nowrap;border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.lang summary::-webkit-details-marker{display:none}.lang summary::after{content:" ▾"}
+.lang div{position:absolute;right:0;top:calc(100% + 6px);z-index:30;display:grid;gap:2px;min-width:132px;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(8,20,32,.16)}
+.lang a{display:block;padding:9px 12px;border-radius:8px;color:var(--ink);text-decoration:none;white-space:nowrap}.lang a:hover{background:var(--sea-soft);color:var(--sea)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:13px 18px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;transition:transform .15s,filter .15s}
 .btn:hover{filter:brightness(1.05)}.btn:active{transform:scale(.98)}
 .btn svg{width:19px;height:19px;fill:currentColor;flex:none}
@@ -342,18 +346,18 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 <script type="application/ld+json">/*JSONLD*/</script>
 </head>
 <body>
-<div class="proto">Сайт в разработке: объекты и фото пока примерные</div>
+<div class="proto">{{proto}}</div>
 <header class="hd"><div class="w">
-  <a class="brand" href="/"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><g stroke="var(--coral)" stroke-width="2.4" stroke-linecap="round"><line x1="15.5" y1="14.0" x2="12.0" y2="14.0"/><line x1="16.8" y1="9.2" x2="13.7" y2="7.5"/><line x1="20.2" y1="5.8" x2="18.5" y2="2.7"/><line x1="25.0" y1="4.5" x2="25.0" y2="1.0"/><line x1="29.8" y1="5.8" x2="31.5" y2="2.7"/><line x1="33.2" y1="9.2" x2="36.3" y2="7.5"/><line x1="34.5" y1="14.0" x2="38.0" y2="14.0"/></g><circle cx="25" cy="14" r="6.5" fill="var(--coral)"/><path d="M4 21.5 17 10.5l13 11" fill="none" stroke="var(--surface)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M7.5 20.5V34h19V20.5L17 12.5z" fill="var(--sea)"/><path d="M4 21.5 17 10.5l13 11" fill="none" stroke="var(--sea)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><rect x="14.5" y="25" width="5" height="9" rx="1" fill="var(--surface)"/></svg><span><b>Assel Usmanova</b><small>Недвижимость в Алании</small></span></a>
-  <nav class="nav"><a href="/" data-go="catalog">Объекты</a>/*NAV*/<a href="/" data-go="about">Обо мне</a></nav>
-  <button class="lang" data-act="lang" aria-label="Язык">RU ▾</button>
-  <button class="hico wa" data-wa="" aria-label="Написать в WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.2.5.2.5.4.1.1.1.7-.1 1.4Z"/></svg></button><button class="hico tg" data-tg aria-label="Написать в Telegram" title="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 19c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.2 12.6l-4.9-1.5c-1-.3-1.1-1 .2-1.6L20.6 2.9c.9-.3 1.6.2 1.3 1.4Z"/></svg></button>
+  <a class="brand" href="{{P}}/"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><g stroke="var(--coral)" stroke-width="2.4" stroke-linecap="round"><line x1="15.5" y1="14.0" x2="12.0" y2="14.0"/><line x1="16.8" y1="9.2" x2="13.7" y2="7.5"/><line x1="20.2" y1="5.8" x2="18.5" y2="2.7"/><line x1="25.0" y1="4.5" x2="25.0" y2="1.0"/><line x1="29.8" y1="5.8" x2="31.5" y2="2.7"/><line x1="33.2" y1="9.2" x2="36.3" y2="7.5"/><line x1="34.5" y1="14.0" x2="38.0" y2="14.0"/></g><circle cx="25" cy="14" r="6.5" fill="var(--coral)"/><path d="M4 21.5 17 10.5l13 11" fill="none" stroke="var(--surface)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M7.5 20.5V34h19V20.5L17 12.5z" fill="var(--sea)"/><path d="M4 21.5 17 10.5l13 11" fill="none" stroke="var(--sea)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><rect x="14.5" y="25" width="5" height="9" rx="1" fill="var(--surface)"/></svg><span><b>Assel Usmanova</b><small>{{brandSub}}</small></span></a>
+  <nav class="nav"><a href="{{P}}/" data-go="catalog">{{navObjects}}</a>/*NAV*/<a href="{{P}}/" data-go="about">{{navAbout}}</a></nav>
+  /*LANGSW*/
+  <button class="hico wa" data-wa="" aria-label="{{waAria}}" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.2.5.2.5.4.1.1.1.7-.1 1.4Z"/></svg></button><button class="hico tg" data-tg aria-label="{{tgAria}}" title="Telegram"><svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 19c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.2 12.6l-4.9-1.5c-1-.3-1.1-1 .2-1.6L20.6 2.9c.9-.3 1.6.2 1.3 1.4Z"/></svg></button>
 </div></header>
 <main id="app"></main>
 <div class="bar" id="bar"></div>
 <div class="toast" id="toast" hidden role="status"></div>
 
-<script>const SITE=/*SITE*/{};const IMG=new Proxy({},{get:(_,k)=>"/img/"+String(k)+".jpg"});</script>
+<script>const SITE=/*SITE*/{};const LANG="/*LANG*/",P="/*P*/",L=/*L*/{};const f=(s,v)=>String(s).replace(/\{(\w+)\}/g,(m,k)=>v[k]??m);const PATH=location.pathname.replace(/^\/(en|tr)(?=\/|$)/,"")||"/";const WHEN_RU=["Сегодня","Завтра","В выходные"];const IMG=new Proxy({},{get:(_,k)=>"/img/"+String(k)+".jpg"});</script>
 <script>
 const WA=`<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.2.5.2.5.4.1.1.1.7-.1 1.4Z"/></svg>`;
 const TG=`<svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 19c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.2 12.6l-4.9-1.5c-1-.3-1.1-1 .2-1.6L20.6 2.9c.9-.3 1.6.2 1.3 1.4Z"/></svg>`;
@@ -362,12 +366,12 @@ const eur=p=>"€"+Math.round(p).toLocaleString("en-US").replace(/,/g," ");
 const O=/*OBJECTS*/[];O.forEach(o=>{o.tags=o.tags||[];o.near=o.near||[];o.imgs=o.imgs||[]});
 const LIVE=O.filter(o=>!o.sold);
 const G=/*GUIDES*/[];
-const seaTxt=o=>o.sea?`${o.sea} м до моря`:"";
-const yearTxt=o=>!o.year?"":o.year==="Сдан"?"Сдан":"Сдача "+o.year;
+const seaTxt=o=>o.sea?f(L.seaTxt,{n:o.sea}):"";
+const yearTxt=o=>o.yearTxt||"";
 let _d="any";try{_d=new URLSearchParams(location.search).get("d")||"any"}catch(_){}
-const st={seller:"any",budget:"any",rooms:"any",dist:_d,sort:"price",pick:{b:"€100–200k",r:"1+1",g:"Жить"}};
-const msg=o=>o?`Здравствуйте, Assel! Интересует объект №${o.n} ${o.name}, ${o.rooms}, ${eur(o.price)}. Когда можно посмотреть?`:"Здравствуйте, Assel! Хочу подобрать квартиру в Алании.";
-const pickMsg=()=>`Здравствуйте, Assel! Ищу ${st.pick.r} в Алании, бюджет ${st.pick.b}, цель: ${st.pick.g.toLowerCase()}. Пришлите подходящие варианты.`;
+const st={seller:"any",budget:"any",rooms:"any",dist:_d,sort:"price",pick:{b:L.pickB[1],r:L.pickR[0],g:L.pickG[0]}};
+const msg=o=>o?f(L.msgObj,{n:o.n,name:o.auto?o.name:o.name+", "+o.rooms,price:eur(o.price)}):L.msgAny;
+const pickMsg=()=>f(L.msgPick,{r:st.pick.r,b:st.pick.b,g:st.pick.g.toLocaleLowerCase(LANG)});
 
 function filtered(){
  let l=LIVE.filter(o=>(st.budget==="any"||o.price<=+st.budget)&&(st.rooms==="any"||o.rooms===st.rooms)&&(st.dist==="any"||o.d===st.dist)&&(st.seller==="any"||(st.seller==="owner")===!!o.owner));
@@ -376,115 +380,112 @@ function filtered(){
 const seg=(k,opts)=>`<div class="seg" role="group">${opts.map(v=>`<button data-pk="${k}" data-v="${v}" aria-pressed="${st.pick[k]===v}">${v}</button>`).join("")}</div>`;
 
 function card(o){return `<article class="card">
- <div class="ph-wrap"><div class="track" data-track>${o.imgs.map((k,i)=>`<img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}" loading="lazy"${i?"":` style="view-transition-name:ph${o.n}"`}>`).join("")}</div>
-  <div class="badges"><span class="badge" style="background:var(--ink);color:var(--bg)">${o.owner?"От собственника":"От застройщика"}</span>${o.hot?`<span class="badge hot">${o.hot}</span>`:""}${o.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
-  ${o.video?`<a class="play" href="/o/${o.n}/" aria-label="Смотреть видео-обзор"><i></i>Видео-обзор</a>`:""}<span class="no">№${o.n}</span>${o.imgs.length>1?`<button class="arr prev" data-arr="-1" aria-label="Предыдущее фото"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="arr next" data-arr="1" aria-label="Следующее фото"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button><div class="dots">${o.imgs.map((_,i)=>`<i data-dot="${i}" role="button" aria-label="Фото ${i+1}" class="${i?"":"on"}"></i>`).join("")}</div>`:""}</div>
- <div class="cb"><div class="pr"><b class="num">${eur(o.price)}</b><span class="num">${eur(o.price/o.area)}/м²</span></div>
-  <h3><a href="/o/${o.n}/">${o.name}, ${o.d}</a></h3>
-  <div class="specs"><span><b>${o.rooms}</b></span><span><b class="num">${o.area}</b> м²</span>${o.sea?`<span><b class="num">${o.sea} м</b> до моря</span>`:""}${o.year?`<span>${yearTxt(o)}</span>`:""}</div>
-  <div class="acts"><button class="btn wa" data-wa="${o.n}">${WA}WhatsApp</button><button class="btn tg" data-tg="${o.n}">${TG}Telegram</button><a class="btn ghost" href="/o/${o.n}/">Смотреть</a></div></div></article>`}
+ <div class="ph-wrap"><div class="track" data-track>${o.imgs.map((k,i)=>`<img src="${IMG[k]}" alt="${f(L.photoAlt,{name:o.name,i:i+1})}" class="${k[0]==="p"?"plan":""}" loading="lazy"${i?"":` style="view-transition-name:ph${o.n}"`}>`).join("")}</div>
+  <div class="badges"><span class="badge" style="background:var(--ink);color:var(--bg)">${o.owner?L.fromOwner:L.fromDev}</span>${o.hot?`<span class="badge hot">${o.hot}</span>`:""}${o.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
+  ${o.video?`<a class="play" href="${P}/o/${o.n}/" aria-label="${L.videoAria}"><i></i>${L.video}</a>`:""}<span class="no">${f(L.num,{n:o.n})}</span>${o.imgs.length>1?`<button class="arr prev" data-arr="-1" aria-label="${L.prevPhoto}"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="arr next" data-arr="1" aria-label="${L.nextPhoto}"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button><div class="dots">${o.imgs.map((_,i)=>`<i data-dot="${i}" role="button" aria-label="${f(L.photoN,{i:i+1})}" class="${i?"":"on"}"></i>`).join("")}</div>`:""}</div>
+ <div class="cb"><div class="pr"><b class="num">${eur(o.price)}</b><span class="num">${f(L.perM2,{p:eur(o.price/o.area)})}</span></div>
+  <h3><a href="${P}/o/${o.n}/">${o.name}, ${o.dn}</a></h3>
+  <div class="specs"><span><b>${o.rooms}</b></span><span><b class="num">${o.area}</b> ${L.m2}</span>${o.sea?`<span>${f(L.seaSpec,{n:o.sea})}</span>`:""}${o.year?`<span>${yearTxt(o)}</span>`:""}</div>
+  <div class="acts"><button class="btn wa" data-wa="${o.n}">${WA}WhatsApp</button><button class="btn tg" data-tg="${o.n}">${TG}Telegram</button><a class="btn ghost" href="${P}/o/${o.n}/">${L.view}</a></div></div></article>`}
 
 function home(){
  const l=filtered();
- return `<section class="hero"><img src="${IMG.hero}" alt="Аланья: крепость и побережье"><div class="w">
-  <div><button class="eyebrow" data-wa=""><i></i>Задавайте вопросы в WhatsApp</button>
-   <h1>Квартиры в Алании <em>от ${eur(Math.min(...LIVE.map(o=>o.price)))}</em>. Подберу под ваш бюджет и проведу сделку</h1>
-   <p class="sub">Новостройки и готовое жильё у моря. Проверяю документы и застройщика, показываю вживую или по видео, сопровождаю до получения ТАПУ.</p>
-   <div class="agent"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><span>Живу в Алании 9 лет · RU · KZ · TR</span></div></div>
-   <div class="ticks"><span>Без регистрации</span><span>Показ по видео</span><span>Помощь с ВНЖ</span></div></div>
-  <div class="pick" id="pick"><h3>Подбор за 3 клика</h3>
-   <div class="q"><span>Бюджет</span>${seg("b",["до €100k","€100–200k","€200–350k","€350k+"])}</div>
-   <div class="q"><span>Комнаты</span>${seg("r",["1+1","2+1","3+1","Вилла"])}</div>
-   <div class="q"><span>Для чего</span>${seg("g",["Жить","Сдавать","Инвестиция","ВНЖ","Гражданство"])}</div>
-   <div class="preview" id="pv"><b>Получить подборку, ваше сообщение мне:</b> ${pickMsg()}</div>
+ return `<section class="hero"><img src="${IMG.hero}" alt="${L.heroAlt}" fetchpriority="high"><div class="w">
+  <div><button class="eyebrow" data-wa=""><i></i>${L.eyebrow}</button>
+   <h1>${f(L.h1,{price:eur(Math.min(...LIVE.map(o=>o.price)))})}</h1>
+   <p class="sub">${L.sub}</p>
+   <div class="agent"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><span>${L.agentLine}</span></div></div>
+   <div class="ticks">${L.ticks.map(t=>`<span>${t}</span>`).join("")}</div></div>
+  <div class="pick" id="pick"><h3>${L.pickH}</h3>
+   <div class="q"><span>${L.qBudget}</span>${seg("b",L.pickB)}</div>
+   <div class="q"><span>${L.qRooms}</span>${seg("r",L.pickR)}</div>
+   <div class="q"><span>${L.qGoal}</span>${seg("g",L.pickG)}</div>
+   <div class="preview" id="pv"><b>${L.pvLead}</b> ${pickMsg()}</div>
    <div class="two"><button class="btn wa" data-wa="pick">${WA}WhatsApp</button><button class="btn tg" data-tg="pick">${TG}Telegram</button></div>
-   <small>Или <a href="/" data-go="contact" style="color:var(--sea)">оставьте контакт</a>, и я напишу сама</small></div>
+   <small>${L.orLeave.replace("{a}",`<a href="${P}/" data-go="contact" style="color:var(--sea)">`).replace("{/a}","</a>")}</small></div>
  </div></section>
  <div class="strip"><div class="w">
-  <div><b>9 лет</b><span>живу в Алании, знаю каждый район</span></div><div><b>20+ семей</b><span>купили квартиру с моей помощью</span></div>
-  <div><b>3 языка</b><span>русский, казахский, турецкий</span></div><div><b>до ТАПУ</b><span>сопровождение сделки</span></div></div></div>
+  ${L.strip.map(s=>`<div><b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}</div></div>
  <div class="w">
- <section class="sec" id="catalog"><div class="sechd"><div><h2>Квартиры, которые я отобрала</h2><p>Каждый объект я проверила сама. Цены напрямую от собственников и застройщиков, без доплат за подбор.</p></div></div>
+ <section class="sec" id="catalog"><div class="sechd"><div><h2>${L.catH}</h2><p>${L.catP}</p></div></div>
   <div class="filters">
-   <div class="fl"><label for="f-b">Бюджет</label><select id="f-b" data-f="budget"><option value="any">любой</option><option value="100000">до €100k</option><option value="200000">до €200k</option><option value="350000">до €350k</option></select></div>
-   <div class="fl"><label for="f-r">Комнаты</label><select id="f-r" data-f="rooms"><option value="any">любые</option><option>1+1</option><option>2+1</option><option>3+1</option></select></div>
-   <div class="fl"><label for="f-d">Район</label><select id="f-d" data-f="dist"><option value="any">все</option>${[...new Set([...O.map(o=>o.d),...(st.dist!=="any"?[st.dist]:[])])].map(d=>`<option>${d}</option>`).join("")}</select></div>
-   <div class="fl"><label for="f-o">Продавец</label><select id="f-o" data-f="seller"><option value="any">все</option><option value="owner">собственник</option><option value="dev">застройщик</option></select></div>
-   <div class="fl"><label for="f-s">Сначала</label><select id="f-s" data-f="sort"><option value="price">дешевле</option><option value="m2">дешевле за м²</option><option value="sea">ближе к морю</option></select></div>
-   <span class="found" id="found">Найдено: ${l.length}</span></div>
+   <div class="fl"><label for="f-b">${L.fBudget}</label><select id="f-b" data-f="budget"><option value="any">${L.anyBudget}</option>${[100000,200000,350000].map((v,i)=>`<option value="${v}">${L.fBudgetOpts[i]}</option>`).join("")}</select></div>
+   <div class="fl"><label for="f-r">${L.fRooms}</label><select id="f-r" data-f="rooms"><option value="any">${L.anyRooms}</option><option>1+1</option><option>2+1</option><option>3+1</option></select></div>
+   <div class="fl"><label for="f-d">${L.fDist}</label><select id="f-d" data-f="dist"><option value="any">${L.all}</option>${[...new Set([...O.map(o=>o.d),...(st.dist!=="any"?[st.dist]:[])])].map(d=>`<option value="${d}">${L.districts?.[d]||d}</option>`).join("")}</select></div>
+   <div class="fl"><label for="f-o">${L.fSeller}</label><select id="f-o" data-f="seller"><option value="any">${L.all}</option><option value="owner">${L.sOwner}</option><option value="dev">${L.sDev}</option></select></div>
+   <div class="fl"><label for="f-s">${L.fSort}</label><select id="f-s" data-f="sort">${["price","m2","sea"].map((v,i)=>`<option value="${v}">${L.sortOpts[i]}</option>`).join("")}</select></div>
+   <span class="found" id="found">${f(L.found,{n:l.length})}</span></div>
   <div class="grid" id="grid">${gridHTML(l)}</div></section>
- <section class="sec" id="guides"><h2>Перед покупкой</h2><div class="gtiles">${G.map((g,i)=>`<a class="gtile" href="/${g.slug}/"><span class="gi">0${i+1}</span><b>${g.h1}</b><span>${g.lead.split(". ")[0]}.</span><i>Читать →</i></a>`).join("")}</div></section>
- <section class="sec" id="about"><div class="about"><div class="pic"><img src="${IMG.assel}" alt="Assel Usmanova, менеджер по недвижимости в Алании" loading="lazy"></div>
-  <div><h2>Привет, я Assel</h2>
-   <p>Я живу в Алании 9 лет и помогаю покупать здесь квартиры людям из Казахстана, России и других стран. Говорю по-русски, по-казахски и по-турецки, поэтому сама веду переговоры с застройщиками и собственниками. Подбираю под задачу: жить у моря, сдавать в аренду или оформить ВНЖ. Сама езжу на объекты, проверяю застройщика и документы, торгуюсь за скидку.</p>
-   <p>Пишите в WhatsApp: отвечаю лично, без менеджеров-посредников и навязчивых звонков.</p>
+ <section class="sec" id="guides"><h2>${L.guidesH}</h2><div class="gtiles">${G.map((g,i)=>`<a class="gtile" href="${P}/${g.slug}/"><span class="gi">0${i+1}</span><b>${g.h1}</b><span>${g.lead.split(". ")[0]}.</span><i>${L.read}</i></a>`).join("")}</div></section>
+ <section class="sec" id="about"><div class="about"><div class="pic"><img src="${IMG.assel}" alt="${L.aboutAlt}" loading="lazy"></div>
+  <div><h2>${L.aboutH}</h2>
+   <p>${L.aboutP1}</p>
+   <p>${L.aboutP2}</p>
    <div class="sig">Assel Usmanova</div>
-   <p style="font-size:13px">Текст временный.</p></div></div>
-  <div class="work">${[["showing","Показываю квартиры вживую или по видеосвязи"],["balcony","Смотрим не только метры, но и вид, и район"],["keys","После ТАПУ передаю ключи и помогаю обустроиться"]].map(([k,t])=>`<figure><img src="${IMG["w-"+k]}" alt="${t}" loading="lazy"><figcaption>${t}</figcaption></figure>`).join("")}</div>
-  <div class="steps">${[["Подбор","Вы пишете бюджет и цель, я присылаю 3–5 вариантов с ценами и планировками."],["Показ","Вживую или по видеосвязи, если вы ещё не в Турции."],["Проверка","Разрешения, долги по объекту, репутация застройщика."],["Сделка и ТАПУ","Договор, оплата, ТАПУ, подключение счётчиков и помощь после покупки."]].map((s,i)=>`<div class="step"><b>${i+1}</b><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></section>
- <section class="sec"><h2>Отзывы клиентов</h2><div class="reviews">${[1,2,3].map(()=>`<div class="rev"><div class="st">★★★★★</div><p>Здесь будет настоящий отзыв клиента.</p><small>Имя · страна · что купил</small></div>`).join("")}</div></section>
- <section class="sec" id="faq"><h2>Частые вопросы</h2><div class="faq">
-  ${[["Можно купить квартиру, не приезжая в Турцию?","Да. Показ проходит по видеосвязи, а сделку можно оформить по доверенности. Я расскажу, какие документы нужны."],
-     ["Даёт ли покупка квартиры ВНЖ?","Владелец жилья может подать на краткосрочный ВНЖ. Условия меняются, поэтому я проверю актуальные требования под ваш случай."],
-     ["Сколько стоят налоги и расходы при покупке?","Зависит от объекта: налог на регистрацию, экспертиза, перевод документов. Я пришлю точный расчёт по выбранной квартире."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
-  <p style="font-size:13px;color:var(--muted)">Ответы черновые.</p></div></section>
+   <p style="font-size:13px">${L.draftText}</p></div></div>
+  <div class="work">${["showing","balcony","keys"].map((k,i)=>[k,L.work[i]]).map(([k,t])=>`<figure><img src="${IMG["w-"+k]}" alt="${t}" loading="lazy"><figcaption>${t}</figcaption></figure>`).join("")}</div>
+  <div class="steps">${L.steps.map((s,i)=>`<div class="step"><b>${i+1}</b><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></section>
+ <section class="sec"><h2>${L.revH}</h2><div class="reviews">${[1,2,3].map(()=>`<div class="rev"><div class="st">★★★★★</div><p>${L.revP}</p><small>${L.revS}</small></div>`).join("")}</div></section>
+ <section class="sec" id="faq"><h2>${L.faqH}</h2><div class="faq">
+  ${L.faq.map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}
+  <p style="font-size:13px;color:var(--muted)">${L.faqNote}</p></div></section>
  ${contact()}
- <footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}</span></footer></div>`;
+ <footer><span>${L.footer}</span><span>${location.host}</span></footer></div>`;
 }
-function gridHTML(l){return l.map(card).join("")||`<div class="empty"><b>По этим фильтрам сейчас ничего нет.</b><p style="color:var(--muted)">Напишите мне: у меня бывают объекты до старта продаж.</p><button class="btn wa" data-wa="">${WA}Написать мне</button></div>`}
-function contact(o){return `<section class="contact" id="contact"><div><h2>${o?"Узнать про №"+o.n:"Не нашли подходящее?"}</h2>
-  <p>${o?"Пришлю дополнительные фото, видео с объекта и точный расчёт стоимости.":"Напишите бюджет и пожелания. Я подберу варианты, в том числе те, что ещё не опубликованы."}</p>
+function gridHTML(l){return l.map(card).join("")||`<div class="empty"><b>${L.emptyB}</b><p style="color:var(--muted)">${L.emptyP}</p><button class="btn wa" data-wa="">${WA}${L.writeMe}</button></div>`}
+function contact(o){return `<section class="contact" id="contact"><div><h2>${o?f(L.cHo,{n:o.n}):L.cH}</h2>
+  <p>${o?L.cPo:L.cP}</p>
   <div class="row"><button class="btn wa" data-wa="${o?o.n:""}">${WA}WhatsApp</button><button class="btn tg" data-tg>${TG}Telegram</button></div></div>
- <form class="lead" id="lead"><label for="l-name">Имя</label><input id="l-name" required placeholder="Как к вам обращаться" autocomplete="name">
-  <label for="l-ph">Телефон, WhatsApp или Telegram</label><input id="l-ph" required placeholder="+7 … или @username">
-  <label for="l-when">Когда удобно связаться</label><select id="l-when"><option>Сегодня</option><option>Завтра</option><option>В выходные</option></select>
+ <form class="lead" id="lead"><label for="l-name">${L.lName}</label><input id="l-name" required placeholder="${L.lNamePh}" autocomplete="name">
+  <label for="l-ph">${L.lPh}</label><input id="l-ph" required placeholder="${L.lPhPh}">
+  <label for="l-when">${L.lWhen}</label><select id="l-when">${L.when.map((w,i)=>`<option value="${i}">${w}</option>`).join("")}</select>
   <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
-  <button class="btn" type="submit">Жду вашего сообщения</button><div class="ok" id="ok" hidden role="status"></div></form></section>`}
+  <button class="btn" type="submit">${L.lSubmit}</button><div class="ok" id="ok" hidden role="status"></div></form></section>`}
 
 function obj(o){
  const sim=LIVE.filter(x=>x!==o).sort((a,b)=>Math.abs(a.price-o.price)-Math.abs(b.price-o.price)).slice(0,3);
- return `<div class="w"><div class="crumbs"><a href="/">Все объекты</a> / ${o.d} / №${o.n}</div>
-  <div class="gal">${o.imgs.map((k,i)=>`<button data-act="photo" data-i="${i}" aria-label="Открыть фото ${i+1}"><img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}"${i?"":` style="view-transition-name:ph${o.n}"`}>${i===2&&o.imgs.length>3?`<span class="more">+${o.imgs.length-3} фото</span>`:""}</button>`).join("")}</div>
+ return `<div class="w"><div class="crumbs"><a href="${P}/">${L.crumbAll}</a> / ${o.dn} / ${f(L.num,{n:o.n})}</div>
+  <div class="gal">${o.imgs.map((k,i)=>`<button data-act="photo" data-i="${i}" aria-label="${f(L.openPhoto,{i:i+1})}"><img src="${IMG[k]}" alt="${f(L.photoAlt,{name:o.name,i:i+1})}" class="${k[0]==="p"?"plan":""}"${i?"":` style="view-transition-name:ph${o.n}"`}>${i===2&&o.imgs.length>3?`<span class="more">${f(L.morePhotos,{n:o.imgs.length-3})}</span>`:""}</button>`).join("")}</div>
   <div class="ob"><div>
    <div class="badges" style="position:static;margin-bottom:12px">${o.hot?`<span class="badge hot">${o.hot}</span>`:""}${o.tags.map(t=>`<span class="badge" style="background:var(--sea-soft);color:var(--sea)">${t}</span>`).join("")}</div>
-   <h1>${o.rooms}, ${o.area} м² в ${o.name}</h1><div class="loc">${[o.d+", Алания",seaTxt(o),"объект №"+o.n].filter(Boolean).join(" · ")}</div>${o.sold?`<div class="soldnote">Этот объект уже продан. Посмотрите похожие ниже или напишите мне, я подберу такой же.</div>`:""}
-   <div class="kv"><div><span>Комнаты</span><b>${o.rooms}</b></div><div><span>Площадь</span><b class="num">${o.area} м²</b></div>${o.floor?`<div><span>Этаж</span><b>${o.floor}</b></div>`:""}${o.year?`<div><span>Сдача</span><b>${o.year}</b></div>`:""}</div>
-   <h2>Об объекте</h2><p>${o.desc}</p>
-   ${o.video?`<h2>Видео-обзор</h2><button class="vid" data-act="video" aria-label="Смотреть видео-обзор"><img src="${IMG[o.imgs[1]]}" alt=""><span class="pl"><i></i></span><span class="vc">Показываю квартиру</span></button>`:""}
-   ${o.near.length?`<h2>Что рядом</h2><div class="near">${o.near.map(n=>`<span>${n}</span>`).join("")}</div>`:""}
-   <div class="map" role="img" aria-label="Примерное расположение"><div class="spot"></div><small><b>${o.d}</b> · примерное место. Точный адрес пришлю перед показом.</small></div>
+   <h1>${o.auto?f(L.objH1Auto,{name:o.name,d:o.dn}):f(L.objH1,{rooms:o.rooms,area:o.area,name:o.name})}</h1><div class="loc">${[f(L.loc,{d:o.dn}),seaTxt(o),f(L.objNo,{n:o.n})].filter(Boolean).join(" · ")}</div>${o.sold?`<div class="soldnote">${L.soldNote}</div>`:""}
+   <div class="kv"><div><span>${L.kRooms}</span><b>${o.rooms}</b></div><div><span>${L.kArea}</span><b class="num">${o.area} ${L.m2}</b></div>${o.floor?`<div><span>${L.kFloor}</span><b>${o.floor}</b></div>`:""}${o.year?`<div><span>${L.kYear}</span><b>${o.year}</b></div>`:""}</div>
+   <h2>${L.aboutObj}</h2><p>${o.desc}</p>
+   ${o.video?`<h2>${L.video}</h2><button class="vid" data-act="video" aria-label="${L.videoAria}"><img src="${IMG[o.imgs[1]]}" alt=""><span class="pl"><i></i></span><span class="vc">${L.videoCap}</span></button>`:""}
+   ${o.near.length?`<h2>${L.nearH}</h2><div class="near">${o.near.map(n=>`<span>${n}</span>`).join("")}</div>`:""}
+   <div class="map" role="img" aria-label="${L.mapAria}"><div class="spot"></div><small><b>${o.dn}</b> · ${L.mapNote}</small></div>
   </div>
-  <aside class="side"><div><div class="pr num">${o.sold?"Продано":eur(o.price)}</div><div class="pm num">${eur(o.price/o.area)} за м² · ${o.owner?"цена собственника":"цена застройщика"}</div></div>
-   <button class="btn wa" data-wa="${o.n}">${WA}Написать про №${o.n}</button>
-   <div class="msg">Откроется WhatsApp с готовым текстом: «${msg(o)}»</div>
+  <aside class="side"><div><div class="pr num">${o.sold?L.sold:eur(o.price)}</div><div class="pm num">${f(L.perM2long,{p:eur(o.price/o.area)})} · ${o.owner?L.priceOwner:L.priceDev}</div></div>
+   <button class="btn wa" data-wa="${o.n}">${WA}${f(L.writeAbout,{n:o.n})}</button>
+   <div class="msg">${f(L.waNote,{msg:msg(o)})}</div>
    <button class="btn tg" data-tg="${o.n}">${TG}Telegram</button>
-   <button class="btn ghost" data-go="contact">Записаться на показ</button>
-   <div class="ag"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><small>Отвечаю лично, обычно в течение часа</small></div></div>
-   <div class="share"><code id="slink">${location.host}/o/${o.n}</code><button data-act="copy">Копировать</button></div>
+   <button class="btn ghost" data-go="contact">${L.book}</button>
+   <div class="ag"><span class="ph"><img src="${IMG['assel-face']}" alt="Assel Usmanova" width="64" height="64"></span><div><b>Assel Usmanova</b><small>${L.agNote}</small></div></div>
+   <div class="share"><code id="slink">${location.host}${P}/o/${o.n}</code><button data-act="copy">${L.copy}</button></div>
   </aside></div>
-  <section class="sec"><h2>Похожие объекты</h2><div class="grid">${sim.map(card).join("")}</div></section>
-  ${contact(o)}<footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}/o/${o.n}</span></footer></div>`;
+  <section class="sec"><h2>${L.similar}</h2><div class="grid">${sim.map(card).join("")}</div></section>
+  ${contact(o)}<footer><span>${L.footer}</span><span>${location.host}/o/${o.n}</span></footer></div>`;
 }
 
 function guide(g){
- const blk=b=>b.type==="districts"?`<section class="sec"><h2>${b.h}</h2><div class="dgrid">${b.cards.map(c=>{const n=LIVE.filter(o=>o.d===c.d).length;return `<article class="dcard"><span class="dwho">${c.who}</span><h3>${c.name}</h3><p>${c.p}</p><div class="dact">${n?`<a class="btn ghost" href="/?d=${encodeURIComponent(c.d)}#catalog">Объекты: ${n}</a>`:""}<button class="btn wa" data-wa="d:${c.name}">${WA}Подобрать здесь</button></div></article>`}).join("")}</div></section>`
+ const blk=b=>b.type==="districts"?`<section class="sec"><h2>${b.h}</h2><div class="dgrid">${b.cards.map(c=>{const n=LIVE.filter(o=>o.d===c.d).length;return `<article class="dcard"><span class="dwho">${c.who}</span><h3>${c.name}</h3><p>${c.p}</p><div class="dact">${n?`<a class="btn ghost" href="${P}/?d=${encodeURIComponent(c.d)}#catalog">${f(L.dObjects,{n})}</a>`:""}<button class="btn wa" data-wa="d:${c.name}">${WA}${L.dPick}</button></div></article>`}).join("")}</div></section>`
   :b.type==="cards"?`<section class="sec"><h2>${b.h}</h2><div class="gcards">${b.cards.map((c,i)=>`<article class="gcard"><span class="gi">0${i+1}</span><h3>${c.t}</h3><p>${c.p}</p></article>`).join("")}</div></section>`
   :b.type==="steps"?`<section class="sec"><h2>${b.h}</h2><div class="steps">${b.items.map((t,i)=>`<div class="step"><b>${i+1}</b><p>${t}</p></div>`).join("")}</div></section>`
   :`<section class="sec"><h2>${b.h}</h2><ul class="glist">${b.items.map(t=>`<li>${t}</li>`).join("")}</ul>${b.note?`<p class="gnote">${b.note}</p>`:""}</section>`;
- return `<section class="ghero"><div class="w"><div class="crumbs"><a href="/">Главная</a> / ${g.nav}</div><h1>${g.h1}</h1><p>${g.lead}</p>
-  <div class="row"><button class="btn wa" data-wa="g:${g.slug}">${WA}${g.cta}</button><a class="btn ghost" href="/#catalog">Смотреть объекты</a></div></div></section>
+ return `<section class="ghero"><div class="w"><div class="crumbs"><a href="${P}/">${L.crumbHome}</a> / ${g.nav}</div><h1>${g.h1}</h1><p>${g.lead}</p>
+  <div class="row"><button class="btn wa" data-wa="g:${g.slug}">${WA}${g.cta}</button><a class="btn ghost" href="${P}/#catalog">${L.seeListings}</a></div></div></section>
  <div class="w">${g.blocks.map(blk).join("")}
-  <p class="gnote" style="margin-top:28px">Текст черновой.</p>
-  <section class="sec"><h2>Другие темы</h2><div class="gtiles">${G.filter(x=>x!==g).map(x=>`<a class="gtile" href="/${x.slug}/"><b>${x.h1}</b><i>Читать →</i></a>`).join("")}</div></section>
-  ${contact()}<footer><span>Assel Usmanova · недвижимость в Алании</span><span>${location.host}/${g.slug}</span></footer></div>`;
+  <p class="gnote" style="margin-top:28px">${L.gDraft}</p>
+  <section class="sec"><h2>${L.otherTopics}</h2><div class="gtiles">${G.filter(x=>x!==g).map(x=>`<a class="gtile" href="${P}/${x.slug}/"><b>${x.h1}</b><i>${L.read}</i></a>`).join("")}</div></section>
+  ${contact()}<footer><span>${L.footer}</span><span>${location.host}/${g.slug}</span></footer></div>`;
 }
 const app=document.getElementById("app"),bar=document.getElementById("bar");
-const curG=()=>{const m=location.pathname.match(/^\/([a-z-]+)\/?$/);return m?G.find(g=>g.slug===m[1]):null};
-const cur=()=>{const m=location.pathname.match(/^\/o\/(\d+)\/?$/);return m?O.find(o=>o.n==m[1]):null};
+const curG=()=>{const m=PATH.match(/^\/([a-z-]+)\/?$/);return m?G.find(g=>g.slug===m[1]):null};
+const cur=()=>{const m=PATH.match(/^\/o\/(\d+)\/?$/);return m?O.find(o=>o.n==m[1]):null};
 function render(){
  const o=cur(),gd=curG();app.innerHTML=o?obj(o):gd?guide(gd):home();
- bar.innerHTML=`<div class="w"><div class="pp">${o?`<b class="num">${eur(o.price)}</b><span>№${o.n} · ${o.rooms} · ${o.d}</span>`:`<b>Assel Usmanova</b><span>Отвечаю в WhatsApp</span>`}</div>
-  <button class="btn wa" data-wa="${o?o.n:""}">${WA}${o?"Узнать про №"+o.n:"Написать в WhatsApp"}</button><button class="btn tg" data-tg="${o?o.n:""}" aria-label="Telegram">${TG}</button></div>`;
+ bar.innerHTML=`<div class="w"><div class="pp">${o?`<b class="num">${eur(o.price)}</b><span>${f(L.num,{n:o.n})} · ${o.rooms} · ${o.dn}</span>`:`<b>Assel Usmanova</b><span>${L.barSub}</span>`}</div>
+  <button class="btn wa" data-wa="${o?o.n:""}">${WA}${o?f(L.cHo,{n:o.n}):L.waAria}</button><button class="btn tg" data-tg="${o?o.n:""}" aria-label="Telegram">${TG}</button></div>`;
  document.querySelectorAll("select[data-f]").forEach(s=>s.value=st[s.dataset.f]);
  enhanceSelects();
  bindTracks();
@@ -505,15 +506,15 @@ function enhanceSelects(){
   wrap.prepend(b);wrap.append(ul);sel.addEventListener("change",sync);sync();
  });
 }
-document.addEventListener("click",e=>{if(!e.target.closest(".dd"))document.querySelectorAll(".dd.open").forEach(d=>{d.classList.remove("open");d.querySelector(".ddb").setAttribute("aria-expanded","false")})});
+document.addEventListener("click",e=>{if(!e.target.closest(".lang"))document.querySelector(".lang[open]")?.removeAttribute("open");if(!e.target.closest(".dd"))document.querySelectorAll(".dd.open").forEach(d=>{d.classList.remove("open");d.querySelector(".ddb").setAttribute("aria-expanded","false")})});
 function bindTracks(){document.querySelectorAll("[data-track]").forEach(t=>t.addEventListener("scroll",()=>{const i=Math.round(t.scrollLeft/t.clientWidth);t.parentNode.querySelectorAll(".dots i").forEach((d,k)=>d.classList.toggle("on",k===i))},{passive:true}))}
 let tt;function toast(h){const el=document.getElementById("toast");el.innerHTML=h;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,4500)}
 const slide=(wrap,i)=>{const t=wrap.querySelector("[data-track]");if(!t)return;const n=t.children.length;i=(i+n)%n;t.scrollTo({left:i*t.clientWidth,behavior:"smooth"})};
 const cur_i=t=>Math.round(t.scrollLeft/t.clientWidth);
 function lightbox(o,start){
  if(!o)return;const ARR=(d,l)=>`<button class="arr ${d<0?"prev":"next"}" data-lb="${d}" aria-label="${l}"><svg viewBox="0 0 24 24"><path d="${d<0?"M15 5l-7 7 7 7":"M9 5l7 7-7 7"}"/></svg></button>`;
- const el=document.createElement("div");el.className="lb";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-label","Фото объекта");
- el.innerHTML=`<div class="lb-top"><span id="lbn">${start+1} / ${o.imgs.length}</span><button class="lb-x" data-lb="x" aria-label="Закрыть">×</button></div><div class="lb-track">${o.imgs.map((k,i)=>`<figure><img src="${IMG[k]}" alt="${o.name}, фото ${i+1}" class="${k[0]==="p"?"plan":""}"></figure>`).join("")}</div>${o.imgs.length>1?ARR(-1,"Предыдущее фото")+ARR(1,"Следующее фото"):""}`;
+ const el=document.createElement("div");el.className="lb";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-label",L.lbAria);
+ el.innerHTML=`<div class="lb-top"><span id="lbn">${start+1} / ${o.imgs.length}</span><button class="lb-x" data-lb="x" aria-label="${L.close}">×</button></div><div class="lb-track">${o.imgs.map((k,i)=>`<figure><img src="${IMG[k]}" alt="${f(L.photoAlt,{name:o.name,i:i+1})}" class="${k[0]==="p"?"plan":""}"></figure>`).join("")}</div>${o.imgs.length>1?ARR(-1,L.prevPhoto)+ARR(1,L.nextPhoto):""}`;
  document.body.append(el);window.__lenis?.stop();document.documentElement.style.overflow="hidden";
  const tr=el.querySelector(".lb-track");requestAnimationFrame(()=>{tr.scrollLeft=start*tr.clientWidth;el.classList.add("on")});
  tr.addEventListener("scroll",()=>{el.querySelector("#lbn").textContent=`${cur_i(tr)+1} / ${o.imgs.length}`},{passive:true});
@@ -527,23 +528,22 @@ function lightbox(o,start){
 document.addEventListener("click",e=>{
  const ar=e.target.closest("[data-arr]");if(ar){e.preventDefault();const w=ar.closest(".ph-wrap");slide(w,cur_i(w.querySelector("[data-track]"))+(+ar.dataset.arr));return}
  const dt=e.target.closest("[data-dot]");if(dt){slide(dt.closest(".ph-wrap"),+dt.dataset.dot);return}
- const w=e.target.closest("[data-wa]");if(w){const v=w.dataset.wa;const o=O.find(x=>x.n==v);const gd=v.startsWith("g:")&&G.find(g=>g.slug===v.slice(2));const txt=v==="pick"?pickMsg():v.startsWith("d:")?`Здравствуйте, Assel! Хочу жить в районе ${v.slice(2)}. Что посоветуете?`:gd?`Здравствуйте, Assel! ${gd.cta}, пожалуйста.`:msg(o);if(SITE.whatsapp){location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(txt)}`}else toast(`<b>Номер WhatsApp ещё не указан</b>Будет отправлено: «${txt}»`);return}
- const tgb=e.target.closest("[data-tg]");if(tgb){const v=tgb.dataset.tg;const txt=v==="pick"?pickMsg():v?msg(O.find(x=>x.n==v)):"";if(txt){try{navigator.clipboard.writeText(txt).catch(()=>{})}catch(_){}toast(`<b>Текст скопирован</b>Вставьте его в чат со мной: «${txt}»`)}if(SITE.telegram)setTimeout(()=>window.open(`https://t.me/${SITE.telegram}`,"_blank"),txt?900:0);else if(!txt)toast("<b>Telegram ещё не указан</b>");return}
- const pk=e.target.closest("[data-pk]");if(pk){st.pick[pk.dataset.pk]=pk.dataset.v;document.querySelectorAll(`[data-pk="${pk.dataset.pk}"]`).forEach(b=>b.setAttribute("aria-pressed",b===pk));document.getElementById("pv").innerHTML=`<b>Получить подборку, ваше сообщение мне:</b> ${pickMsg()}`;return}
- const g=e.target.closest("[data-go]");if(g){e.preventDefault();const go=()=>{const t=document.getElementById(g.dataset.go);if(!t)return;window.__lenis?window.__lenis.scrollTo(t,{offset:-80}):t.scrollIntoView({behavior:"smooth"})};if((cur()||curG())&&g.dataset.go!=="contact"){location.href="/#"+g.dataset.go}else go();return}
+ const w=e.target.closest("[data-wa]");if(w){const v=w.dataset.wa;const o=O.find(x=>x.n==v);const gd=v.startsWith("g:")&&G.find(g=>g.slug===v.slice(2));const txt=v==="pick"?pickMsg():v.startsWith("d:")?f(L.msgDist,{d:v.slice(2)}):gd?(gd.msg||f(L.msgGuide,{cta:gd.cta})):msg(o);if(SITE.whatsapp){location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(txt)}`}else toast(f(L.noWa,{txt}));return}
+ const tgb=e.target.closest("[data-tg]");if(tgb){const v=tgb.dataset.tg;const txt=v==="pick"?pickMsg():v?msg(O.find(x=>x.n==v)):"";if(txt){try{navigator.clipboard.writeText(txt).catch(()=>{})}catch(_){}toast(f(L.tgCopied,{txt}))}if(SITE.telegram)setTimeout(()=>window.open(`https://t.me/${SITE.telegram}`,"_blank"),txt?900:0);else if(!txt)toast(L.noTg);return}
+ const pk=e.target.closest("[data-pk]");if(pk){st.pick[pk.dataset.pk]=pk.dataset.v;document.querySelectorAll(`[data-pk="${pk.dataset.pk}"]`).forEach(b=>b.setAttribute("aria-pressed",b===pk));document.getElementById("pv").innerHTML=`<b>${L.pvLead}</b> ${pickMsg()}`;return}
+ const g=e.target.closest("[data-go]");if(g){e.preventDefault();const go=()=>{const t=document.getElementById(g.dataset.go);if(!t)return;window.__lenis?window.__lenis.scrollTo(t,{offset:-80}):t.scrollIntoView({behavior:"smooth"})};if((cur()||curG())&&g.dataset.go!=="contact"){location.href=P+"/#"+g.dataset.go}else go();return}
  const a=e.target.closest("[data-act]");if(!a)return;
- if(a.dataset.act==="lang")toast("<b>Языки</b>English и Türkçe скоро.");
- if(a.dataset.act==="video"){if(cur().youtube)location.href="https://www.youtube.com/watch?v="+cur().youtube;else toast("<b>Видео-обзор</b>Скоро здесь будет видео.");}
+ if(a.dataset.act==="video"){if(cur().youtube)location.href="https://www.youtube.com/watch?v="+cur().youtube;else toast(L.videoSoon);}
  if(a.dataset.act==="photo")lightbox(cur(),+a.dataset.i||0);
- if(a.dataset.act==="copy"){const t=location.origin+"/o/"+cur().n+"/";try{navigator.clipboard.writeText(t).then(()=>a.textContent="Скопировано",()=>getSelection().selectAllChildren(document.getElementById("slink")))}catch(_){getSelection().selectAllChildren(document.getElementById("slink"))}}
+ if(a.dataset.act==="copy"){const t=location.origin+P+"/o/"+cur().n+"/";try{navigator.clipboard.writeText(t).then(()=>a.textContent=L.copied,()=>getSelection().selectAllChildren(document.getElementById("slink")))}catch(_){getSelection().selectAllChildren(document.getElementById("slink"))}}
 });
-document.addEventListener("change",e=>{const f=e.target.dataset.f;if(!f)return;st[f]=e.target.value;const l=filtered();const gr=document.getElementById("grid");gr.innerHTML=gridHTML(l);document.getElementById("found").textContent="Найдено: "+l.length;bindTracks();window.motion?.cards(gr)});
+document.addEventListener("change",e=>{const fk=e.target.dataset.f;if(!fk)return;st[fk]=e.target.value;const l=filtered();const gr=document.getElementById("grid");gr.innerHTML=gridHTML(l);document.getElementById("found").textContent=f(L.found,{n:l.length});bindTracks();window.motion?.cards(gr)});
 // Lead source: UTM tags from an Instagram link or the referring site, kept for this visit.
 let SRC="";try{const q=new URLSearchParams(location.search);SRC=[q.get("utm_source"),q.get("utm_campaign"),q.get("utm_content")].filter(Boolean).join(" / ")||sessionStorage.getItem("src")||(document.referrer&&!document.referrer.includes(location.host)?new URL(document.referrer).host:"");sessionStorage.setItem("src",SRC)}catch(_){}
-document.addEventListener("submit",async e=>{if(e.target.id!=="lead")return;e.preventDefault();const f=e.target,o=cur(),ok=document.getElementById("ok"),b=f.querySelector("button[type=submit]");
- const lead={name:document.getElementById("l-name").value,contact:document.getElementById("l-ph").value,when:document.getElementById("l-when").value,n:o?o.n:null,src:SRC,page:location.pathname,website:f.elements.website?.value||""};
- b.disabled=true;try{const r=await fetch("/api/lead/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)});if(!r.ok)throw 0;ok.textContent=`Спасибо, ${lead.name}! Я получила заявку и напишу вам ${lead.when.toLowerCase()==="сегодня"?"сегодня":lead.when.toLowerCase()}.`;ok.hidden=false;f.querySelectorAll("input,select").forEach(x=>x.disabled=true);b.hidden=true}
- catch(_){b.disabled=false;const t=`Здравствуйте, Assel! Меня зовут ${lead.name}. Контакт: ${lead.contact}. Удобно связаться: ${lead.when.toLowerCase()}.${o?" Интересует объект №"+o.n+".":""}`;if(SITE.whatsapp)location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t)}`;else{ok.textContent="Не получилось отправить. Напишите мне в WhatsApp или Telegram.";ok.hidden=false}}});
+document.addEventListener("submit",async e=>{if(e.target.id!=="lead")return;e.preventDefault();const fm=e.target,o=cur(),ok=document.getElementById("ok"),b=fm.querySelector("button[type=submit]");
+ const wi=+document.getElementById("l-when").value||0;const lead={name:document.getElementById("l-name").value,contact:document.getElementById("l-ph").value,when:WHEN_RU[wi],lang:LANG,n:o?o.n:null,src:SRC,page:location.pathname,website:fm.elements.website?.value||""};
+ b.disabled=true;try{const r=await fetch("/api/lead/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)});if(!r.ok)throw 0;ok.textContent=f(L.lOk,{name:lead.name,when:L.whenIn[wi]});ok.hidden=false;fm.querySelectorAll("input,select").forEach(x=>x.disabled=true);b.hidden=true}
+ catch(_){b.disabled=false;const t=f(L.lFallback,{name:lead.name,contact:lead.contact,when:L.whenIn[wi]})+(o?f(L.lFallbackObj,{n:o.n}):"");if(SITE.whatsapp)location.href=`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t)}`;else{ok.textContent=L.lFail;ok.hidden=false}}});
 if(location.hash){const t=document.getElementById(location.hash.slice(1));t&&setTimeout(()=>t.scrollIntoView(),0)}
 render();
 </script>
