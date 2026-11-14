@@ -31,5 +31,43 @@
     "desc_en": "A neat 1+1 apartment of 35 m² on the ground floor of a 2022 building in Gazipasha, about a kilometre from the sea and the town centre. The living room is combined with a kitchen that already has fitted units, plus a separate bedroom, laminate flooring, a bathroom and a balcony. It comes unfurnished, so you can set it up your own way: a good choice for anyone looking for affordable housing near the sea in a quiet town.",
     "desc_tr": "Gazipaşa'da, 2022 yapımı bir binanın giriş katında 35 m² büyüklüğünde düzenli bir 1+1 daire; denize ve merkeze yaklaşık bir kilometre mesafede. Salon, mutfak dolapları hazır olan açık mutfakla birleşik; ayrı bir yatak odası, laminat zemin, banyo ve balkon mevcut. Daire eşyasız satılıyor, böylece kendi zevkinize göre döşeyebilirsiniz: sakin bir şehirde denize yakın uygun fiyatlı konut arayanlar için iyi bir seçenek.",
     "addedAt": "2026-11-13"
+  },
+  {
+    "n": 2,
+    "owner": true,
+    "name": "Квартира 1+1, 60 м²",
+    "d": "Клеопатра",
+    "price": 125000,
+    "rooms": "1+1",
+    "area": 60,
+    "sea": 700,
+    "floor": "3",
+    "year": "Сдан",
+    "imgs": [
+      "o2-1",
+      "o2-2",
+      "o2-3",
+      "o2-4",
+      "o2-5",
+      "o2-6",
+      "o2-7",
+      "o2-8",
+      "o2-9",
+      "o2-10"
+    ],
+    "tags": [
+      "Под ВНЖ",
+      "Под аренду",
+      "С мебелью"
+    ],
+    "desc": "Квартира 1+1 площадью 60 м² на третьем этаже в доме 2015 года, в центре Алании у пляжа Клеопатры: до моря 700 м, до центра 450 м. Передаётся с мебелью, есть гостиная, спальня, санузел и балкон. В комплексе крытый бассейн, аквагорки, фитнес, хамам, сауна и охрана, так что квартира подойдёт и для жизни с оформлением ВНЖ, и для краткосрочной аренды.",
+    "near": [
+      "Море 700 м",
+      "Центр города 450 м",
+      "Аэропорт 65 км"
+    ],
+    "desc_en": "A 1+1 apartment of 60 m² on the third floor of a 2015 building in central Alanya near Cleopatra Beach: 700 m to the sea, 450 m to the city centre. It comes furnished, with a living room, bedroom, bathroom and balcony. The complex has an indoor pool, water slides, gym, hammam, sauna and security, so it suits both living with a residence permit and short-term rental.",
+    "desc_tr": "Alanya merkezde, Kleopatra Plajı yakınında, 2015 yapımı binanın üçüncü katında 60 m² 1+1 daire: denize 700 m, şehir merkezine 450 m. Eşyalı teslim edilir; salon, yatak odası, banyo ve balkon mevcut. Sitede kapalı havuz, su kaydırakları, fitness, hamam, sauna ve güvenlik bulunuyor; ikamet izni ile yaşamak ve kısa dönem kiralama için uygundur.",
+    "addedAt": "2026-11-14"
   }
 ]
