@@ -4,6 +4,9 @@ Personal sales site of Assel Usmanova, a real-estate sales manager in Alanya. Go
 Google or Yandex opens an object page and writes to Assel in WhatsApp or Telegram. The site is in three languages:
 Russian at `/`, English at `/en/`, Turkish at `/tr/`. No lead magnets, no sign-up, no pop-ups, no live chat.
 
+Before starting work read `docs/CONTEXT.md`: who the people are, decisions already made, what is live and what is open.
+Keep that file current when a decision is made or an open item is closed.
+
 ## How it works
 
 - `data/objects.json`: every object. The only source of objects.
