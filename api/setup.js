@@ -7,6 +7,7 @@ export default async function handler(req, res) {
     await tg('setWebhook', { url, secret_token: webhookSecret(), allowed_updates: ['message', 'callback_query'] });
     await tg('setMyCommands', { commands: [
       { command: 'list', description: 'Все объекты' },
+      { command: 'leads', description: 'Кабинет с заявками покупателей' },
       { command: 'price', description: 'Новая цена: /price 12 145000' },
       { command: 'sold', description: 'Продано: /sold 12' },
       { command: 'balance', description: 'Остаток на счёте Claude: /balance или /balance 20' },
