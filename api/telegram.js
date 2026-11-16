@@ -8,6 +8,7 @@ import { parseListing, applyCorrection } from '../lib/parse.js';
 import { readObjects, commitObjects } from '../lib/gh.js';
 import { charge, setBalance, getBilling, usd, outOfCredit, LOW_BALANCE } from '../lib/cost.js';
 import { findUrls, readPage, downloadImage } from '../lib/page.js';
+import { sign, LOGIN_TTL } from '../lib/auth.js';
 import { previewText, missing, nextNumber, toObject, addObject, eur, esc, objectRef, toDraft, updateObject, diffText, deleteObject, nextPhotoIndex } from '../lib/objects.js';
 
 const SITE = () => (process.env.SITE_URL || 'https://assel-chi.vercel.app').replace(/\/$/, '');
@@ -24,6 +25,7 @@ const HELP = `Перешлите мне объект: фото, текст от 
 /price 12 145000 — новая цена объекта №12
 /sold 12 — объект №12 продан (страница остаётся, покупателю предложат похожие)
 /unsold 12 — вернуть в продажу
+/leads — кабинет с заявками покупателей
 /cancel — удалить черновик
 /balance — сколько примерно осталось на счёте Claude; /balance 20 — записать остаток после пополнения`;
 
@@ -216,6 +218,11 @@ async function onCommand(chat, cmd, arg) {
       : `На счёте примерно ${usd(b.balance)} (по моим подсчётам после последнего пополнения). Всего потрачено ботом: ${usd(b.spent || 0)}.\nТочная сумма: https://console.anthropic.com/settings/billing`);
   }
   if (cmd === 'cancel') { await drafts.clear(chat); return send(chat, 'Черновик удалён.'); }
+  if (cmd === 'leads') {
+    const link = `${SITE()}/api/login/?t=${sign('l', chat, LOGIN_TTL)}`;
+    return send(chat, `Ваш кабинет с заявками покупателей. Ссылка работает 15 минут, после входа телефон помнит вас 30 дней.`,
+      { reply_markup: { inline_keyboard: [[{ text: '📋 Открыть заявки', url: link }]] } });
+  }
   if (cmd === 'list') {
     const list = (await readObjects()).filter(o => !o.demo);
     if (!list.length) return send(chat, 'На сайте пока только примеры. Перешлите мне первый объект.');

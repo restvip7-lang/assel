@@ -28,14 +28,21 @@ Keep that file current when a decision is made or an open item is closed.
   Short links for Instagram stay `/o/<n>/` (Russian); the language menu in the header leads to the same page in another language.
 - Telegram bot (`api/telegram.js`): Assel forwards photos, texts and PDFs; on «Готово» Claude (`lib/parse.js`) extracts
   the fields, the bot shows a preview, corrections are plain messages, «Опубликовать» commits photos to `public/img/o<n>-<i>.jpg`
-  and the object to `data/objects.json` through the GitHub API (`lib/gh.js`), and Vercel redeploys. Links in a message (agency object pages) are opened by `lib/page.js`: text and photo URLs go to Claude, which picks the photos; the price is never taken from the page. Commands: /list, /price, /sold, /unsold, /cancel. The complex name is optional: without it the object is titled «Квартира 1+1, 35 м²» (`autoName`). The preview ends with «Опубликовать» / «Удалить».
+  and the object to `data/objects.json` through the GitHub API (`lib/gh.js`), and Vercel redeploys. Links in a message (agency object pages) are opened by `lib/page.js`: text and photo URLs go to Claude, which picks the photos; the price is never taken from the page. Commands: /list, /leads, /price, /sold, /unsold, /cancel. The complex name is optional: without it the object is titled «Квартира 1+1, 35 м²» (`autoName`). The preview ends with «Опубликовать» / «Удалить».
   Published objects: Assel sends «1», «№1» or a site link /o/1/ and gets a card with «Изменить» (free-text change → Claude → diff → «Сохранить»; new photos → add or replace), «Продано»/«В продажу», «Удалить» (asks first). Edit sessions live in `drafts/<chat>/edit/` and expire after 30 min. A deleted object stays in objects.json as a stub `{ n, deleted: true }`: its number is never reused and /o/<n>/ redirects to the home page.
   Claude spending (`lib/cost.js`): every call's cost comes from `usage` at claude-opus-5-5 prices; the publish/save reply says what it cost. Anthropic has no balance API, so `/balance 20` records the balance after a top-up, each call subtracts from it (Blob `billing/state.json`), and all admins get one warning below $1; a "credit balance too low" API error also alerts admins.
   Pictures for ads (`lib/promo.js`, SVG templates rendered with resvg, fonts in `fonts/`): 4:5, 9:16 and 16:9, each as «photo and price» and «infographic». The build writes them to `/o/<n>/promo/` (a page with download buttons); the bot sends them as files right after publishing and on the card button «Картинки для Instagram». Text stays inside Instagram safe zones (`SAFE` in promo.js): on 9:16 the top 300 px, the bottom 670 px and the right 150 px are covered by Instagram buttons, so only the photo goes there; on 4:5 keep ~100 px top and bottom for the 3:4 profile grid crop.
   Drafts live in a private Vercel Blob store (`lib/drafts.js`). The first real object removes the `demo: true` examples.
 - Leads: the site form posts to `api/lead.js`, which sends the lead (object, UTM source) to Assel in Telegram.
+- Buyer leads cabinet (`/cabinet/`, `public/cabinet/index.html`, noindex): posts where people want to buy in Alanya, collected by
+  the separate parser repo `restvip7-lang/alanya-leads` from Telegram chats and Facebook posts. The parser POSTs each lead to
+  `api/leads.js` with `X-Leads-Secret` (or `secret` in the body) = env `LEADS_SECRET`; `lib/leads.js` stores one private Blob
+  `leads/<sha256(id)>.json` per lead (duplicates ignored). Assel opens the cabinet from the bot: `/leads` → a login link valid
+  15 minutes (`api/login.js`) → HttpOnly session cookie for 30 days, valid only while the user is in `ADMIN_IDS` (`lib/auth.js`,
+  keys derived from the bot token). In the cabinet she sets a status, a comment and a next-step date (PATCH `api/leads.js`);
+  status changes are kept in `history`.
 - `api/setup.js`: open `/api/setup/` once after the token changes to register the webhook and the command menu.
-- Env vars (Vercel): `TELEGRAM_BOT_TOKEN`, `ADMIN_IDS` (Telegram user ids, comma separated; the first one gets leads
+- Env vars (Vercel): `LEADS_SECRET` (shared with the parser's `webhook_secret`), `TELEGRAM_BOT_TOKEN`, `ADMIN_IDS` (Telegram user ids, comma separated; the first one gets leads
   unless `LEADS_CHAT_ID` is set), `ANTHROPIC_API_KEY`, `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only),
   `BLOB_READ_WRITE_TOKEN` (added by the Blob store), optional `SITE_URL`.
 - Tests: `npm test`. Run tests and the build before every push. Vercel builds from `main`.

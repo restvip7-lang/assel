@@ -4,7 +4,7 @@ What a new session needs besides the code: who the people are, what was decided 
 `CLAUDE.md` explains how the code works; this file explains the project. Keep it current: when a decision is made or a
 backlog item is closed, edit the line here in the same commit. No secrets, tokens or Telegram ids in this file.
 
-Last updated: 2026-11-14.
+Last updated: 2026-11-16.
 
 ## People and how to work with them
 
@@ -43,6 +43,10 @@ Last updated: 2026-11-14.
   Anthropic account, because there is no balance API); admins get a warning below $1.
 - Pictures for Instagram, WhatsApp and Telegram for every object (4:5, 9:16, 16:9) at `/o/<n>/promo/`, also sent by the bot.
 - Real objects: №1 (Gazipasa, 1+1) and №2 (Cleopatra, 1+1). Their photos carry the Point Property watermark.
+- Buyer leads cabinet at `/cabinet/` (2026-11-16, decided by Anuar): leads from the parser `restvip7-lang/alanya-leads`
+  (Telegram chats, Facebook posts copied by hand: Facebook forbids automated collection) land in a login-only page where Assel
+  sets status, comment and next-step date. Login only through the bot (`/leads`), no passwords. An earlier Google Sheet idea was dropped.
+  Needs `LEADS_SECRET` in Vercel and the same value as `webhook_secret` in the parser's config.ini.
 - Indexing is off (`indexable: false`) until the site has its own domain.
 
 ## Open items

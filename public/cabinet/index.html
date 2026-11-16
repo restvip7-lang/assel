@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Заявки покупателей</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Prata&display=swap">
+<style>
+:root{--bg:#F6F8F9;--surface:#FFFFFF;--ink:#0E1B2C;--muted:#5B6B7C;--line:#DDE4EA;--sea:#0A7C86;--coral:#FF6A3D;--tg:#2A9BD8;--wa:#1FAF5A;
+  --s-new:#F5B400;--s-miss:#FF6A3D;--s-wrote:#2A9BD8;--s-work:#3B6FE0;--s-show:#8A5CD6;--s-deal:#1FAF5A;--s-no:#9AABBA}
+@media (prefers-color-scheme:dark){:root{--bg:#0B141D;--surface:#121F2B;--ink:#EAF1F6;--muted:#9AABBA;--line:#22323F;--sea:#35B6C0;--coral:#FF8055;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Onest,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px 10px}
+h1{font:400 22px/1.2 Prata,serif;margin:0 0 10px}
+.w{max-width:860px;margin:0 auto}
+.bar{display:flex;gap:8px}
+.bar input{flex:1;min-width:0;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;font:500 13px Onest,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip b{font-weight:700;margin-left:4px;opacity:.7}
+main{padding:12px 16px 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;border-left:5px solid var(--sc,var(--line))}
+.top{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.facts span{background:var(--bg);border-radius:8px;padding:3px 8px;font-size:13px;font-weight:600}
+.facts .money{color:var(--sea)}
+.text{white-space:pre-wrap;word-break:break-word;margin:6px 0;max-height:7.3em;overflow:hidden;position:relative}
+.text.open{max-height:none}
+.more{background:none;border:0;color:var(--sea);font:600 13px Onest,sans-serif;padding:0;cursor:pointer}
+.who{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border-radius:10px;padding:8px 12px;font:600 13px Onest,sans-serif;color:#fff;background:var(--sea)}
+.btn.tg{background:var(--tg)}.btn.wa{background:var(--wa)}.btn.ghost{background:var(--bg);color:var(--ink)}
+.work{display:grid;grid-template-columns:1fr 150px;gap:8px;margin-top:10px}
+.work select,.work input,.work textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.work textarea{grid-column:1/-1;min-height:62px;resize:vertical}
+.saved{font-size:12px;color:var(--muted);min-height:16px;margin-top:4px}
+.empty,.login{text-align:center;color:var(--muted);padding:48px 16px}
+.login h2{font:400 22px Prata,serif;color:var(--ink)}
+.login a{color:var(--sea)}
+@media (min-width:700px){.work{grid-template-columns:200px 160px 1fr}.work textarea{grid-column:auto;min-height:42px}}
+</style>
+</head>
+<body>
+<header><div class="w">
+  <h1>Заявки покупателей</h1>
+  <div class="bar"><input id="q" type="search" placeholder="Поиск: район, 2+1, имя, текст" aria-label="Поиск"></div>
+  <div class="chips" id="chips" role="group" aria-label="Фильтр по статусу"></div>
+</div></header>
+<main class="w" id="list"><p class="empty">Загружаю…</p></main>
+<script>
+const COLORS={'Новая':'--s-new','Не дозвонилась':'--s-miss','Написала':'--s-wrote','В работе':'--s-work','Показ назначен':'--s-show','Сделка':'--s-deal','Не актуально':'--s-no'};
+let LEADS=[],STATUSES=[],filter='active',q='';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=l=>l.budget?new Intl.NumberFormat('ru-RU').format(l.budget)+' '+({EUR:'€',USD:'$',TRY:'₺'}[l.currency]||l.currency||''):'';
+const SRC={telegram:'Telegram',facebook:'Facebook'};
+
+async function load(){
+  const r=await fetch('/api/leads/',{credentials:'same-origin'});
+  if(r.status===401){$('#list').innerHTML='<div class="login"><h2>Нужно войти</h2><p>Откройте бота <a href="https://t.me/asselweb_bot">@asselweb_bot</a>, отправьте ему <b>/leads</b> и нажмите «Открыть заявки».</p></div>';$('header .bar').hidden=true;return}
+  const j=await r.json();LEADS=j.leads;STATUSES=j.statuses;render()
+}
+function phones(s){return (String(s).match(/\+?\d[\d\s\-()]{8,}\d/g)||[]).map(p=>p.replace(/[^\d+]/g,''))}
+function matches(l){
+  if(filter==='active'&&(l.status==='Сделка'||l.status==='Не актуально'))return false;
+  if(filter!=='active'&&filter!=='all'&&l.status!==filter)return false;
+  if(!q)return true;
+  return [l.text,l.districts,l.property_type,l.author,l.author_profile,l.chat,l.comment].join(' ').toLowerCase().includes(q)
+}
+function chips(){
+  const n=s=>LEADS.filter(l=>s==='all'||(s==='active'?!['Сделка','Не актуально'].includes(l.status):l.status===s)).length;
+  const items=[['active','В работе и новые'],['all','Все'],...STATUSES.map(s=>[s,s])];
+  $('#chips').innerHTML=items.map(([k,t])=>`<button class="chip" data-f="${esc(k)}" aria-pressed="${filter===k}">${esc(t)}<b>${n(k)}</b></button>`).join('')
+}
+function card(l){
+  const tel=phones(l.contacts);
+  const prof=l.author_profile?`<a class="btn tg" href="https://t.me/${esc(l.author_profile.replace('@',''))}" target="_blank" rel="noopener">✈️ ${esc(l.author_profile)}</a>`:'';
+  const calls=tel.map(p=>`<a class="btn" href="tel:${esc(p)}">📞 ${esc(p)}</a><a class="btn wa" href="https://wa.me/${esc(p.replace('+',''))}" target="_blank" rel="noopener">WhatsApp</a>`).join('');
+  const post=l.link?`<a class="btn ghost" href="${esc(l.link)}" target="_blank" rel="noopener">Открыть пост</a>`:'';
+  const facts=[money(l)&&`<span class="money">${esc(money(l))}</span>`,l.property_type&&`<span>${esc(l.property_type)}</span>`,l.districts&&`<span>${esc(l.districts)}</span>`].filter(Boolean).join('');
+  return `<article class="card" data-id="${esc(l.id)}" style="--sc:var(${COLORS[l.status]||'--line'})">
+  <div class="top"><span>${esc(l.date||'')} · ${esc(SRC[l.source]||l.source||'')}${l.chat?' · '+esc(l.chat):''}</span><span>${esc(l.author||'')}</span></div>
+  ${facts?`<div class="facts">${facts}</div>`:''}
+  <div class="text">${esc(l.text)}</div>${l.text.length>260?'<button class="more">Показать полностью</button>':''}
+  <div class="who">${prof}${calls}${post}</div>
+  <div class="work">
+    <select aria-label="Статус" data-k="status">${STATUSES.map(s=>`<option${s===l.status?' selected':''}>${esc(s)}</option>`).join('')}</select>
+    <input type="date" aria-label="Следующий шаг" data-k="next" value="${esc(l.next||'')}">
+    <textarea aria-label="Комментарий" data-k="comment" placeholder="Комментарий: позвонила, перезвонить в пятницу…">${esc(l.comment||'')}</textarea>
+  </div>
+  <div class="saved">${l.updatedAt?'Изменено '+new Date(l.updatedAt).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div>
+</article>`
+}
+function render(){
+  chips();
+  const list=LEADS.filter(matches);
+  $('#list').innerHTML=list.length?list.map(card).join(''):'<p class="empty">Заявок нет.</p>'
+}
+const timers={};
+async function save(el){
+  const c=el.closest('.card'),id=c.dataset.id,k=el.dataset.k,v=el.value,info=c.querySelector('.saved');
+  info.textContent='Сохраняю…';
+  try{
+    const r=await fetch('/api/leads/',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,[k]:v})});
+    if(!r.ok)throw 0;
+    const {lead}=await r.json();
+    LEADS[LEADS.findIndex(l=>l.id===id)]=lead;
+    info.textContent='Сохранено';
+    if(k==='status'){c.style.setProperty('--sc',`var(${COLORS[v]})`);chips()}
+  }catch{info.textContent='Не сохранилось. Проверьте интернет и попробуйте ещё раз.'}
+}
+document.addEventListener('change',e=>{if(e.target.matches('.work select,.work input'))save(e.target)});
+document.addEventListener('input',e=>{if(e.target.matches('.work textarea')){const id=e.target.closest('.card').dataset.id;clearTimeout(timers[id]);timers[id]=setTimeout(()=>save(e.target),900)}});
+document.addEventListener('click',e=>{
+  const f=e.target.closest('.chip');if(f){filter=f.dataset.f;render();return}
+  if(e.target.matches('.more')){const t=e.target.previousElementSibling;t.classList.toggle('open');e.target.textContent=t.classList.contains('open')?'Свернуть':'Показать полностью'}
+});
+$('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render()});
+load().catch(()=>{$('#list').innerHTML='<p class="empty">Не удалось загрузить. Обновите страницу.</p>'});
+</script>
+</body>
+</html>
