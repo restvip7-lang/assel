@@ -58,6 +58,9 @@ Keep that file current when a decision is made or an open item is closed.
   (author + normalized text; the same long text from anyone; for listings also author + district + layout + price). The first
   post with a key wins (empty Blob `dupkeys/<kind>/<sha>.json`); a repost in another chat or a copy-paste is answered as a duplicate,
   so it is neither stored nor counted in the bot summary.
+- Permanent addresses (Anuar 2026-11-17: no new link every time): `/cabinet/` and `/cabinet/listings/` are fixed URLs to bookmark;
+  the bot/group link is only the first login. Every GET renews the session cookie (`renewSession`), so it never expires while
+  the page is opened at least once in 30 days. The two pages link to each other (the listings page shows the link only to admins).
 - `api/setup.js`: open `/api/setup/` once after the token changes to register the webhook and the command menu.
 - Env vars (Vercel): `LEADS_SECRET` (shared with the parser's `webhook_secret`), `TELEGRAM_BOT_TOKEN`, `ADMIN_IDS` (Telegram user ids, comma separated; the first one gets leads
   unless `LEADS_CHAT_ID` is set), `ANTHROPIC_API_KEY`, `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only),

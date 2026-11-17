@@ -5,7 +5,7 @@
 // PATCH (same): { id, hidden: true|false }.
 import crypto from 'node:crypto';
 import { admins, send } from '../lib/tg.js';
-import { sessionUser, viewerOk } from '../lib/auth.js';
+import { sessionUser, viewerOk, renewSession } from '../lib/auth.js';
 import { addListing, allListings, setHidden, getChat, summaryText, viewerLink } from '../lib/listings.js';
 
 const SITE = () => (process.env.SITE_URL || 'https://assel-chi.vercel.app').replace(/\/$/, '');
@@ -34,7 +34,10 @@ export default async function handler(req, res) {
     }
   }
   if (!sessionUser(req, admins()) && !viewerOk(req)) return res.status(401).json({ ok: false, error: 'login' });
-  if (req.method === 'GET') return res.status(200).json({ ok: true, listings: await allListings() });
+  if (req.method === 'GET') {
+    const admin = !!renewSession(req, res, admins());
+    return res.status(200).json({ ok: true, admin, listings: await allListings() });
+  }
   if (req.method === 'PATCH') {
     if (!b.id) return res.status(400).json({ ok: false });
     const l = await setHidden(String(b.id), b.hidden === true);

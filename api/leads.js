@@ -5,7 +5,7 @@
 // PATCH (cabinet session cookie): { id, status?, comment?, next? } or { id, deleted: true, reason } / { id, deleted: false }.
 import crypto from 'node:crypto';
 import { admins, send } from '../lib/tg.js';
-import { sessionUser } from '../lib/auth.js';
+import { sessionUser, renewSession } from '../lib/auth.js';
 import { addLead, allLeads, updateLead, STATUSES, DELETE_REASONS, summaryText } from '../lib/leads.js';
 
 const SITE = () => (process.env.SITE_URL || 'https://assel-chi.vercel.app').replace(/\/$/, '');
@@ -36,6 +36,7 @@ export default async function handler(req, res) {
     }
   }
   if (!sessionUser(req, admins())) return res.status(401).json({ ok: false, error: 'login' });
+  if (req.method === 'GET') renewSession(req, res, admins());
   if (req.method === 'GET') return res.status(200).json({ ok: true, statuses: STATUSES, reasons: DELETE_REASONS, leads: await allLeads() });
   if (req.method === 'PATCH') {
     if (!b.id) return res.status(400).json({ ok: false });
