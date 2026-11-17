@@ -171,3 +171,16 @@ test('owner listings: the same apartment from two chats is shown once', async ()
   assert.equal(s.author_profile, '@amir');
   assert.equal(out.find(l => l.id === 'e').also.length, 1);
 });
+
+test('opening the cabinet renews the session for another 30 days', async () => {
+  const { renewSession, sign, COOKIE, VIEW_COOKIE } = await import('../lib/auth.js');
+  let r = res();
+  assert.equal(renewSession({ headers: { cookie: `${COOKIE}=${sign('s', 42, 1000)}` } }, r, [42]), 42);
+  assert.match(r.headers['Set-Cookie'][0], new RegExp(`^${COOKIE}=.*Max-Age=2592000`));
+  r = res();
+  assert.equal(renewSession({ headers: { cookie: `${VIEW_COOKIE}=${sign('v', -100, 1000)}` } }, r, [42]), null);
+  assert.match(r.headers['Set-Cookie'][0], new RegExp(`^${VIEW_COOKIE}=`));
+  r = res();
+  renewSession({ headers: { cookie: `${COOKIE}=${sign('s', 7, 1000)}` } }, r, [42]);
+  assert.equal(r.headers['Set-Cookie'], undefined);
+});

@@ -14,7 +14,8 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Onest,system-ui,sans-serif;-webkit-text-size-adjust:100%}
 header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px 10px}
-h1{font:400 22px/1.2 Prata,serif;margin:0 0 10px}
+h1{font:400 22px/1.2 Prata,serif;margin:0 0 4px}
+.nav{display:inline-block;color:var(--sea);font:600 13px Onest,sans-serif;text-decoration:none;margin-bottom:8px}
 .w{max-width:860px;margin:0 auto}
 .bar{display:flex;gap:8px}
 .bar input{flex:1;min-width:0;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
@@ -60,6 +61,7 @@ main{padding:12px 16px 40px}
 <body>
 <header><div class="w">
   <h1>Заявки покупателей</h1>
+  <a class="nav" href="/cabinet/listings/">🏠 Квартиры от собственников →</a>
   <div class="bar"><input id="q" type="search" placeholder="Поиск: район, 2+1, имя, текст" aria-label="Поиск"></div>
   <div class="chips" id="chips" role="group" aria-label="Фильтр по статусу"></div>
 </div></header>

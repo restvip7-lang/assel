@@ -13,7 +13,9 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Onest,system-ui,sans-serif;-webkit-text-size-adjust:100%}
 header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px 8px}
-h1{font:400 22px/1.2 Prata,serif;margin:0 0 10px}
+h1{font:400 22px/1.2 Prata,serif;margin:0 0 4px}
+.nav{display:inline-block;color:var(--sea);font:600 13px Onest,sans-serif;text-decoration:none;margin-bottom:8px}
+.nav[hidden]{display:none}
 .w{max-width:860px;margin:0 auto}
 .tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:8px}
 .tab{flex:1;border:0;background:none;color:var(--ink);border-radius:9px;padding:8px 6px;font:600 14px Onest,sans-serif;cursor:pointer}
@@ -59,6 +61,7 @@ h3{font:600 13px Onest,sans-serif;color:var(--muted);text-transform:uppercase;le
 <body>
 <header><div class="w">
   <h1>Квартиры от собственников</h1>
+  <a class="nav" id="nav" href="/cabinet/" hidden>📋 Заявки покупателей →</a>
   <div class="tabs" id="tabs" role="group" aria-label="Какие квартиры показать"></div>
   <div class="bar"><input id="q" type="search" placeholder="Поиск: район, цена, текст" aria-label="Поиск"></div>
   <div class="chips" id="districts" role="group" aria-label="Район"></div>
@@ -86,7 +89,7 @@ const hidden=l=>l.hidden||(l.agent&&l.hidden!==false);
 async function load(){
   const r=await fetch('/api/listings/',{credentials:'same-origin'});
   if(r.status===401){$('#list').innerHTML='<div class="login"><h2>Нужно войти</h2><p>Откройте список по кнопке «Открыть список» в общем чате или отправьте боту <a href="https://t.me/asselweb_bot">@asselweb_bot</a> команду <b>/listings</b>.</p></div>';$('header .bar').hidden=true;return}
-  ALL=(await r.json()).listings;render()
+  const j=await r.json();ALL=j.listings;$('#nav').hidden=!j.admin;render()
 }
 function inTab(l,t){
   if(t==='hidden')return hidden(l);
