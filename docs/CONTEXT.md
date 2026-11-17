@@ -49,6 +49,9 @@ Last updated: 2026-11-16.
   Needs `LEADS_SECRET` in Vercel and the same value as `webhook_secret` in the parser's config.ini. Live since 2026-11-17:
   the parser runs on GitHub Actions at 08:00, 13:00, 17:00 Turkey time every day (no night runs, Anuar's choice), and after
   a run with new leads both admins get one bot message «Новых заявок: N».
+- Owners' listings at `/cabinet/listings/` (2026-11-17, Anuar): apartments for sale directly from owners in the same Telegram
+  chats, for Anuar and his wife. One summary per run in their shared Telegram group, not per apartment. Facebook to be solved
+  together with the buyer-side Facebook work (Anuar will not copy posts by hand); WhatsApp groups cannot be read officially.
 - Indexing is off (`indexable: false`) until the site has its own domain.
 
 ## Open items

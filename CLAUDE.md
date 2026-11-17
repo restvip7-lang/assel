@@ -45,6 +45,15 @@ Keep that file current when a decision is made or an open item is closed.
   filter shows them with «Вернуть в работу». After each run the parser POSTs `{ type: 'summary', leads: [...] }` with only the truly
   new leads; `api/leads.js` sends every admin one bot message «Новых заявок: N» (up to 5 short lines, `summaryText`) with a
   button to the cabinet. The parser runs on GitHub Actions at 08:00, 13:00 and 17:00 Turkey time, every day.
+- Owners' listings (`/cabinet/listings/`, `public/cabinet/listings/index.html`, noindex; decided by Anuar 2026-11-17): apartments
+  for sale by owners, found by `owners.py` in the same parser repo and chats. A plain list, no statuses: tabs «Сегодня» (added today,
+  Turkey time), «Все», «Скрытые»; grouped by district, then layout, sorted by price; buttons to the post, the seller's Telegram and phone.
+  The parser POSTs each listing to `api/listings.js` (same `LEADS_SECRET`); `lib/listings.js` keeps one private Blob `listings/<sha>.json`.
+  An author with more than `AGENT_AFTER` different apartments is marked «похоже, агент» and hidden. After a run the parser POSTs
+  `{ type: 'summary', listings }` and the bot sends ONE message (count by district and layout, not one per apartment: Anuar's wish)
+  to the group chat registered by an admin sending `/listings` in that group (Blob `config/listings-chat.json`). Its button
+  carries a 7-day link (`api/login/?g=`) that sets a viewer cookie `cabv` opening only the listings, so group members who are not bot
+  admins (Anuar's wife) can open it. In a private chat `/listings` gives an admin login link to the same page.
 - `api/setup.js`: open `/api/setup/` once after the token changes to register the webhook and the command menu.
 - Env vars (Vercel): `LEADS_SECRET` (shared with the parser's `webhook_secret`), `TELEGRAM_BOT_TOKEN`, `ADMIN_IDS` (Telegram user ids, comma separated; the first one gets leads
   unless `LEADS_CHAT_ID` is set), `ANTHROPIC_API_KEY`, `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only),
