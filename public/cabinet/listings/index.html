@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Квартиры от собственников</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Prata&display=swap">
+<style>
+:root{--bg:#F6F8F9;--surface:#FFFFFF;--ink:#0E1B2C;--muted:#5B6B7C;--line:#DDE4EA;--sea:#0A7C86;--coral:#FF6A3D;--tg:#2A9BD8;--wa:#1FAF5A}
+@media (prefers-color-scheme:dark){:root{--bg:#0B141D;--surface:#121F2B;--ink:#EAF1F6;--muted:#9AABBA;--line:#22323F;--sea:#35B6C0;--coral:#FF8055}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Onest,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px 8px}
+h1{font:400 22px/1.2 Prata,serif;margin:0 0 10px}
+.w{max-width:860px;margin:0 auto}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:8px}
+.tab{flex:1;border:0;background:none;color:var(--ink);border-radius:9px;padding:8px 6px;font:600 14px Onest,sans-serif;cursor:pointer}
+.tab[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.tab b{font-weight:700;opacity:.65;margin-left:3px}
+.bar input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 11px;font:500 13px Onest,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--sea);color:#fff;border-color:var(--sea)}
+.chip b{font-weight:700;margin-left:4px;opacity:.7}
+main{padding:8px 16px 40px}
+details.d{margin:10px 0}
+details.d>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;padding:10px 2px;border-bottom:2px solid var(--ink)}
+details.d>summary::-webkit-details-marker{display:none}
+details.d>summary h2{font:400 20px Prata,serif;margin:0}
+details.d>summary span{color:var(--muted);font-size:13px}
+h3{font:600 13px Onest,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.card.hid{opacity:.7}
+.facts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.facts .price{font:700 18px Onest,sans-serif;color:var(--sea);margin-right:4px;background:none;padding:0}
+.facts span{background:var(--bg);border-radius:8px;padding:2px 8px;font-size:13px;font-weight:600}
+.facts .own{background:none;color:var(--wa);padding:0}
+.facts .ag{background:none;color:var(--coral);padding:0}
+.meta{font-size:12px;color:var(--muted);margin-top:6px}
+.text{white-space:pre-wrap;word-break:break-word;margin:6px 0 0;max-height:4.4em;overflow:hidden;font-size:14px}
+.text.open{max-height:none}
+.more{background:none;border:0;color:var(--sea);font:600 13px Onest,sans-serif;padding:2px 0;cursor:pointer}
+.who{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border-radius:10px;padding:8px 11px;font:600 13px Onest,sans-serif;color:#fff;background:var(--sea);border:0;cursor:pointer}
+.btn.tg{background:var(--tg)}.btn.wa{background:var(--wa)}.btn.ghost{background:var(--bg);color:var(--ink)}
+.hide{margin-left:auto;background:none;border:0;color:var(--muted);font:600 13px Onest,sans-serif;cursor:pointer;padding:6px 0}
+.empty,.login{text-align:center;color:var(--muted);padding:48px 16px}
+.empty button{margin-top:10px}
+.login h2{font:400 22px Prata,serif;color:var(--ink)}
+.login a{color:var(--sea)}
+</style>
+</head>
+<body>
+<header><div class="w">
+  <h1>Квартиры от собственников</h1>
+  <div class="tabs" id="tabs" role="group" aria-label="Какие квартиры показать"></div>
+  <div class="bar"><input id="q" type="search" placeholder="Поиск: район, цена, текст" aria-label="Поиск"></div>
+  <div class="chips" id="rooms" role="group" aria-label="Планировка"></div>
+</div></header>
+<main class="w" id="list"><p class="empty">Загружаю…</p></main>
+<script>
+let ALL=[],tab='today',room='',q='';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CUR={EUR:'€',USD:'$',TRY:'₺'};
+const money=l=>l.price?new Intl.NumberFormat('ru-RU').format(l.price)+' '+(CUR[l.currency]||l.currency||''):'Цена в посте';
+// «Сегодня» по времени Турции
+const day=iso=>new Date(iso).toLocaleDateString('sv-SE',{timeZone:'Europe/Istanbul'});
+const TODAY=day(new Date().toISOString());
+const roomKey=r=>/^\d\+\d$/.test(r)?r:(r||'Другое');
+const roomOrder=r=>/^\d\+\d$/.test(r)?Number(r[0])*10+Number(r[2]):r==='Другое'?999:500;
+const SRC={telegram:'Telegram',facebook:'Facebook'};
+const hidden=l=>l.hidden||(l.agent&&l.hidden!==false);
+
+async function load(){
+  const r=await fetch('/api/listings/',{credentials:'same-origin'});
+  if(r.status===401){$('#list').innerHTML='<div class="login"><h2>Нужно войти</h2><p>Откройте список по кнопке «Открыть список» в общем чате или отправьте боту <a href="https://t.me/asselweb_bot">@asselweb_bot</a> команду <b>/listings</b>.</p></div>';$('header .bar').hidden=true;return}
+  ALL=(await r.json()).listings;render()
+}
+function inTab(l,t){
+  if(t==='hidden')return hidden(l);
+  if(hidden(l))return false;
+  return t==='all'||day(l.addedAt)===TODAY
+}
+function matches(l){
+  if(!inTab(l,tab))return false;
+  if(room&&roomKey(l.rooms)!==room)return false;
+  if(!q)return true;
+  return [l.text,l.district,l.rooms,l.author,l.chat,l.price].join(' ').toLowerCase().includes(q)
+}
+function phones(l){
+  const p=(String(l.contacts).match(/\+?\d[\d\s\-()]{8,}\d/g)||[]).map(x=>x.replace(/[^\d+]/g,''));
+  if(l.phone)p.unshift('+'+l.phone.replace(/^\+/,''));
+  return [...new Set(p)]
+}
+function card(l){
+  const prof=l.author_profile?`<a class="btn tg" href="https://t.me/${esc(l.author_profile.slice(1))}" target="_blank" rel="noopener">✈️ Написать</a>`:'';
+  const calls=phones(l).map(p=>`<a class="btn" href="tel:${esc(p)}">📞 ${esc(p)}</a><a class="btn wa" href="https://wa.me/${esc(p.replace('+',''))}" target="_blank" rel="noopener">WhatsApp</a>`).join('');
+  const post=l.link?`<a class="btn ghost" href="${esc(l.link)}" target="_blank" rel="noopener">Открыть пост</a>`:'';
+  const isHid=hidden(l);
+  return `<article class="card${isHid?' hid':''}" data-id="${esc(l.id)}">
+  <div class="facts"><span class="price">${esc(money(l))}</span>${l.rooms?`<span>${esc(l.rooms)}</span>`:''}${l.area?`<span>${esc(l.area)} м²</span>`:''}${l.owner_said?'<span class="own">✓ пишет, что собственник</span>':''}${l.agent?'<span class="ag">похоже, агент: много объявлений</span>':''}</div>
+  <div class="text">${esc(l.text)}</div>${l.text.length>160?'<button class="more">Показать полностью</button>':''}
+  <div class="meta">${esc(l.date||'')} · ${esc(SRC[l.source]||l.source||'Telegram')}${l.chat?' · '+esc(l.chat):''}${l.author?' · '+esc(l.author):''}</div>
+  <div class="who">${prof}${calls}${post}<button class="hide" data-h="${isHid?0:1}">${isHid?'↩️ Вернуть':'Скрыть'}</button></div>
+</article>`
+}
+function render(){
+  const n=t=>ALL.filter(l=>inTab(l,t)).length;
+  $('#tabs').innerHTML=[['today','Сегодня'],['all','Все'],['hidden','Скрытые']].map(([k,t])=>`<button class="tab" data-t="${k}" aria-pressed="${tab===k}">${t}<b>${n(k)}</b></button>`).join('');
+  const base=ALL.filter(l=>inTab(l,tab));
+  const rc={};base.forEach(l=>{const k=roomKey(l.rooms);rc[k]=(rc[k]||0)+1});
+  if(room&&!rc[room])room='';
+  $('#rooms').innerHTML=[['','Все планировки',base.length],...Object.keys(rc).sort((a,b)=>roomOrder(a)-roomOrder(b)).map(k=>[k,k,rc[k]])]
+    .map(([k,t,c])=>`<button class="chip" data-r="${esc(k)}" aria-pressed="${room===k}">${esc(t)}<b>${c}</b></button>`).join('');
+  const list=ALL.filter(matches);
+  if(!list.length){
+    $('#list').innerHTML=tab==='today'&&!q&&!room?'<div class="empty">Сегодня новых квартир пока нет.<br><button class="btn ghost" data-t="all">Показать все</button></div>':'<p class="empty">Ничего не нашлось.</p>';
+    return
+  }
+  // Район → планировка → квартиры по цене
+  const byD={};list.forEach(l=>{const d=l.district||'Район не указан';((byD[d]||={})[roomKey(l.rooms)]||=[]).push(l)});
+  const cnt=o=>Object.values(o).reduce((a,b)=>a+b.length,0);
+  const ds=Object.keys(byD).sort((a,b)=>(a==='Район не указан')-(b==='Район не указан')||cnt(byD[b])-cnt(byD[a]));
+  $('#list').innerHTML=ds.map(d=>`<details class="d" open><summary><h2>${esc(d)}</h2><span>${cnt(byD[d])} кв.</span></summary>${
+    Object.keys(byD[d]).sort((a,b)=>roomOrder(a)-roomOrder(b)).map(r=>`<h3>${esc(r)} · ${byD[d][r].length}</h3>${
+      byD[d][r].sort((a,b)=>(a.price||1e12)-(b.price||1e12)).map(card).join('')}`).join('')}</details>`).join('')
+}
+document.addEventListener('click',async e=>{
+  const t=e.target.closest('[data-t]');if(t){tab=t.dataset.t;render();scrollTo(0,0);return}
+  const r=e.target.closest('[data-r]');if(r){room=r.dataset.r;render();return}
+  if(e.target.matches('.more')){const x=e.target.previousElementSibling;x.classList.toggle('open');e.target.textContent=x.classList.contains('open')?'Свернуть':'Показать полностью';return}
+  if(e.target.matches('.hide')){
+    const c=e.target.closest('.card'),id=c.dataset.id;
+    e.target.disabled=true;
+    try{
+      const res=await fetch('/api/listings/',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,hidden:e.target.dataset.h==='1'})});
+      if(!res.ok)throw 0;
+      const {listing}=await res.json(),old=ALL.find(l=>l.id===id);
+      Object.assign(old,listing);render()
+    }catch{e.target.disabled=false;e.target.textContent='Не получилось, ещё раз'}
+  }
+});
+$('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render()});
+load().catch(()=>{$('#list').innerHTML='<p class="empty">Не удалось загрузить. Обновите страницу.</p>'});
+</script>
+</body>
+</html>

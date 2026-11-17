@@ -9,6 +9,7 @@ import { readObjects, commitObjects } from '../lib/gh.js';
 import { charge, setBalance, getBilling, usd, outOfCredit, LOW_BALANCE } from '../lib/cost.js';
 import { findUrls, readPage, downloadImage } from '../lib/page.js';
 import { sign, LOGIN_TTL } from '../lib/auth.js';
+import { setChat as setListingsChat } from '../lib/listings.js';
 import { previewText, missing, nextNumber, toObject, addObject, eur, esc, objectRef, toDraft, updateObject, diffText, deleteObject, nextPhotoIndex } from '../lib/objects.js';
 
 const SITE = () => (process.env.SITE_URL || 'https://assel-chi.vercel.app').replace(/\/$/, '');
@@ -26,6 +27,7 @@ const HELP = `Перешлите мне объект: фото, текст от 
 /sold 12 — объект №12 продан (страница остаётся, покупателю предложат похожие)
 /unsold 12 — вернуть в продажу
 /leads — кабинет с заявками покупателей
+/listings — квартиры на продажу от собственников (в группе: присылать сводку сюда)
 /cancel — удалить черновик
 /balance — сколько примерно осталось на счёте Claude; /balance 20 — записать остаток после пополнения`;
 
@@ -57,6 +59,14 @@ async function handle(u) {
   const from = u.message?.from ?? u.callback_query?.from;
   if (!from) return;
   const chat = u.message?.chat.id ?? u.callback_query.message.chat.id;
+  // In a group the bot only takes /listings: that group then gets the owners' listings summary after each run.
+  const where = u.message?.chat ?? u.callback_query.message.chat;
+  if (where.type !== 'private') {
+    if (!/^\/listings(?:@\w+)?\b/.test(u.message?.text || '')) return;
+    if (!admins().includes(from.id)) return send(chat, 'Подключить этот чат может только админ бота.');
+    await setListingsChat(chat, where.title || '');
+    return send(chat, '✅ Готово. После каждого запуска парсера (около 08:00, 13:00 и 17:00) сюда придёт одно сообщение: сколько новых квартир от собственников, по районам и планировкам, и кнопка «Открыть список».');
+  }
   if (!admins().includes(from.id)) {
     if (u.message) await send(chat, `Это бот сайта Assel Usmanova. Ваш Telegram id: <code>${from.id}</code>. Чтобы получить доступ, передайте его Ануару.`);
     return;
@@ -222,6 +232,11 @@ async function onCommand(chat, cmd, arg) {
     const link = `${SITE()}/api/login/?t=${sign('l', chat, LOGIN_TTL)}`;
     return send(chat, `Ваш кабинет с заявками покупателей. Ссылка работает 15 минут, после входа телефон помнит вас 30 дней.`,
       { reply_markup: { inline_keyboard: [[{ text: '📋 Открыть заявки', url: link }]] } });
+  }
+  if (cmd === 'listings') {
+    const link = `${SITE()}/api/login/?t=${sign('l', chat, LOGIN_TTL)}&to=listings`;
+    return send(chat, `Квартиры на продажу от собственников. Ссылка работает 15 минут.\nЧтобы сводка приходила в общий чат, добавьте меня в группу и отправьте там /listings.`,
+      { reply_markup: { inline_keyboard: [[{ text: '🏠 Открыть квартиры', url: link }]] } });
   }
   if (cmd === 'list') {
     const list = (await readObjects()).filter(o => !o.demo);
