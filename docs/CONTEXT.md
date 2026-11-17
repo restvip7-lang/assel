@@ -46,7 +46,9 @@ Last updated: 2026-11-16.
 - Buyer leads cabinet at `/cabinet/` (2026-11-16, decided by Anuar): leads from the parser `restvip7-lang/alanya-leads`
   (Telegram chats, Facebook posts copied by hand: Facebook forbids automated collection) land in a login-only page where Assel
   sets status, comment and next-step date. Login only through the bot (`/leads`), no passwords. An earlier Google Sheet idea was dropped.
-  Needs `LEADS_SECRET` in Vercel and the same value as `webhook_secret` in the parser's config.ini.
+  Needs `LEADS_SECRET` in Vercel and the same value as `webhook_secret` in the parser's config.ini. Live since 2026-11-17:
+  the parser runs on GitHub Actions at 08:00, 13:00, 17:00 Turkey time every day (no night runs, Anuar's choice), and after
+  a run with new leads both admins get one bot message «Новых заявок: N».
 - Indexing is off (`indexable: false`) until the site has its own domain.
 
 ## Open items
