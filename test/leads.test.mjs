@@ -63,3 +63,15 @@ test('summary after a run: count, short lines, nothing when empty', () => {
   assert.match(t, /Куплю &lt;b&gt;дом/);
   assert.match(t, /и ещё 2/);
 });
+
+test('delete needs a reason, keeps the record, can be restored', () => {
+  const l = { id: 'x', status: 'Новая', history: [] };
+  assert.throws(() => applyUpdate(l, { deleted: true, reason: '  ' }));
+  const d = applyUpdate(l, { deleted: true, reason: 'Уже купил' }, 'T');
+  assert.equal(d.deleted, true);
+  assert.equal(d.deleteReason, 'Уже купил');
+  assert.deepEqual(d.history.at(-1), { at: 'T', deleted: 'Уже купил' });
+  const r = applyUpdate(d, { deleted: false }, 'U');
+  assert.equal(r.deleted, false);
+  assert.deepEqual(r.history.at(-1), { at: 'U', restored: true });
+});
