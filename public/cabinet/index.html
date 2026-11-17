@@ -38,6 +38,18 @@ main{padding:12px 16px 40px}
 .work{display:grid;grid-template-columns:1fr 150px;gap:8px;margin-top:10px}
 .work select,.work input,.work textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 .work textarea{grid-column:1/-1;min-height:62px;resize:vertical}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px}
+.del{background:none;border:0;color:var(--muted);font:600 13px Onest,sans-serif;padding:6px 0;cursor:pointer}
+.delbox{margin-top:10px;padding:12px;border-radius:12px;background:var(--bg)}
+.delbox p{margin:0 0 8px;font-weight:600}
+.reasons{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.reasons button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;font:500 13px Onest,sans-serif;cursor:pointer}
+.reasons button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.delbox input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.delact{display:flex;gap:8px;margin-top:8px}
+.delact button{flex:1;border:0;border-radius:10px;padding:10px;font:600 14px Onest,sans-serif;cursor:pointer}
+.delact .yes{background:var(--coral);color:#fff}.delact .no{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.gone{font-size:13px;color:var(--muted);margin:8px 0 0}
 .saved{font-size:12px;color:var(--muted);min-height:16px;margin-top:4px}
 .empty,.login{text-align:center;color:var(--muted);padding:48px 16px}
 .login h2{font:400 22px Prata,serif;color:var(--ink)}
@@ -54,7 +66,7 @@ main{padding:12px 16px 40px}
 <main class="w" id="list"><p class="empty">Загружаю…</p></main>
 <script>
 const COLORS={'Новая':'--s-new','Не дозвонилась':'--s-miss','Написала':'--s-wrote','В работе':'--s-work','Показ назначен':'--s-show','Сделка':'--s-deal','Не актуально':'--s-no'};
-let LEADS=[],STATUSES=[],filter='active',q='';
+let LEADS=[],STATUSES=[],REASONS=[],filter='active',q='';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=l=>l.budget?new Intl.NumberFormat('ru-RU').format(l.budget)+' '+({EUR:'€',USD:'$',TRY:'₺'}[l.currency]||l.currency||''):'';
@@ -63,18 +75,20 @@ const SRC={telegram:'Telegram',facebook:'Facebook'};
 async function load(){
   const r=await fetch('/api/leads/',{credentials:'same-origin'});
   if(r.status===401){$('#list').innerHTML='<div class="login"><h2>Нужно войти</h2><p>Откройте бота <a href="https://t.me/asselweb_bot">@asselweb_bot</a>, отправьте ему <b>/leads</b> и нажмите «Открыть заявки».</p></div>';$('header .bar').hidden=true;return}
-  const j=await r.json();LEADS=j.leads;STATUSES=j.statuses;render()
+  const j=await r.json();LEADS=j.leads;STATUSES=j.statuses;REASONS=j.reasons||[];render()
 }
 function phones(s){return (String(s).match(/\+?\d[\d\s\-()]{8,}\d/g)||[]).map(p=>p.replace(/[^\d+]/g,''))}
 function matches(l){
+  if(filter==='deleted')return !!l.deleted&&(!q||[l.text,l.deleteReason].join(' ').toLowerCase().includes(q));
+  if(l.deleted)return false;
   if(filter==='active'&&(l.status==='Сделка'||l.status==='Не актуально'))return false;
   if(filter!=='active'&&filter!=='all'&&l.status!==filter)return false;
   if(!q)return true;
   return [l.text,l.districts,l.property_type,l.author,l.author_profile,l.chat,l.comment].join(' ').toLowerCase().includes(q)
 }
 function chips(){
-  const n=s=>LEADS.filter(l=>s==='all'||(s==='active'?!['Сделка','Не актуально'].includes(l.status):l.status===s)).length;
-  const items=[['active','В работе и новые'],['all','Все'],...STATUSES.map(s=>[s,s])];
+  const n=s=>s==='deleted'?LEADS.filter(l=>l.deleted).length:LEADS.filter(l=>!l.deleted).filter(l=>s==='all'||(s==='active'?!['Сделка','Не актуально'].includes(l.status):l.status===s)).length;
+  const items=[['active','В работе и новые'],['all','Все'],...STATUSES.map(s=>[s,s]),['deleted','Удалённые']];
   $('#chips').innerHTML=items.map(([k,t])=>`<button class="chip" data-f="${esc(k)}" aria-pressed="${filter===k}">${esc(t)}<b>${n(k)}</b></button>`).join('')
 }
 function card(l){
@@ -88,13 +102,27 @@ function card(l){
   ${facts?`<div class="facts">${facts}</div>`:''}
   <div class="text">${esc(l.text)}</div>${l.text.length>260?'<button class="more">Показать полностью</button>':''}
   <div class="who">${prof}${calls}${post}</div>
-  <div class="work">
+  ${l.deleted?`<p class="gone">🗑 Удалена: ${esc(l.deleteReason||'')}</p><div class="foot"><button class="del" data-restore>↩️ Вернуть в работу</button></div>`:`<div class="work">
     <select aria-label="Статус" data-k="status">${STATUSES.map(s=>`<option${s===l.status?' selected':''}>${esc(s)}</option>`).join('')}</select>
     <input type="date" aria-label="Следующий шаг" data-k="next" value="${esc(l.next||'')}">
     <textarea aria-label="Комментарий" data-k="comment" placeholder="Комментарий: позвонила, перезвонить в пятницу…">${esc(l.comment||'')}</textarea>
   </div>
-  <div class="saved">${l.updatedAt?'Изменено '+new Date(l.updatedAt).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div>
+  <div class="foot"><div class="saved">${l.updatedAt?'Изменено '+new Date(l.updatedAt).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div><button class="del" data-del>🗑 Удалить</button></div>`}
 </article>`
+}
+function delBox(c){
+  if(c.querySelector('.delbox'))return;
+  c.insertAdjacentHTML('beforeend',`<div class="delbox"><p>Почему удаляем?</p>
+  <div class="reasons">${REASONS.map(r=>`<button type="button" aria-pressed="false">${esc(r)}</button>`).join('')}</div>
+  <input maxlength="200" placeholder="Или своя причина коротко" aria-label="Причина удаления">
+  <div class="delact"><button class="no" type="button">Отмена</button><button class="yes" type="button">Удалить</button></div></div>`)
+}
+async function setDeleted(c,body){
+  const id=c.dataset.id;
+  const r=await fetch('/api/leads/',{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,...body})});
+  if(!r.ok)throw 0;
+  const {lead}=await r.json();
+  LEADS[LEADS.findIndex(l=>l.id===id)]=lead;render()
 }
 function render(){
   chips();
@@ -118,6 +146,17 @@ document.addEventListener('change',e=>{if(e.target.matches('.work select,.work i
 document.addEventListener('input',e=>{if(e.target.matches('.work textarea')){const id=e.target.closest('.card').dataset.id;clearTimeout(timers[id]);timers[id]=setTimeout(()=>save(e.target),900)}});
 document.addEventListener('click',e=>{
   const f=e.target.closest('.chip');if(f){filter=f.dataset.f;render();return}
+  const c=e.target.closest('.card');
+  if(c&&e.target.matches('[data-del]')){delBox(c);return}
+  if(c&&e.target.matches('.reasons button')){c.querySelectorAll('.reasons button').forEach(b=>b.setAttribute('aria-pressed',b===e.target));c.querySelector('.delbox input').value='';return}
+  if(c&&e.target.matches('.delact .no')){c.querySelector('.delbox').remove();return}
+  if(c&&e.target.matches('.delact .yes')){
+    const box=c.querySelector('.delbox'),picked=box.querySelector('.reasons [aria-pressed=true]'),own=box.querySelector('input').value.trim();
+    const reason=own||(picked&&picked.textContent);
+    if(!reason){box.querySelector('p').textContent='Выберите причину или напишите свою';return}
+    setDeleted(c,{deleted:true,reason}).catch(()=>{box.querySelector('p').textContent='Не удалось удалить. Проверьте интернет.'});return
+  }
+  if(c&&e.target.matches('[data-restore]')){setDeleted(c,{deleted:false}).catch(()=>{});return}
   if(e.target.matches('.more')){const t=e.target.previousElementSibling;t.classList.toggle('open');e.target.textContent=t.classList.contains('open')?'Свернуть':'Показать полностью'}
 });
 $('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render()});
