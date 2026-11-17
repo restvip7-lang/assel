@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanLead, applyUpdate, STATUSES } from '../lib/leads.js';
+import { cleanLead, applyUpdate, STATUSES, summaryText } from '../lib/leads.js';
 
 process.env.TELEGRAM_BOT_TOKEN ||= 'test-token';
 const { sign, verify, sessionUser, COOKIE } = await import('../lib/auth.js');
@@ -49,4 +49,17 @@ test('leads API: parser needs the secret, cabinet needs a session', async () => 
   delete process.env.LEADS_SECRET;
   r = res(); await leadsApi({ method: 'POST', headers: { 'x-leads-secret': '' }, body: {} }, r);
   assert.equal(r.code, 503);
+});
+
+test('summary after a run: count, short lines, nothing when empty', () => {
+  assert.equal(summaryText([]), '');
+  const t = summaryText([
+    { property_type: '2+1', districts: 'Оба', budget: 120000, currency: 'EUR', text: 'x' },
+    { text: 'Куплю <b>дом</b>' },
+    ...Array(5).fill({ property_type: 'вилла', text: 'y' }),
+  ]);
+  assert.match(t, /Новых заявок: 7/);
+  assert.match(t, /2\+1, Оба, 120\s000 €/);
+  assert.match(t, /Куплю &lt;b&gt;дом/);
+  assert.match(t, /и ещё 2/);
 });

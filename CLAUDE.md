@@ -40,7 +40,9 @@ Keep that file current when a decision is made or an open item is closed.
   `leads/<sha256(id)>.json` per lead (duplicates ignored). Assel opens the cabinet from the bot: `/leads` → a login link valid
   15 minutes (`api/login.js`) → HttpOnly session cookie for 30 days, valid only while the user is in `ADMIN_IDS` (`lib/auth.js`,
   keys derived from the bot token). In the cabinet she sets a status, a comment and a next-step date (PATCH `api/leads.js`);
-  status changes are kept in `history`.
+  status changes are kept in `history`. After each run the parser POSTs `{ type: 'summary', leads: [...] }` with only the truly
+  new leads; `api/leads.js` sends every admin one bot message «Новых заявок: N» (up to 5 short lines, `summaryText`) with a
+  button to the cabinet. The parser runs on GitHub Actions at 08:00, 13:00 and 17:00 Turkey time, every day.
 - `api/setup.js`: open `/api/setup/` once after the token changes to register the webhook and the command menu.
 - Env vars (Vercel): `LEADS_SECRET` (shared with the parser's `webhook_secret`), `TELEGRAM_BOT_TOKEN`, `ADMIN_IDS` (Telegram user ids, comma separated; the first one gets leads
   unless `LEADS_CHAT_ID` is set), `ANTHROPIC_API_KEY`, `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only),
