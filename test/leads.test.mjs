@@ -153,3 +153,21 @@ test('cleanLead and cleanListing never store dup_keys (only used for the check)'
   assert.equal('dup_keys' in cleanLead({ id: 'x', text: 'y', dup_keys: ['a'] }), false);
   assert.equal('dup_keys' in cleanListing({ id: 'x', text: 'y', dup_keys: ['a'] }), false);
 });
+
+test('owner listings: the same apartment from two chats is shown once', async () => {
+  const { mergeDuplicates } = await import('../lib/listings.js');
+  const text = 'Собственник. Продам. Продается отличная видовая квартира студия в комплексе stay suite residence';
+  const out = mergeDuplicates([
+    { id: 'a', text, chat: 'ТОП 100', date: '2026-11-11 12:03', author_profile: '@amir', link: 'https://t.me/a/1' },
+    { id: 'b', text: '🔥 ' + text + '!', chat: 'Недвижимость Алания', date: '2026-11-17 12:08', link: 'https://t.me/b/2' },
+    { id: 'c', text: 'Продаю 2+1 в Оба, другой текст совсем, 150 000 евро, звоните', chat: 'x', date: '2026-11-12' },
+    { id: 'd', text: 'Продаю 2+1 Махмутлар 145000', author_id: '5', district: 'Махмутлар', rooms: '2+1', price: 145000, date: '2026-11-13' },
+    { id: 'e', text: 'Квартира 2+1, Махмутлар, 145 000 евро, переписал объявление', author_id: '5', district: 'Махмутлар', rooms: '2+1', price: 145000, date: '2026-11-14' },
+  ]);
+  assert.equal(out.length, 3);
+  const s = out.find(l => l.id === 'b');
+  assert.equal(s.also.length, 1);
+  assert.equal(s.also[0].chat, 'ТОП 100');
+  assert.equal(s.author_profile, '@amir');
+  assert.equal(out.find(l => l.id === 'e').also.length, 1);
+});
