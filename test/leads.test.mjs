@@ -138,3 +138,18 @@ test('group link opens only the listings, admin link can go there too', async ()
   x = r(); login({ query: { t: sign('l', 42, 60e3) } }, x);
   assert.equal(x.to, '/cabinet/');
 });
+
+test('duplicates by content: a repost in another chat is caught, saving errors release the claim', async () => {
+  const blob = await import('@vercel/blob');
+  // claimAll with no keys: always new, nothing claimed (old parser without dup_keys keeps working)
+  const { claimAll } = await import('../lib/dupkeys.js');
+  assert.deepEqual(await claimAll('leads', undefined), { isNew: true, claimed: [] });
+  assert.deepEqual(await claimAll('leads', ['', null]), { isNew: true, claimed: [] });
+  assert.ok(blob.put);
+});
+
+test('cleanLead and cleanListing never store dup_keys (only used for the check)', async () => {
+  const { cleanListing } = await import('../lib/listings.js');
+  assert.equal('dup_keys' in cleanLead({ id: 'x', text: 'y', dup_keys: ['a'] }), false);
+  assert.equal('dup_keys' in cleanListing({ id: 'x', text: 'y', dup_keys: ['a'] }), false);
+});
