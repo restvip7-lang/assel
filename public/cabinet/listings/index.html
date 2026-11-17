@@ -21,6 +21,8 @@ h1{font:400 22px/1.2 Prata,serif;margin:0 0 10px}
 .tab b{font-weight:700;opacity:.65;margin-left:3px}
 .bar input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+#rooms{padding-top:4px}
+#districts .chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 11px;font:500 13px Onest,sans-serif;cursor:pointer}
 .chip[aria-pressed=true]{background:var(--sea);color:#fff;border-color:var(--sea)}
@@ -59,11 +61,16 @@ h3{font:600 13px Onest,sans-serif;color:var(--muted);text-transform:uppercase;le
   <h1>Квартиры от собственников</h1>
   <div class="tabs" id="tabs" role="group" aria-label="Какие квартиры показать"></div>
   <div class="bar"><input id="q" type="search" placeholder="Поиск: район, цена, текст" aria-label="Поиск"></div>
+  <div class="chips" id="districts" role="group" aria-label="Район"></div>
   <div class="chips" id="rooms" role="group" aria-label="Планировка"></div>
 </div></header>
 <main class="w" id="list"><p class="empty">Загружаю…</p></main>
 <script>
-let ALL=[],tab='today',room='',q='';
+let ALL=[],tab='today',room='',dist='',q='';
+const NO_D='Район не указан';
+const distKey=l=>l.district||NO_D;
+try{dist=localStorage.getItem('lst-dist')||'';room=localStorage.getItem('lst-room')||''}catch{}
+const remember=()=>{try{localStorage.setItem('lst-dist',dist);localStorage.setItem('lst-room',room)}catch{}};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const CUR={EUR:'€',USD:'$',TRY:'₺'};
@@ -89,6 +96,7 @@ function inTab(l,t){
 function matches(l){
   if(!inTab(l,tab))return false;
   if(room&&roomKey(l.rooms)!==room)return false;
+  if(dist&&distKey(l)!==dist)return false;
   if(!q)return true;
   return [l.text,l.district,l.rooms,l.author,l.chat,l.price].join(' ').toLowerCase().includes(q)
 }
@@ -113,13 +121,19 @@ function render(){
   const n=t=>ALL.filter(l=>inTab(l,t)).length;
   $('#tabs').innerHTML=[['today','Сегодня'],['all','Все'],['hidden','Скрытые']].map(([k,t])=>`<button class="tab" data-t="${k}" aria-pressed="${tab===k}">${t}<b>${n(k)}</b></button>`).join('');
   const base=ALL.filter(l=>inTab(l,tab));
-  const rc={};base.forEach(l=>{const k=roomKey(l.rooms);rc[k]=(rc[k]||0)+1});
-  if(room&&!rc[room])room='';
-  $('#rooms').innerHTML=[['','Все планировки',base.length],...Object.keys(rc).sort((a,b)=>roomOrder(a)-roomOrder(b)).map(k=>[k,k,rc[k]])]
+  // Районы считаются с учётом выбранной планировки, планировки с учётом района
+  const dc={};base.filter(l=>!room||roomKey(l.rooms)===room).forEach(l=>{const k=distKey(l);dc[k]=(dc[k]||0)+1});
+  const dn=Object.values(dc).reduce((a,b)=>a+b,0);
+  $('#districts').innerHTML=[['','Все районы',dn],...Object.keys(dc).sort((a,b)=>(a===NO_D)-(b===NO_D)||dc[b]-dc[a]).map(k=>[k,k,dc[k]]),...(dist&&!dc[dist]?[[dist,dist,0]]:[])]
+    .map(([k,t,c])=>`<button class="chip" data-d="${esc(k)}" aria-pressed="${dist===k}">${esc(t)}<b>${c}</b></button>`).join('');
+  const rbase=base.filter(l=>!dist||distKey(l)===dist);
+  const rc={};rbase.forEach(l=>{const k=roomKey(l.rooms);rc[k]=(rc[k]||0)+1});
+  if(room&&!rc[room])rc[room]=0;
+  $('#rooms').innerHTML=[['','Все планировки',rbase.length],...Object.keys(rc).sort((a,b)=>roomOrder(a)-roomOrder(b)).map(k=>[k,k,rc[k]])]
     .map(([k,t,c])=>`<button class="chip" data-r="${esc(k)}" aria-pressed="${room===k}">${esc(t)}<b>${c}</b></button>`).join('');
   const list=ALL.filter(matches);
   if(!list.length){
-    $('#list').innerHTML=tab==='today'&&!q&&!room?'<div class="empty">Сегодня новых квартир пока нет.<br><button class="btn ghost" data-t="all">Показать все</button></div>':'<p class="empty">Ничего не нашлось.</p>';
+    $('#list').innerHTML=tab==='today'&&!q&&!room&&!dist?'<div class="empty">Сегодня новых квартир пока нет.<br><button class="btn ghost" data-t="all">Показать все</button></div>':'<p class="empty">Ничего не нашлось.</p>';
     return
   }
   // Район → планировка → квартиры по цене
@@ -132,7 +146,8 @@ function render(){
 }
 document.addEventListener('click',async e=>{
   const t=e.target.closest('[data-t]');if(t){tab=t.dataset.t;render();scrollTo(0,0);return}
-  const r=e.target.closest('[data-r]');if(r){room=r.dataset.r;render();return}
+  const r=e.target.closest('[data-r]');if(r){room=r.dataset.r;remember();render();return}
+  const d=e.target.closest('[data-d]');if(d){dist=d.dataset.d;remember();render();return}
   if(e.target.matches('.more')){const x=e.target.previousElementSibling;x.classList.toggle('open');e.target.textContent=x.classList.contains('open')?'Свернуть':'Показать полностью';return}
   if(e.target.matches('.hide')){
     const c=e.target.closest('.card'),id=c.dataset.id;
